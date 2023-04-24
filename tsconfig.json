@@ -1,0 +1,45 @@
+/* To learn more about this file see: https://angular.io/config/tsconfig. */
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "baseUrl": "./",
+    "outDir": "./dist/out-tsc",
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "sourceMap": true,
+    "declaration": false,
+    "downlevelIteration": true,
+    "experimentalDecorators": true,
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "target": "es2020",
+    "paths": {
+      "@app-assets/*":["src/assets/*"],
+      "@app-env/*":["src/environments/*"],
+      "@app-modules/*": ["src/app/pages/*"],
+      "@app-auth-modules/*": ["src/app/pages/auth-pages/*"],
+      "@app-featured-modules/*": ["src/app/pages/featured-pages/*"],
+      "@app-shared/*": ["src/app/shared/*"],
+      "@app-guard/*": ["src/app/core/guard/*"],
+      "@app-pipes/*": ["src/app/core/pipes/*"],
+      "@app-layouts/*": ["src/app/core/layouts/*"],
+      "@app-services/*": ["src/app/core/services/*"],
+      "@app-interceptor/*": ["src/app/core/interceptor/*"],
+    },
+    "module": "es2020",
+    "lib": [
+      "es2020",
+      "dom"
+    ]
+  },
+  "angularCompilerOptions": {
+    "enableI18nLegacyMessageIdFormat": false,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "strictTemplates": true
+  }
+}

@@ -1,0 +1,21 @@
+<div class="app-header" [ngClass]="{
+  'app-header--shadow' : globals.headerShadow,
+  'app-header--opacity-bg' : globals.headerTransparentBg
+  }">
+  <div class="sidebar-shown-hidden-ico cursor-pointer" (click)="toggleSideBar()">
+    <i class="fa-solid fa-angles-left fa-lg close-sidebar"></i>
+    <i class="fa-solid fa-angles-right fa-lg show-sidebar"></i>
+  </div>
+  <div class="app-header--pane">
+    <button [ngClass]="{'is-active' : globals.toggleSidebarMobile}"
+      class="navbar-toggler hamburger hamburger--elastic toggle-mobile-sidebar-btn" (click)="toggleSidebarMobileOpen()"
+      type="button">
+      <span class="hamburger-box">
+        <span class="hamburger-inner"></span>
+      </span>
+    </button>
+  </div>
+  <div class="app-header--pane">
+    <app-header-userbox></app-header-userbox>
+  </div>
+</div>
