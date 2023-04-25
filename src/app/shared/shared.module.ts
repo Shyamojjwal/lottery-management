@@ -16,29 +16,18 @@ import { faFacebook, faTwitter, faAngular, faVuejs, faReact, faHtml5, faGoogle, 
 // Angular FontAwesome Icons
 
 import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
-
-// Perfect Scrollbar
-
-// import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
-// import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
-// import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { ThemeOptions } from '@app-layouts/theme-options';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
-
-// const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
-//   wheelPropagation: false
-// };
-
-// const MODULES = [FontAwesomeModule, PerfectScrollbarModule]
-const MODULES = [FontAwesomeModule]
+const MODULES = [
+  FormsModule,
+  FontAwesomeModule,
+  ReactiveFormsModule,
+]
 
 const PROVIDERS = [
   ThemeOptions,
-  // {
-  //   provide: PERFECT_SCROLLBAR_CONFIG,
-  //   useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG
-  // }
 ]
 
 @NgModule({

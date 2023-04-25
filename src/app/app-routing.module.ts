@@ -7,8 +7,7 @@ const routes: Routes = [
   {
     path: "",
     component: FeaturedLayoutComponent,
-    // canActivate: [UserAuthGuard],
-    canActivate: [],
+    canActivate: [UserAuthGuard],
     loadChildren: ()=>import("@app-featured-modules/featured-pages.module").then(m=>m.FeaturedPagesModule)
   },
   {

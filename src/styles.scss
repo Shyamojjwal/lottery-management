@@ -2,6 +2,7 @@
  Import Theme scss file 
 */
 @import './assets/theme/base.scss';
+@import './assets/theme/auth-scss/scss/login.scss';
 
 @import url(https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css);
 @import url(https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/fontawesome.min.css);
@@ -36,4 +37,8 @@ body.sidebar-hidden {
 
 .cursor-pointer {
   cursor: pointer;
+}
+
+.pb-11 {
+  padding-bottom: 14rem !important;
 }
