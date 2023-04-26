@@ -11,12 +11,12 @@ export class AuthenticationService {
 
   private credentials: string = appSettings.credentialsKey;
   private userCredential: string = appSettings.userInfo;
-  
+
   /**
    * *If user is authenticated
    *
    * @returns boolean if authenticated
-   * @date 14 March 2023
+   * @date April 26, 2023
    * @developer Shyamojjwal Shit
    */
   public isAuthenticated(): boolean {
@@ -24,5 +24,27 @@ export class AuthenticationService {
       return true;
     }
     return false;
+  }
+
+  /**
+   * *Removing current user detail from storage
+   *
+   * @date April 26, 2023
+   * @developer Shyamojjwal Shit
+   */
+  public clearUserInfo() {
+    this._cookieService.delete(this.credentials);
+  }
+
+  /**
+   * *Getting current user token from storage
+   *
+   * @returns JWT Token
+   * @date 29 Nov 2021
+   * @developer Rahul Kundu
+   */
+  public getToken(): string {
+    return this._cookieService.get(this.credentials);
+    // return _authToken != null ? _authToken : '';
   }
 }

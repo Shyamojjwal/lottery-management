@@ -9,6 +9,7 @@ import { BsDropdownModule } from "ngx-bootstrap/dropdown";
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { HTTPInterceptorProvider } from '@app-interceptor/index';
 
 const _declarations: Array<any> = [
   AppComponent,
@@ -31,7 +32,7 @@ const _MODULES: Array<any> = [
   BsDropdownModule.forRoot()
 ]
 
-const _PROVIDERS: Array<any> = [];
+const _PROVIDERS: Array<any> = [HTTPInterceptorProvider];
 
 @NgModule({
   declarations: [..._declarations],

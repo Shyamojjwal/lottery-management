@@ -13,4 +13,8 @@ export class AuthService {
   userSignIn = (_payload: any) => {
     return this._apiService.post("generate-token", _payload);
   }
+
+  getCrntUserInfo = () => {
+    return this._apiService.get("current_user");
+  }
 }

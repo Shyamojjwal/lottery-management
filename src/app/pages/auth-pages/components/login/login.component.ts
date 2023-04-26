@@ -1,6 +1,8 @@
 import { AfterViewChecked, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AuthService } from '@app-modules/auth-pages/services';
+import { AppCookieService } from '@app-services/app-cookie.service';
 import { checkFormValidation, makeAllFormControlAsDirty } from '@app-shared/helper/shared-functions';
 import { userSignInValidationMessage } from '@app-shared/helper/validation-messages';
 
@@ -17,8 +19,10 @@ export class LoginComponent implements OnInit, AfterViewChecked {
   public isFormSubmitted: boolean = false;
 
   constructor(
+    private router: Router,
     private FB: FormBuilder,
-    private _apiService: AuthService
+    private _apiService: AuthService,
+    private _cookieService: AppCookieService
   ) { }
 
   ngOnInit(): void {
@@ -61,7 +65,7 @@ export class LoginComponent implements OnInit, AfterViewChecked {
 
   doUserLogin = () => {
     console.log("userSignInForm: ", this.userSignInForm);
-    if(!this.userSignInForm.valid) {
+    if (!this.userSignInForm.valid) {
       makeAllFormControlAsDirty(this.userSignInForm);
       this.validateUserForm();
       this.isFormSubmitted = false;
@@ -74,16 +78,33 @@ export class LoginComponent implements OnInit, AfterViewChecked {
     }
 
     this._apiService.userSignIn(_payload).subscribe({
-      next: (_res:any) => {
+      next: (_res: any) => {
         console.log(_res);
+        this._cookieService.setUserToken(_res.token);
+        this.loadCrntUserInfo();
       },
-      error: (_err:any) => {
+      error: (_err: any) => {
         console.error("Error: ", _err);
-        this.userSignInForm.get('userPass').setErrors({badCredential: true});
+        this.userSignInForm.get('userPass').setErrors({ badCredential: true });
         makeAllFormControlAsDirty(this.userSignInForm);
         this.validateUserForm();
       }
     });
+  }
+
+  loadCrntUserInfo = () => {
+    this._apiService.getCrntUserInfo().subscribe({
+      next: (_res: any) => {
+        console.log("User Info: ", _res);
+        this._cookieService.setUserInfo(_res);
+        setTimeout(() => {
+          this.router.navigate(['/dashboard']);
+        }, 500);
+      },
+      error: (_err: any) => {
+        console.error("_err: ", _err);
+      }
+    })
   }
 
 }
