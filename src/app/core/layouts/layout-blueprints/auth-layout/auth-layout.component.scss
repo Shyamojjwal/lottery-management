@@ -1,0 +1,26 @@
+.auth-layout {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 100vw;
+  background-image: url('/assets/images/hero-bg/hero-1.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  .signin-content {
+    width: 60rem;
+    height: auto;
+    -webkit-box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.8);
+    -moz-box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.8);
+    box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.8);
+    border-radius: 20px;
+    padding: 30px;
+    background-color: #fff;
+    .left-img-sec {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+}

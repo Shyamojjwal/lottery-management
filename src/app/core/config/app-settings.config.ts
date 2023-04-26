@@ -1,6 +1,6 @@
 export const appSettings = {
-  appTitle: 'Admin-Template 14.3.0',
-  credentialsKey: 'Admin-Template-user_token',
-  userInfo: 'Admin-Template-user_info',
+  appTitle: 'Lottery Management System',
+  credentialsKey: 'lottery-user_token',
+  userInfo: 'lottery-user_info',
   ajaxTimeout: 300000,
 };

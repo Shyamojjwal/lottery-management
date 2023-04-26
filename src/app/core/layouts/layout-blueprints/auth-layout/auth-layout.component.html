@@ -1,14 +1,12 @@
-<div class="main">
-  <section class="sign-in">
-    <div class="container">
-      <div class="signin-content">
-        <div class="signin-image">
-          <figure><img src="./assets/images/auth-img/signin-image.jpg" alt="sing up image"></figure>
-        </div>
-        <div class="signin-form">
-          <router-outlet></router-outlet>
-        </div>
+<section class="auth-layout">
+  <div class="signin-content">
+    <div class="row">
+      <div class="col-lg-5 left-img-sec">
+        <img src="./assets/images/auth-img/signin-image.jpg"/>
+      </div>
+      <div class="col-lg-7">
+        <router-outlet></router-outlet>
       </div>
     </div>
-  </section>
-</div>
+  </div>
+</section>

@@ -18,10 +18,12 @@ import { faFacebook, faTwitter, faAngular, faVuejs, faReact, faHtml5, faGoogle, 
 import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { ThemeOptions } from '@app-layouts/theme-options';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 
 const MODULES = [
   FormsModule,
+  HttpClientModule,
   FontAwesomeModule,
   ReactiveFormsModule,
 ]

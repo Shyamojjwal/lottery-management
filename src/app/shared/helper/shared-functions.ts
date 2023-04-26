@@ -51,10 +51,10 @@ export function getQueryParams(param: any){
     });
 }
 
-export function imageToBase64(fileReader: FileReader, fileToRead: File): Observable<string> {
-    fileReader.readAsDataURL(fileToRead);
-    return fromEvent(fileReader, 'load').pipe(pluck('currentTarget', 'result'));
-}
+// export function imageToBase64(fileReader: FileReader, fileToRead: File): Observable<string> {
+//     fileReader.readAsDataURL(fileToRead);
+//     return fromEvent(fileReader, 'load').pipe(pluck('currentTarget', 'result'));
+// }
 
 export function getFileExtention(_fileName:string = "") {
     // return (/[.]/.exec(_fileName)) ? /[^.]+$/.exec(_fileName)[0] : undefined;

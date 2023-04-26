@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { StorageService } from '@app-shared/services';
 import { CookieService } from 'ngx-cookie-service';
 import { appSettings } from '../config';
+import { StorageService } from '@app-services/index';
 
 @Injectable({
   providedIn: 'root'
