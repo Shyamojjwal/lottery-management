@@ -1,22 +1,13 @@
 <div class="user-box position-relative ml-2" dropdown>
-  <a dropdownToggle
-          [routerLink]=""
-          class="p-0 d-flex align-items-center cursor-pointer"
-  >
+  <a dropdownToggle [routerLink]="" class="p-0 d-flex align-items-center cursor-pointer">
     <div class="d-block d-44 rounded-sm overflow-hidden">
-        <img src="assets/images/avatars/avatar5.jpg" class="img-fluid" alt="..." />
+      <img src="assets/images/avatars/avatar5.jpg" class="img-fluid" alt="..." />
     </div>
     <div class="d-none d-xl-block pl-2">
-      <div class="font-weight-bold">
-        Ryan Kent
-      </div>
-      <span class="text-black-50">
-        Senior accountant
-      </span>
+      <div class="font-weight-bold">{{loggedUserInfo.firstName}}&nbsp;({{loggedUserInfo.userCode}})</div>
+      <span class="text-black-50">{{userDesignation}}</span>
     </div>
-    <span class="pl-1 pl-xl-3"
-    ><fa-icon [icon]="['fas', 'angle-down']" class="opacity-5"></fa-icon
-    ></span>
+    <span class="pl-1 pl-xl-3"><fa-icon [icon]="['fas', 'angle-down']" class="opacity-5"></fa-icon></span>
   </a>
   <div *dropdownMenu class="dropdown-menu dropdown-menu-right dropdown-menu-lg p-0">
     <ul class="list-group list-group-flush text-left bg-transparent">

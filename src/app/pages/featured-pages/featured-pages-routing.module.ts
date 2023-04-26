@@ -10,6 +10,10 @@ const routes: Routes = [
   {
     path: "dashboard",
     loadChildren: () => import('@app-featured-modules/dashboard/dashboard.module').then(m=>m.DashboardModule)
+  },
+  {
+    path: "user-management",
+    loadChildren: () => import('@app-featured-modules/user-management/user-management.module').then(m=>m.UserManagementModule)
   }
 ];
 

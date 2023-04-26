@@ -46,6 +46,18 @@ export class AuthenticationService {
    */
   public getToken(): string {
     return this._cookieService.get(this.credentials);
-    // return _authToken != null ? _authToken : '';
+  }
+
+  /**
+   * *Getting current user information from storage
+   *
+   * @returns JWT Token
+   * @date 29 Nov 2021
+   * @developer Rahul Kundu
+   */
+  public getUser(): any {
+    const _userInfo: any = this._cookieService.get(this.userCredential);
+
+    return JSON.parse(_userInfo);
   }
 }

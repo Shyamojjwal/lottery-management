@@ -41,13 +41,13 @@ export class SidebarMenuService {
         {
           "title": "User List",
           "type": "simple",
-          "link": "/user-list"
+          "link": "/user-management"
         },
-        {
-          "title": "User Import",
-          "type": "simple",
-          "link": "/user-import"
-        }
+        // {
+        //   "title": "User Import",
+        //   "type": "simple",
+        //   "link": "/user-import"
+        // }
       ]
     },
     // {
