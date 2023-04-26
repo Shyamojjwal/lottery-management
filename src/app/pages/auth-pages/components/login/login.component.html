@@ -25,6 +25,6 @@
       />
       <div class="error-cont">{{ validationMessages?.userPass }}</div>
     </div>
-    <button class="btn btn-outline-primary" type="submit">Sign In</button>
+    <button class="btn btn-outline-primary" type="submit" [disabled]="isFormSubmitted">Sign In</button>
   </form>
 </section>

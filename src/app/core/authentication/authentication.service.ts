@@ -34,6 +34,7 @@ export class AuthenticationService {
    */
   public clearUserInfo() {
     this._cookieService.delete(this.credentials);
+    this._cookieService.delete(this.userCredential);
   }
 
   /**

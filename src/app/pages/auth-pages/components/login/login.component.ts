@@ -72,6 +72,8 @@ export class LoginComponent implements OnInit, AfterViewChecked {
       return;
     }
 
+    this.isFormSubmitted = true;
+
     const _payload: any = {
       username: this.userSignInForm.value.userAuth,
       password: this.userSignInForm.value.userPass
@@ -88,6 +90,8 @@ export class LoginComponent implements OnInit, AfterViewChecked {
         this.userSignInForm.get('userPass').setErrors({ badCredential: true });
         makeAllFormControlAsDirty(this.userSignInForm);
         this.validateUserForm();
+
+        this.isFormSubmitted = false;
       }
     });
   }
