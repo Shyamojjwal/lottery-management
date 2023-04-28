@@ -38,6 +38,13 @@ body.sidebar-hidden {
   cursor: pointer;
 }
 
+.app-content--inner__wrapper {
+  .page-title {
+    margin-bottom: 2rem;
+    border-bottom: 2px solid #d4d4d4;
+  }
+}
+
 .pb-11 {
   padding-bottom: 14rem !important;
 }

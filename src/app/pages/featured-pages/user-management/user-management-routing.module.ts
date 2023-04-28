@@ -10,15 +10,18 @@ const routes: Routes = [
   },
   {
     path: "user-list",
-    component: UserListComponent
+    component: UserListComponent,
+    data: {title: "All User list"}
   },
   {
     path: "new-user",
-    component: UserModificationComponent
+    component: UserModificationComponent,
+    data: {title: "Add New User"}
   },
   {
-    path: "modify-user",
-    component: UserModificationComponent
+    path: ":userCode/modify-user",
+    component: UserModificationComponent,
+    data: {title: "Modify User"}
   }
 ];
 
