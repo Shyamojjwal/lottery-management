@@ -1,0 +1,26 @@
+h5.form-section-title {
+  overflow: hidden;
+  position: relative;
+
+  &::after {
+    content: "";
+    display: inline-block;
+    height: 0.5em;
+    vertical-align: bottom;
+    width: 100%;
+    margin-right: -100%;
+    margin-left: 10px;
+    border-top: 2px solid #1bc943;
+    bottom: -5px;
+    position: absolute;
+  }
+}
+
+.form-section {
+  padding-bottom: 10px;
+  border-bottom: 1px solid #d4d4d4;
+}
+
+.footer-btn-group {
+  margin: 1.5rem 0px !important;
+}
