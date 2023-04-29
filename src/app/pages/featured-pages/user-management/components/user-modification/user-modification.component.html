@@ -2,6 +2,11 @@
   <h3 class="d-inline-block" *ngIf="isNewEntry">Add New User</h3>
   <h3 class="d-inline-block" *ngIf="!isNewEntry">Modify User</h3>
   <div class="btn-group-v2 float-right">
+    <div class="radio-container d-inline-block mr-4" *ngIf="!isNewEntry && isModify">
+      <input type="checkbox" name="group1" id="radio-1" [checked]="isValidatePass"
+        (change)="isValidatePass = !isValidatePass">
+      <label for="radio-1"><span class="radio">Change Password</span></label>
+    </div>
     <button class="btn btn-light mr-4" (click)="continueInfoModification()"
       *ngIf="!isNewEntry && !isModify">Modify</button>
     <button class="btn btn-success mr-4" *ngIf="isModify" (click)="saveModificationForm()">Save</button>
@@ -10,56 +15,67 @@
 </div>
 <!-- Form Section Start -->
 <div class="form-section">
-  <div class="row">
-    <div class="col-md-8 col-xs-12">
+  <form [formGroup]="userModifyForm">
+    <div class="row">
+      <div class="col-md-8 col-xs-12">
 
-      <h5 class="form-section-title mb-3">User Information</h5>
+        <h5 class="form-section-title mb-3">User Information</h5>
 
-      <div class="row">
-        <div class="col-md-6 form-group">
-          <label>User Name</label>
-          <input type="text" placeholder="User Name" class="form-control">
+        <div class="row">
+          <div class="col-md-6 form-group">
+            <label>User Name</label>
+            <input type="text" placeholder="User Name" class="form-control" formControlName="username"
+              [readOnly]="isInputReadOnly || isPreview" [attr.disabled]="!isNewEntry ? true : null">
+          </div>
+          <div class="col-md-6 form-group">
+            <label>Email Address</label>
+            <input type="text" placeholder="Email Address" class="form-control" formControlName="email"
+              [readOnly]="isInputReadOnly || isPreview">
+          </div>
         </div>
-        <div class="col-md-6 form-group">
-          <label>Email Address</label>
-          <input type="text" placeholder="Email Address" class="form-control">
+        <div class="row">
+          <div class="col-md-6 form-group">
+            <label>First Name</label>
+            <input type="text" placeholder="First Name" class="form-control" formControlName="firstName"
+              [readOnly]="isInputReadOnly || isPreview">
+          </div>
+          <div class="col-md-6 form-group">
+            <label>Last Name</label>
+            <input type="text" placeholder="Last Name" class="form-control" formControlName="lastName"
+              [readOnly]="isInputReadOnly || isPreview">
+          </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="col-md-6 form-group">
-          <label>First Name</label>
-          <input type="text" placeholder="First Name" class="form-control">
+        <div class="row">
+          <div class="col-md-6 form-group">
+            <label>Phone Number</label>
+            <input type="text" placeholder="Phone Number" class="form-control" formControlName="phoneNumber"
+              [readOnly]="isInputReadOnly || isPreview">
+          </div>
+          <div class="col-md-6 form-group">
+            <label>Address</label>
+            <textarea placeholder="Address" class="form-control" formControlName="address" col="2"
+              [readOnly]="isInputReadOnly || isPreview"></textarea>
+          </div>
         </div>
-        <div class="col-md-6 form-group">
-          <label>Last Name</label>
-          <input type="text" placeholder="Last Name" class="form-control">
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-6 form-group">
-          <label>Phone Number</label>
-          <input type="text" placeholder="Phone Number" class="form-control">
-        </div>
-        <div class="col-md-6 form-group">
-          <label>Address</label>
-          <textarea placeholder="Address" class="form-control" col="2"></textarea>
-        </div>
-      </div>
+        <ng-container *ngIf="isNewEntry || (!isNewEntry && isValidatePass)">
+          <h5 class="form-section-title mb-3">Security Information</h5>
 
-      <h5 class="form-section-title mb-3">Security Information</h5>
-
-      <div class="row">
-        <div class="col-md-6 form-group">
-          <label>Password</label>
-          <input type="password" placeholder="Password" class="form-control">
-        </div>
-        <div class="col-md-6 form-group">
-          <label>Confirm Password</label>
-          <input type="password" placeholder="Confirm Password" class="form-control" />
-        </div>
+          <div class="row">
+            <div class="col-md-6 form-group">
+              <label>Password</label>
+              <input type="password" placeholder="Password" class="form-control" formControlName="password"
+                [readOnly]="isInputReadOnly || isPreview">
+            </div>
+            <div class="col-md-6 form-group">
+              <label>Confirm Password</label>
+              <input type="password" placeholder="Confirm Password" class="form-control" formControlName="cnfPass"
+                [readOnly]="isInputReadOnly || isPreview" />
+            </div>
+          </div>
+        </ng-container>
       </div>
     </div>
-  </div>
+  </form>
 </div>
 <!-- Form Button Section -->
 <div class="footer-btn-group">

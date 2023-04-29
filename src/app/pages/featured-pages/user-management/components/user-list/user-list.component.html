@@ -13,7 +13,7 @@
           <th scope="col">Email</th>
           <th scope="col">Phone Number</th>
           <th scope="col">Category</th>
-          <th scope="col" class="action-col">Action</th>
+          <!-- <th scope="col" class="action-col">Action</th> -->
         </tr>
         <tr>
           <th scope="col">
@@ -34,9 +34,9 @@
           <th scope="col">
             <input type="text" class="form-control" placeholder="Category" />
           </th>
-          <th scope="col">
+          <!-- <th scope="col">
             <hr />
-          </th>
+          </th> -->
         </tr>
       </thead>
       <tbody>
@@ -47,12 +47,12 @@
           <td>{{user.email}}</td>
           <td>{{user.phoneNo}}</td>
           <td>{{user.userCategory}}</td>
-          <td>
+          <!-- <td>
             <div class="action-sec">
               <span class="action-edit" [routerLink]="['/user-management', user.userCode, 'modify-user']"><i class="fa-sharp fa-solid fa-pen-to-square fa-beat-fade"></i></span>
               <span class="action-remove"><i class="fa-solid fa-trash-can"></i></span>
             </div>
-          </td>
+          </td> -->
         </tr>
       </tbody>
     </table>

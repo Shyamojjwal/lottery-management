@@ -24,6 +24,7 @@
       "@app-auth-modules/*": ["src/app/pages/auth-pages/*"],
       "@app-featured-modules/*": ["src/app/pages/featured-pages/*"],
       "@app-shared/*": ["src/app/shared/*"],
+      "@app-core/*": ["src/app/core/*"],
       "@app-auth-service/*": ["src/app/core/authentication/*"],
       "@app-guard/*": ["src/app/core/guard/*"],
       "@app-pipes/*": ["src/app/core/pipes/*"],

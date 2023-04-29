@@ -8,23 +8,29 @@ const img_ext_list = ['JPG', 'JPEG', 'PNG']
 export function checkFormValidation(form: FormGroup, listValidationMessage: any) {
     let showValidationMessages: any = {};
 
-    for(const _key of Object.keys(form.controls)){
+    for (const _key of Object.keys(form.controls)) {
         let cur_control = form.get(_key);
-        if(cur_control instanceof FormControl) {
+        if (cur_control instanceof FormControl) {
             showValidationMessages[_key] = '';
             if (cur_control.invalid && (cur_control.dirty || cur_control.touched)) {
-              let errors:any = cur_control.errors;
-              for(const _err of Object.keys(errors)) {
-                showValidationMessages[_key] = listValidationMessage[_key][_err];
-              }
+                let errors: any = cur_control.errors;
+                for (const _err of Object.keys(errors)) {
+                    showValidationMessages[_key] = listValidationMessage[_key][_err];
+                }
             }
         }
     }
     return showValidationMessages;
 }
 
+export function noWhitespaceValidator(control: FormControl) {
+    const isWhitespace = (control.value || '').trim().length === 0;
+    const isValid = !isWhitespace;
+    return isValid ? null : { required: true };
+};
+
 export function makeAllFormControlAsDirty(form: FormGroup | any) {
-    Object.keys(form.controls).forEach((key:any) => {
+    Object.keys(form.controls).forEach((key: any) => {
         form.get(key).markAsDirty();
     });
 }
@@ -45,7 +51,7 @@ export function loadDynamicScript(url: string, value: any): HTMLScriptElement | 
     }
 }
 
-export function getQueryParams(param: any){
+export function getQueryParams(param: any) {
     return new HttpParams({
         fromString: Object.entries(param).map(([key, val]) => `${key}=${val}`).join('&'),
     });
@@ -56,21 +62,21 @@ export function getQueryParams(param: any){
 //     return fromEvent(fileReader, 'load').pipe(pluck('currentTarget', 'result'));
 // }
 
-export function getFileExtention(_fileName:string = "") {
+export function getFileExtention(_fileName: string = "") {
     // return (/[.]/.exec(_fileName)) ? /[^.]+$/.exec(_fileName)[0] : undefined;
     return _fileName && _fileName.length > 0 ? _fileName.substring(_fileName.lastIndexOf('.') + 1) : null;
 }
 
 export function checkImageExtention(control: FormControl): { extension: boolean; } | null {
-    if(control.value && control.value != undefined) {
+    if (control.value && control.value != undefined) {
         var _ext: string | any = '';
 
-        if(typeof(control.value) !== 'object') {
+        if (typeof (control.value) !== 'object') {
             _ext = getFileExtention(control.value);
-        } else if(typeof(control.value) === 'object') {
+        } else if (typeof (control.value) === 'object') {
             _ext = getFileExtention(control.value.name);
         }
-        if(_ext && _ext != undefined && img_ext_list.indexOf(_ext.toUpperCase()) > -1) {
+        if (_ext && _ext != undefined && img_ext_list.indexOf(_ext.toUpperCase()) > -1) {
             return null
         } else {
             return { 'extension': true }
@@ -84,8 +90,8 @@ export function roundUp(_value: number = 0) {
     return Math.ceil(_value);
 }
 
-export function sortValues(sortArray: Array<any> = [], key: string, order:string = 'asc') {
-    if(order == 'asc') {
+export function sortValues(sortArray: Array<any> = [], key: string, order: string = 'asc') {
+    if (order == 'asc') {
         return sortArray.sort((a, b) => {
             if (a[key] < b[key])
                 return -1;
@@ -104,7 +110,7 @@ export function sortValues(sortArray: Array<any> = [], key: string, order:string
     }
 }
 
-export function sumOfArrayObjectKeyValue(_array: Array<object>, _key:string) {
+export function sumOfArrayObjectKeyValue(_array: Array<object>, _key: string) {
     const _selectedProjects = Object.assign([], _array);
-    return _selectedProjects.map((item:any) => item[_key]).reduce((prev:any, curr:any) => prev + curr, 0);
+    return _selectedProjects.map((item: any) => item[_key]).reduce((prev: any, curr: any) => prev + curr, 0);
 }

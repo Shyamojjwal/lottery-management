@@ -13,4 +13,16 @@ export class UserService {
   loadAllUsers = () => {
     return this._apiService.get('user/getAllUser');
   }
+
+  loadAllUserInfo = (_userCode: string) => {
+    return this._apiService.get(`user/getUserByCode?userCode=${_userCode}`);
+  }
+
+  submitModifyForm = (_payload:any, isNewEntry: boolean = true) => {
+    if(isNewEntry) {
+      return this._apiService.post('addNewUser', _payload);
+    } else {
+      return this._apiService.put('addNewUser', _payload);
+    }
+  }
 }

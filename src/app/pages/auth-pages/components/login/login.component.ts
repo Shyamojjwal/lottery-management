@@ -3,7 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Router } from '@angular/router';
 import { AuthService } from '@app-modules/auth-pages/services';
 import { AppCookieService } from '@app-services/app-cookie.service';
-import { checkFormValidation, makeAllFormControlAsDirty } from '@app-shared/helper/shared-functions';
+import { checkFormValidation, makeAllFormControlAsDirty, noWhitespaceValidator } from '@app-shared/helper/shared-functions';
 import { userSignInValidationMessage } from '@app-shared/helper/validation-messages';
 
 @Component({
@@ -38,19 +38,19 @@ export class LoginComponent implements OnInit, AfterViewChecked {
   initLoginForm = () => {
     this.userSignInForm = this.FB.group({
       // userAuth: ['', [Validators.required, Validators.pattern(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/), this.noWhitespaceValidator]],
-      userAuth: ['', [Validators.required, this.noWhitespaceValidator]],
-      userPass: ['', [Validators.required, this.noWhitespaceValidator]]
+      userAuth: ['', [Validators.required, noWhitespaceValidator]],
+      userPass: ['', [Validators.required, noWhitespaceValidator]]
     })
   }
   get g() {
     return this.userSignInForm.controls;
   }
 
-  public noWhitespaceValidator = (control: FormControl) => {
-    const isWhitespace = (control.value || '').trim().length === 0;
-    const isValid = !isWhitespace;
-    return isValid ? null : { required: true };
-  };
+  // public noWhitespaceValidator = (control: FormControl) => {
+  //   const isWhitespace = (control.value || '').trim().length === 0;
+  //   const isValid = !isWhitespace;
+  //   return isValid ? null : { required: true };
+  // };
 
   trimAndValidateUserForm = (_field: string) => {
     this.userSignInForm.get(_field).setValue(this.userSignInForm.get(_field).value.trim());
