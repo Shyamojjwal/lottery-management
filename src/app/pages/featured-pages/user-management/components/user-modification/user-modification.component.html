@@ -25,36 +25,56 @@
           <div class="col-md-6 form-group">
             <label>User Name</label>
             <input type="text" placeholder="User Name" class="form-control" formControlName="username"
-              [readOnly]="isInputReadOnly || isPreview" [attr.disabled]="!isNewEntry ? true : null">
+              (focusout)="trimAndValidateUserForm('username')" [readOnly]="isInputReadOnly || isPreview"
+              [attr.disabled]="!isNewEntry ? true : null" />
+            <small class="form-text text-muted err-msg">{{validationMessages?.username}}</small>
           </div>
           <div class="col-md-6 form-group">
             <label>Email Address</label>
             <input type="text" placeholder="Email Address" class="form-control" formControlName="email"
-              [readOnly]="isInputReadOnly || isPreview">
+              (focusout)="trimAndValidateUserForm('email')" [readOnly]="isInputReadOnly || isPreview" />
+            <small class="form-text text-muted err-msg">{{validationMessages?.email}}</small>
           </div>
         </div>
         <div class="row">
           <div class="col-md-6 form-group">
             <label>First Name</label>
             <input type="text" placeholder="First Name" class="form-control" formControlName="firstName"
-              [readOnly]="isInputReadOnly || isPreview">
+              (focusout)="trimAndValidateUserForm('firstName')" [readOnly]="isInputReadOnly || isPreview">
+            <small class="form-text text-muted err-msg">{{validationMessages?.firstName}}</small>
           </div>
           <div class="col-md-6 form-group">
             <label>Last Name</label>
             <input type="text" placeholder="Last Name" class="form-control" formControlName="lastName"
-              [readOnly]="isInputReadOnly || isPreview">
+              (focusout)="trimAndValidateUserForm('lastName')" [readOnly]="isInputReadOnly || isPreview">
+            <small class="form-text text-muted err-msg">{{validationMessages?.lastName}}</small>
           </div>
         </div>
         <div class="row">
           <div class="col-md-6 form-group">
             <label>Phone Number</label>
             <input type="text" placeholder="Phone Number" class="form-control" formControlName="phoneNumber"
-              [readOnly]="isInputReadOnly || isPreview">
+              (focusout)="trimAndValidateUserForm('phoneNumber')" [readOnly]="isInputReadOnly || isPreview">
+            <small class="form-text text-muted err-msg">{{validationMessages?.phoneNumber}}</small>
           </div>
           <div class="col-md-6 form-group">
+            <label>Category</label>
+            <select class="form-control" formControlName="userCategory"
+              (focusout)="trimAndValidateUserForm('userCategory')"
+              [attr.disabled]="(isInputReadOnly || isPreview) ? true : null">
+              <option value="">--- Select Category ---</option>
+              <option *ngFor="let _cat of userCategoryList" [value]="_cat">{{_cat}}</option>
+            </select>
+            <small class="form-text text-muted err-msg">{{validationMessages?.userCategory}}</small>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 form-group">
             <label>Address</label>
-            <textarea placeholder="Address" class="form-control" formControlName="address" col="2"
+            <textarea placeholder="Address" class="form-control" formControlName="address"
+              (focusout)="trimAndValidateUserForm('address')" col="2"
               [readOnly]="isInputReadOnly || isPreview"></textarea>
+            <small class="form-text text-muted err-msg">{{validationMessages?.address}}</small>
           </div>
         </div>
         <ng-container *ngIf="isNewEntry || (!isNewEntry && isValidatePass)">
@@ -64,12 +84,14 @@
             <div class="col-md-6 form-group">
               <label>Password</label>
               <input type="password" placeholder="Password" class="form-control" formControlName="password"
-                [readOnly]="isInputReadOnly || isPreview">
+                (focusout)="trimAndValidateUserForm('password')" [readOnly]="isInputReadOnly || isPreview">
+              <small class="form-text text-muted err-msg">{{validationMessages?.password}}</small>
             </div>
             <div class="col-md-6 form-group">
               <label>Confirm Password</label>
               <input type="password" placeholder="Confirm Password" class="form-control" formControlName="cnfPass"
-                [readOnly]="isInputReadOnly || isPreview" />
+                (focusout)="trimAndValidateUserForm('cnfPass')" [readOnly]="isInputReadOnly || isPreview" />
+              <small class="form-text text-muted err-msg">{{validationMessages?.cnfPass}}</small>
             </div>
           </div>
         </ng-container>

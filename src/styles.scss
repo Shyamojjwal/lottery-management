@@ -45,6 +45,14 @@ body.sidebar-hidden {
   }
 }
 
+.form-group {
+  small.form-text.err-msg {
+    color: red !important;
+    font-style: italic;
+    font-size: 85%;
+  }
+}
+
 .pb-11 {
   padding-bottom: 14rem !important;
 }

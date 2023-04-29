@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { checkFormValidation, makeAllFormControlAsDirty, noWhitespaceValidator } from '@app-shared/helper/shared-functions';
 import { appSettings } from "@app-core/config";
@@ -28,6 +28,8 @@ export class UserModificationComponent implements OnInit {
   private userCode: any = null;
   private userInfo: IUser | any = null;
   public isValidatePass: boolean = false;
+
+  public userCategoryList: Array<any> = ['Stockiest', 'SubStockiest', 'Seller'];
 
   constructor(
     private router: Router,
@@ -64,6 +66,7 @@ export class UserModificationComponent implements OnInit {
       email: ["", [Validators.required, Validators.pattern(appSettings.RegExp.email), noWhitespaceValidator]],
       phoneNumber: ["", [Validators.required, Validators.pattern(appSettings.RegExp.phoneNo), noWhitespaceValidator]],
       address: ["", [Validators.required, Validators.pattern(appSettings.RegExp.address), noWhitespaceValidator]],
+      userCategory: ["", [Validators.required]],
       password: [""],
       cnfPass: [""],
     })
@@ -73,12 +76,17 @@ export class UserModificationComponent implements OnInit {
   passwordValidationSetup = () => {
     if (this.isValidatePass || this.isNewEntry) {
       this.userModifyForm.get('password').setValidators([Validators.required, noWhitespaceValidator]);
-      this.userModifyForm.get('cnfPass').setValidators([Validators.required, noWhitespaceValidator]);
+      this.userModifyForm.get('cnfPass').setValidators([Validators.required, noWhitespaceValidator, this.validateConfirmPassword]);
     } else {
       this.userModifyForm.get('password').clearValidators();
       this.userModifyForm.get('cnfPass').clearValidators();
     }
   }
+
+  validateConfirmPassword(control: FormControl) {
+    let _pass = this.userModifyForm?.value?.password || '';
+    return control.value == _pass ? null : { 'passNotMatch': true };
+}
 
   loadUserInfo = () => {
     this.apiService.loadAllUserInfo(this.userCode).subscribe({

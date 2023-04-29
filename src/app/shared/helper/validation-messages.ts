@@ -36,6 +36,10 @@ export const modifyUserValidationMsg = {
     whitespace: `Phone No can't be blank.`,
     pattern: `Accepted characters are 0-9(-).+`
   },
+  userCategory: {
+    required: `User Category can't be blank.`,
+    whitespace: `User Category can't be blank.`,
+  },
   address: {
     required: `Address can't be blank.`,
     whitespace: `Address can't be blank.`,
@@ -48,5 +52,6 @@ export const modifyUserValidationMsg = {
   cnfPass: {
     required: `Confirm Password can't be blank.`,
     whitespace: `Confirm Password can't be blank.`,
+    passNotMatch: `Password are not match.`,
   }
 }
