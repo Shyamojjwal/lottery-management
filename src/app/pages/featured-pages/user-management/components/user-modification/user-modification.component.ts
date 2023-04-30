@@ -166,6 +166,7 @@ export class UserModificationComponent implements OnInit {
       },
       error: (_err: any) => {
         console.error("Modify User Error: ", _err);
+        this.isFormSubmitted = false;
       }
     })
   }

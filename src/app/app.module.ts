@@ -10,6 +10,7 @@ import { BsDropdownModule } from "ngx-bootstrap/dropdown";
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HTTPInterceptorProvider } from '@app-interceptor/index';
+import { LoadingBarRouterModule } from "@ngx-loading-bar/router";
 
 const _declarations: Array<any> = [
   AppComponent,
@@ -28,6 +29,7 @@ const _MODULES: Array<any> = [
   BrowserModule,
   NgProgressModule,
   AppRoutingModule,
+  LoadingBarRouterModule,
   BrowserAnimationsModule,
   BsDropdownModule.forRoot()
 ]
