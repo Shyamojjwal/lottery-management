@@ -5,5 +5,5 @@
 export const environment = {
   production: false,
   cryptoJSKey: 'ASDFG12345678@123ce4a9d9c',
-  baseUrl: 'https://cad-prayer-clicks-olympic.trycloudflare.com/'
+  baseUrl: 'https://strategy-invited-mistress-bbs.trycloudflare.com/'
 };
