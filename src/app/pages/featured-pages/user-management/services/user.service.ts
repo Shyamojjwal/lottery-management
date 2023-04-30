@@ -20,9 +20,9 @@ export class UserService {
 
   submitModifyForm = (_payload:any, isNewEntry: boolean = true) => {
     if(isNewEntry) {
-      return this._apiService.post('addNewUser', _payload);
+      return this._apiService.post('user/addNewUser', _payload);
     } else {
-      return this._apiService.put('addNewUser', _payload);
+      return this._apiService.put('user/addNewUser', _payload);
     }
   }
 }

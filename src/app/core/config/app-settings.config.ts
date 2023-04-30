@@ -10,5 +10,6 @@ export const appSettings = {
     alphabet: /^[A-Za-z]+$/,
     numeric: /^[0-9]*$/,
     alphaNumeric: /^[a-zA-Z0-9]+$/,
-  }
+  },
+  charString: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz'
 };

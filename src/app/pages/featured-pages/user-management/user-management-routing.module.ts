@@ -4,12 +4,7 @@ import { UserListComponent, UserModificationComponent } from './components';
 
 const routes: Routes = [
   {
-    path: '',
-    redirectTo: 'user-list',
-    pathMatch: "full"
-  },
-  {
-    path: "user-list",
+    path: "",
     component: UserListComponent,
     data: {title: "All User list"}
   },

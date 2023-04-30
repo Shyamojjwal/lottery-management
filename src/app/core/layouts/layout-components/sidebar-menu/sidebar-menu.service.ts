@@ -35,21 +35,27 @@ export class SidebarMenuService {
     },
     {
       "title": "User Management",
-      "type": "dropdown",
-      "icon": "<i class=\"pe-7s-keypad\"></i>",
-      "submenus": [
-        {
-          "title": "User List",
-          "type": "simple",
-          "link": "/user-management"
-        },
-        // {
-        //   "title": "User Import",
-        //   "type": "simple",
-        //   "link": "/user-import"
-        // }
-      ]
+      "type": "simple",
+      "icon": "<i class=\"pe-7s-users\"></i>",
+      "link": "/user-management"
     },
+    // {
+    //   "title": "User Management",
+    //   "type": "dropdown",
+    //   "icon": "<i class=\"pe-7s-keypad\"></i>",
+    //   "submenus": [
+    //     {
+    //       "title": "User List",
+    //       "type": "simple",
+    //       "link": "/user-management"
+    //     },
+    //     {
+    //       "title": "User Import",
+    //       "type": "simple",
+    //       "link": "/user-import"
+    //     }
+    //   ]
+    // },
     // {
     //   "title": "Cards",
     //   "type": "dropdown",

@@ -1,7 +1,6 @@
 import { HttpParams } from '@angular/common/http';
-import { FormGroup, FormControl } from '@angular/forms';
-import { fromEvent, Observable } from 'rxjs';
-import { pluck } from 'rxjs/operators';
+import { FormGroup, FormControl, AbstractControl } from '@angular/forms';
+// import * as randomStr from "random-string-gen";
 
 const img_ext_list = ['JPG', 'JPEG', 'PNG']
 
@@ -113,4 +112,13 @@ export function sortValues(sortArray: Array<any> = [], key: string, order: strin
 export function sumOfArrayObjectKeyValue(_array: Array<object>, _key: string) {
     const _selectedProjects = Object.assign([], _array);
     return _selectedProjects.map((item: any) => item[_key]).reduce((prev: any, curr: any) => prev + curr, 0);
+}
+
+export const generateRandCode = (_length: number = 5, _incSpecialChar: boolean = false) => {
+    const randomStr = require('random-string-gen');
+    return randomStr({
+        length: _length,
+        type: 'alphanumeric',
+        capitalization: 'uppercase'
+    })
 }

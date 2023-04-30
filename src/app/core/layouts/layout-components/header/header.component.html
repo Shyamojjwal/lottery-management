@@ -3,8 +3,9 @@
   'app-header--opacity-bg' : globals.headerTransparentBg
   }">
   <div class="sidebar-shown-hidden-ico cursor-pointer" (click)="toggleSideBar()">
-    <i class="fa-solid fa-angles-left fa-lg close-sidebar"></i>
-    <i class="fa-solid fa-angles-right fa-lg show-sidebar"></i>
+    <i class="fa-solid fa-arrows-left-right-to-line fa-lg"></i>
+    <!-- <i class="fa-solid fa-angles-left fa-lg close-sidebar"></i>
+    <i class="fa-solid fa-angles-right fa-lg show-sidebar"></i> -->
   </div>
   <div class="app-header--pane">
     <button [ngClass]="{'is-active' : globals.toggleSidebarMobile}"

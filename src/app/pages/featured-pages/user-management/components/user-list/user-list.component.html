@@ -4,57 +4,69 @@
 </div>
 <div class="row">
   <div class="col-lg-12">
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col">User Code</th>
-          <th scope="col">First Name</th>
-          <th scope="col">Last Name</th>
-          <th scope="col">Email</th>
-          <th scope="col">Phone Number</th>
-          <th scope="col">Category</th>
-          <!-- <th scope="col" class="action-col">Action</th> -->
-        </tr>
-        <tr>
-          <th scope="col">
-            <input type="text" class="form-control" placeholder="User Code" />
-          </th>
-          <th scope="col">
-            <input type="text" class="form-control" placeholder="First Name" />
-          </th>
-          <th scope="col">
-            <input type="text" class="form-control" placeholder="Last Name" />
-          </th>
-          <th scope="col">
-            <input type="text" class="form-control" placeholder="Email" />
-          </th>
-          <th scope="col">
-            <input type="text" class="form-control" placeholder="Phone Number" />
-          </th>
-          <th scope="col">
-            <input type="text" class="form-control" placeholder="Category" />
-          </th>
-          <!-- <th scope="col">
+    <form [formGroup]="filterForm">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">User Code</th>
+            <th scope="col">First Name</th>
+            <th scope="col">Last Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Phone Number</th>
+            <th scope="col">Category</th>
+            <!-- <th scope="col" class="action-col">Action</th> -->
+          </tr>
+          <tr>
+            <th scope="col">
+              <input type="text" class="form-control" formControlName="userCode" placeholder="User Code" />
+            </th>
+            <th scope="col">
+              <input type="text" class="form-control" formControlName="firstName" placeholder="First Name" />
+            </th>
+            <th scope="col">
+              <input type="text" class="form-control" formControlName="lastName" placeholder="Last Name" />
+            </th>
+            <th scope="col">
+              <input type="text" class="form-control" formControlName="email" placeholder="Email" />
+            </th>
+            <th scope="col">
+              <input type="text" class="form-control" formControlName="phoneNo" placeholder="Phone Number" />
+            </th>
+            <th scope="col">
+              <input type="text" class="form-control" formControlName="category" placeholder="Category" />
+            </th>
+            <!-- <th scope="col">
             <hr />
           </th> -->
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let user of userList">
-          <th>{{user.userCode}}</th>
-          <td>{{user.firstName}}</td>
-          <td>{{user.lastName}}</td>
-          <td>{{user.email}}</td>
-          <td>{{user.phoneNo}}</td>
-          <td>{{user.userCategory}}</td>
-          <!-- <td>
+          </tr>
+        </thead>
+        <tbody *ngIf="isApiInProgress">
+          <tr>
+            <td colspan="6" class="text-center">Loading...</td>
+          </tr>
+        </tbody>
+        <tbody *ngIf="!isApiInProgress && filterUserList.length <= 0">
+          <tr>
+            <td colspan="6" class="text-center">Record Not Found</td>
+          </tr>
+        </tbody>
+        <tbody *ngIf="!isApiInProgress && filterUserList.length > 0">
+          <tr *ngFor="let user of filterUserList">
+            <th>{{user.userCode}}</th>
+            <td>{{user.firstName}}</td>
+            <td>{{user.lastName}}</td>
+            <td>{{user.email}}</td>
+            <td>{{user.phoneNo}}</td>
+            <td>{{user.userCategory}}</td>
+            <!-- <td>
             <div class="action-sec">
               <span class="action-edit" [routerLink]="['/user-management', user.userCode, 'modify-user']"><i class="fa-sharp fa-solid fa-pen-to-square fa-beat-fade"></i></span>
               <span class="action-remove"><i class="fa-solid fa-trash-can"></i></span>
             </div>
           </td> -->
-        </tr>
-      </tbody>
-    </table>
+          </tr>
+        </tbody>
+      </table>
+    </form>
   </div>
 </div>

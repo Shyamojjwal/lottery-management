@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { checkFormValidation, makeAllFormControlAsDirty, noWhitespaceValidator } from '@app-shared/helper/shared-functions';
+import { checkFormValidation, generateRandCode, makeAllFormControlAsDirty, noWhitespaceValidator } from '@app-shared/helper/shared-functions';
 import { appSettings } from "@app-core/config";
 import { modifyUserValidationMsg } from '@app-shared/helper/validation-messages';
 import { UserService } from '../../services';
 import { IUser } from '@app-shared/models/user.model';
+import { PasswordValidators } from '@app-shared/helper/password-validator';
 
 
 
@@ -20,7 +21,7 @@ export class UserModificationComponent implements OnInit {
   public isPreview: boolean = false;
   public isModify: boolean = false;
   public isInputReadOnly: boolean = true;
-  
+
   public userModifyForm: FormGroup | any;
   public validationMessages: any = null;
   public isFormSubmitted: boolean = false;
@@ -60,6 +61,7 @@ export class UserModificationComponent implements OnInit {
 
   initModifyForm = () => {
     this.userModifyForm = this.FB.group({
+      userCode: ["", [Validators.required]],
       username: ["", [Validators.required]],
       firstName: ["", [Validators.required, Validators.pattern(appSettings.RegExp.alphabet), noWhitespaceValidator]],
       lastName: ["", [Validators.required, Validators.pattern(appSettings.RegExp.alphabet), noWhitespaceValidator]],
@@ -69,24 +71,28 @@ export class UserModificationComponent implements OnInit {
       userCategory: ["", [Validators.required]],
       password: [""],
       cnfPass: [""],
+    }, {
+      validator: PasswordValidators.MatchValidator(
+        'password',
+        'cnfPass'
+      )
     })
     this.passwordValidationSetup()
+
+    this.userModifyForm.get('userCode').valueChanges.subscribe(() => {
+      this.validateUserForm();
+    })
   }
 
   passwordValidationSetup = () => {
     if (this.isValidatePass || this.isNewEntry) {
       this.userModifyForm.get('password').setValidators([Validators.required, noWhitespaceValidator]);
-      this.userModifyForm.get('cnfPass').setValidators([Validators.required, noWhitespaceValidator, this.validateConfirmPassword]);
+      this.userModifyForm.get('cnfPass').setValidators([Validators.required]);
     } else {
       this.userModifyForm.get('password').clearValidators();
       this.userModifyForm.get('cnfPass').clearValidators();
     }
   }
-
-  validateConfirmPassword(control: FormControl) {
-    let _pass = this.userModifyForm?.value?.password || '';
-    return control.value == _pass ? null : { 'passNotMatch': true };
-}
 
   loadUserInfo = () => {
     this.apiService.loadAllUserInfo(this.userCode).subscribe({
@@ -95,6 +101,7 @@ export class UserModificationComponent implements OnInit {
         this.userInfo = { ..._res.data.user } as IUser
 
         this.userModifyForm.patchValue({
+          userCode: this.userInfo.userCode,
           username: this.userInfo.username,
           firstName: this.userInfo.firstName,
           lastName: this.userInfo.lastName,
@@ -106,6 +113,13 @@ export class UserModificationComponent implements OnInit {
       error: (_err: any) => {
         console.error("Error: ", _err);
       }
+    })
+  }
+
+  generateUserCode = () => {
+    const _userCode = generateRandCode();
+    this.userModifyForm.patchValue({
+      userCode: _userCode
     })
   }
 
@@ -123,33 +137,34 @@ export class UserModificationComponent implements OnInit {
 
   validateUserForm = () => {
     this.validationMessages = checkFormValidation(this.userModifyForm, modifyUserValidationMsg);
-    console.log("validationMessages: ", this.validationMessages, this.userModifyForm.value)
+    // console.log("validationMessages: ", this.validationMessages, this.userModifyForm.value)
   };
 
   saveModificationForm = () => {
-    if(!this.userModifyForm.valid) {
+    if (!this.userModifyForm.valid) {
       makeAllFormControlAsDirty(this.userModifyForm);
       this.validateUserForm();
       this.isFormSubmitted = false;
       return;
     }
     this.isFormSubmitted = true;
-    var _payload:any = {...this.userModifyForm.value};
-    if(!this.isNewEntry) {
+    var _payload: any = { ...this.userModifyForm.value };
+    if (!this.isNewEntry) {
       _payload.userCode = this.userCode;
       delete _payload.password;
     }
-    
+
     delete _payload.cnfPass;
 
-    console.log("Payload: ", _payload, this.userModifyForm.value);
-    return;
+    // console.log("Payload: ", _payload, this.userModifyForm.value);
+    // return;
 
     this.apiService.submitModifyForm(_payload, this.isNewEntry).subscribe({
-      next: (_res:any) => {
+      next: (_res: any) => {
         console.error("Modify User Success: ", _res);
+        this.router.navigate(['/user-management']);
       },
-      error: (_err:any) => {
+      error: (_err: any) => {
         console.error("Modify User Error: ", _err);
       }
     })

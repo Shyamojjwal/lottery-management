@@ -16,6 +16,10 @@ export const modifyUserValidationMsg = {
     required: `Username can't be blank.`,
     whitespace: `Username can't be blank.`
   },
+  userCode: {
+    required: `userCode can't be blank.`,
+    whitespace: `userCode can't be blank.`
+  },
   firstName: {
     required: `First Name can't be blank.`,
     whitespace: `First Name can't be blank.`,
@@ -52,6 +56,6 @@ export const modifyUserValidationMsg = {
   cnfPass: {
     required: `Confirm Password can't be blank.`,
     whitespace: `Confirm Password can't be blank.`,
-    passNotMatch: `Password are not match.`,
+    mustMatch: `Password are not match.`,
   }
 }
