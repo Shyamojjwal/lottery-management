@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
   cryptoJSKey: 'ASDFG12345678@123ce4a9d9c',
-  baseUrl: 'https://strategy-invited-mistress-bbs.trycloudflare.com/'
+  baseUrl: 'https://merry-stuck-gardens-figures.trycloudflare.com/'
 };
