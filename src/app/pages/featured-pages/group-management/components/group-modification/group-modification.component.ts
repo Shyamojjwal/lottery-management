@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GroupService } from '../../services';
-import { checkFormValidation, noWhitespaceValidator } from '@app-shared/helper/shared-functions';
+import { checkFormValidation, makeAllFormControlAsDirty, noWhitespaceValidator } from '@app-shared/helper/shared-functions';
 import { modifyGroupValidationMsg } from '@app-shared/helper/validation-messages';
 import { appSettings } from '@app-core/config';
 
@@ -65,7 +65,7 @@ export class GroupModificationComponent implements OnInit {
 
   initModifyForm = () => {
     this.itemModifyForm = this.FB.group({
-      groupName: ["", [Validators.required, Validators.pattern(appSettings.RegExp.alphabet), noWhitespaceValidator]]
+      groupName: ["", [Validators.required, Validators.pattern(appSettings.RegExp.address), noWhitespaceValidator]]
     });
   }
 
@@ -85,7 +85,33 @@ export class GroupModificationComponent implements OnInit {
   }
 
   saveModificationForm = () => {
+    if (!this.itemModifyForm.valid) {
+      makeAllFormControlAsDirty(this.itemModifyForm);
+      this.validateUserForm();
+      this.isFormSubmitted = false;
+      return;
+    }
+    this.isFormSubmitted = true;
+    var _payload: any = { ...this.itemModifyForm.value };
+    if (!this.isNewEntry) {
+      _payload.groupId = this.groupId;
+    }
 
+    delete _payload.cnfPass;
+
+    // console.log("Payload: ", _payload, this.userModifyForm.value);
+    // return;
+
+    this.apiService.modifyItemInfo(_payload, this.isNewEntry).subscribe({
+      next: (_res: any) => {
+        console.error("Modify Group Success: ", _res);
+        this.router.navigate(['/group-management']);
+      },
+      error: (_err: any) => {
+        console.error("Modify Group Error: ", _err);
+        this.isFormSubmitted = false;
+      }
+    })
   }
 
 }

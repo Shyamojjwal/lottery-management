@@ -49,6 +49,16 @@ export class SidebarMenuService {
       "icon": "<i class=\"pe-7s-server\"></i>",
       "link": "/group-management"
     },
+    {
+      "title": "Raffle",
+      "type": "header"
+    },
+    {
+      "title": "Raffle Management",
+      "type": "simple",
+      "icon": "<i class=\"pe-7s-server\"></i>",
+      "link": "/raffle-management"
+    },
     // {
     //   "title": "User Management",
     //   "type": "dropdown",

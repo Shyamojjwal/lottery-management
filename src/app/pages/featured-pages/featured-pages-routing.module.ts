@@ -18,6 +18,10 @@ const routes: Routes = [
   {
     path: "group-management",
     loadChildren: () => import('@app-featured-modules/group-management/group-management.module').then(m=>m.GroupManagementModule)
+  },
+  {
+    path: "raffle-management",
+    loadChildren: () => import('@app-featured-modules/raffle-management/raffle-management.module').then(m=>m.RaffleManagementModule)
   }
 ];
 

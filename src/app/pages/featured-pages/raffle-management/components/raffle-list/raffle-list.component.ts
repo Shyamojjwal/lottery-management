@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { GroupService } from '../../services';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { RaffleService } from '../../services';
 
 @Component({
-  selector: 'app-group-list',
-  templateUrl: './group-list.component.html',
-  styleUrls: ['./group-list.component.scss']
+  selector: 'app-raffle-list',
+  templateUrl: './raffle-list.component.html',
+  styleUrls: ['./raffle-list.component.scss']
 })
-export class GroupListComponent implements OnInit {
+export class RaffleListComponent implements OnInit {
 
   public isApiInProgress: boolean = true;
   public allGroupList: Array<any> = [];
@@ -16,32 +16,25 @@ export class GroupListComponent implements OnInit {
 
   constructor(
     private FB: FormBuilder,
-    private apiService: GroupService
+    private apiService: RaffleService
   ) { }
 
   ngOnInit(): void {
-    this.loadGroupList();
+    this.loadItemList();
     this.initFilterList();
   }
 
-  loadGroupList = () => {
-    this.apiService.loadAllGroups().subscribe({
-      next: (_res:any) => {
-        console.log("Group List Res: ", _res)
+  loadItemList = () => {
 
-        this.allGroupList = this.filterArrayList = [..._res.data.groups];
-        // console.log(this.userList)
-        this.isApiInProgress = false;
-      },
-      error: (_err) => {
-        console.error("Group List Err: ", _err)
-      }
-    })
   }
 
   initFilterList = () => {
     this.filterForm = this.FB.group({
-      groupName: [""]
+      raffleName: [''],
+      raffleCode: [''],
+      series: [''],
+      playDay: [''],
+      playTime: [''],
     })
 
     this.filterForm.valueChanges.subscribe((_inputValues: any) => {

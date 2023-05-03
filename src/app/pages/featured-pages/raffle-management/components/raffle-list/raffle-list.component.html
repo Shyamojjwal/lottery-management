@@ -1,0 +1,69 @@
+<div class="page-title">
+  <h1 class="d-inline-block">View All Raffle</h1>
+  <a class="btn btn-primary float-right" [routerLink]="['/raffle-management/add-raffle']">Add New</a>
+</div>
+<div class="row">
+  <div class="col-lg-12">
+    <form [formGroup]="filterForm">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Raffle Code</th>
+            <th scope="col">Raffle Name</th>
+            <th scope="col">Series</th>
+            <th scope="col">Play Day</th>
+            <th scope="col">Play Time</th>
+            <th scope="col">Draw Time</th>
+            <!-- <th scope="col" class="action-col">Action</th> -->
+          </tr>
+          <tr>
+            <th scope="col">
+              <input type="text" class="form-control mw-13" formControlName="raffleCode" placeholder="Raffle Code" />
+            </th>
+            <th scope="col">
+              <input type="text" class="form-control mw-13" formControlName="raffleName" placeholder="Raffle Name" />
+            </th>
+            <th scope="col">
+              <input type="text" class="form-control mw-13" formControlName="series" placeholder="Series" />
+            </th>
+            <th scope="col">
+              <input type="text" class="form-control mw-13" formControlName="playDay" placeholder="Play Day" />
+            </th>
+            <th scope="col">
+              <input type="text" class="form-control mw-13" formControlName="playTime" placeholder="Play Time" />
+            </th>
+            <th scope="col">
+              <hr />
+            </th>
+          </tr>
+        </thead>
+        <tbody *ngIf="isApiInProgress">
+          <tr>
+            <td class="text-center" colspan="6">Loading...</td>
+          </tr>
+        </tbody>
+        <tbody *ngIf="!isApiInProgress && filterArrayList.length <= 0">
+          <tr>
+            <td class="text-center" colspan="6">Record Not Found</td>
+          </tr>
+        </tbody>
+        <tbody *ngIf="!isApiInProgress && filterArrayList.length > 0">
+          <tr *ngFor="let item of filterArrayList">
+            <th>{{item?.raffleCode}}</th>
+            <th>{{item?.raffleName}}</th>
+            <th>{{item?.series}}</th>
+            <th>{{item?.playDay}}</th>
+            <th>{{item?.playTime}}</th>
+            <th>{{item?.drawTime}}</th>
+            <!-- <td>
+            <div class="action-sec">
+              <span class="action-edit" [routerLink]="['/group-management', item.groupId, 'modify-group']"><i class="fa-sharp fa-solid fa-pen-to-square fa-beat-fade"></i></span>
+              <span class="action-remove"><i class="fa-solid fa-trash-can"></i></span>
+            </div>
+          </td> -->
+          </tr>
+        </tbody>
+      </table>
+    </form>
+  </div>
+</div>

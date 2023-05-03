@@ -63,6 +63,7 @@ export const modifyUserValidationMsg = {
 export const modifyGroupValidationMsg = {
   groupName: {
     required: `Group Name can't be blank.`,
-    whitespace: `Group Name can't be blank.`
+    whitespace: `Group Name can't be blank.`,
+    pattern: `Accepted characters are A-Za-z 0-9,.`
   }
 }
