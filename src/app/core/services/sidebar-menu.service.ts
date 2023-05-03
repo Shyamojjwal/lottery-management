@@ -39,6 +39,16 @@ export class SidebarMenuService {
       "icon": "<i class=\"pe-7s-users\"></i>",
       "link": "/user-management"
     },
+    {
+      "title": "Group",
+      "type": "header"
+    },
+    {
+      "title": "Group Management",
+      "type": "simple",
+      "icon": "<i class=\"pe-7s-server\"></i>",
+      "link": "/group-management"
+    },
     // {
     //   "title": "User Management",
     //   "type": "dropdown",

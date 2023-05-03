@@ -61,3 +61,59 @@ body.sidebar-hidden {
 .pb-11 {
   padding-bottom: 14rem !important;
 }
+
+// Table CSS
+.table {
+  box-shadow: 0 0 10px 3px #d4d4d4;
+
+  .action-col {
+    width: 200px !important;
+  }
+
+  input.form-control {
+    height: 1.8rem !important;
+    padding: 0.5rem;
+  }
+
+  input.mw-13 {
+    max-width: 25rem !important;
+  }
+
+  .action-sec {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+
+    i {
+      font-size: 20px;
+    }
+  }
+}
+
+// Form input & title css
+.form-section {
+  padding-bottom: 10px;
+  border-bottom: 1px solid #d4d4d4;
+
+  h5.form-section-title {
+    overflow: hidden;
+    position: relative;
+
+    &::after {
+      content: "";
+      display: inline-block;
+      height: 0.5em;
+      vertical-align: bottom;
+      width: 100%;
+      margin-right: -100%;
+      margin-left: 10px;
+      border-top: 2px solid #1bc943;
+      bottom: -5px;
+      position: absolute;
+    }
+  }
+}
+
+.footer-btn-group {
+  margin: 1.5rem 0px !important;
+}

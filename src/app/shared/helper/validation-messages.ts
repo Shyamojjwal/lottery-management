@@ -59,3 +59,10 @@ export const modifyUserValidationMsg = {
     mustMatch: `Password are not match.`,
   }
 }
+
+export const modifyGroupValidationMsg = {
+  groupName: {
+    required: `Group Name can't be blank.`,
+    whitespace: `Group Name can't be blank.`
+  }
+}

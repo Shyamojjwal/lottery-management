@@ -14,6 +14,10 @@ const routes: Routes = [
   {
     path: "user-management",
     loadChildren: () => import('@app-featured-modules/user-management/user-management.module').then(m=>m.UserManagementModule)
+  },
+  {
+    path: "group-management",
+    loadChildren: () => import('@app-featured-modules/group-management/group-management.module').then(m=>m.GroupManagementModule)
   }
 ];
 

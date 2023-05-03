@@ -1,8 +1,8 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { SidebarMenuService } from '@app-core/services';
 import { ThemeOptions } from '@app-layouts/theme-options';
-import { SidebarMenuService } from './sidebar-menu.service';
 
 @Component({
   selector: 'app-sidebar-menu',
