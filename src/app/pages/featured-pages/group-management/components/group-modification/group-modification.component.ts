@@ -97,8 +97,6 @@ export class GroupModificationComponent implements OnInit {
       _payload.groupId = this.groupId;
     }
 
-    delete _payload.cnfPass;
-
     // console.log("Payload: ", _payload, this.userModifyForm.value);
     // return;
 

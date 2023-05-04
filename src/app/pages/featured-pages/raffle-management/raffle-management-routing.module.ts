@@ -12,7 +12,7 @@ const routes: Routes = [
     component: RaffleModificationComponent
   },
   {
-    path: ":raffleCode/modify-raffle",
+    path: ":itemId/modify-raffle",
     component: RaffleModificationComponent
   }
 ];

@@ -10,7 +10,7 @@ import { RaffleService } from '../../services';
 export class RaffleListComponent implements OnInit {
 
   public isApiInProgress: boolean = true;
-  public allGroupList: Array<any> = [];
+  public allItemList: Array<any> = [];
   public filterArrayList: Array<any> = [];
   public filterForm: FormGroup | any;
 
@@ -25,7 +25,16 @@ export class RaffleListComponent implements OnInit {
   }
 
   loadItemList = () => {
-
+    this.apiService.loadAllItems().subscribe({
+      next: (_res: any) => {
+        console.log("Response: ", _res);
+        this.allItemList = this.filterArrayList = [...(_res?.data?.raffles || [])];
+        this.isApiInProgress = false;
+      },
+      error: (_err: any) => {
+        console.error("Error: ", _err);
+      }
+    })
   }
 
   initFilterList = () => {
@@ -40,15 +49,35 @@ export class RaffleListComponent implements OnInit {
     this.filterForm.valueChanges.subscribe((_inputValues: any) => {
 
       setTimeout(() => {
-        var _filterArray: Array<any> = [...this.allGroupList];
+        var _filterArray: Array<any> = [...this.allItemList];
 
         let _filterObj = Object.fromEntries(Object.entries(_inputValues).filter(([_, v]) => (v != null && v != '')));
 
         for (const _key of Object.keys(_filterObj)) {
           if (_inputValues[_key].trim().length > 0) {
-            if (_key == 'groupName') {
+            if (_key == 'raffleName') {
               _filterArray = _filterArray.filter((x: any) =>
-                x.groupName.toLowerCase().includes(_inputValues[_key].trim().toLowerCase())
+                x.raffleName.toLowerCase().includes(_inputValues[_key].trim().toLowerCase())
+              );
+            }
+            if (_key == 'raffleCode') {
+              _filterArray = _filterArray.filter((x: any) =>
+                x.raffleCode.toLowerCase().includes(_inputValues[_key].trim().toLowerCase())
+              );
+            }
+            if (_key == 'series') {
+              _filterArray = _filterArray.filter((x: any) =>
+                x.series.toLowerCase().includes(_inputValues[_key].trim().toLowerCase())
+              );
+            }
+            if (_key == 'playDay') {
+              _filterArray = _filterArray.filter((x: any) =>
+                x.playDay.toLowerCase().includes(_inputValues[_key].trim().toLowerCase())
+              );
+            }
+            if (_key == 'playTime') {
+              _filterArray = _filterArray.filter((x: any) =>
+                x.playTime.toLowerCase().includes(_inputValues[_key].trim().toLowerCase())
               );
             }
           }

@@ -67,3 +67,33 @@ export const modifyGroupValidationMsg = {
     pattern: `Accepted characters are A-Za-z 0-9,.`
   }
 }
+
+export const modifyRaffleValidationMsg = {
+  raffleName: {
+    required: `Raffle Name can't be blank.`,
+    whitespace: `Raffle Name can't be blank.`,
+    pattern: `Accepted characters are A-Za-z `
+  },
+  raffleCode: {
+    required: `Raffle Code can't be blank.`,
+    whitespace: `Raffle Code can't be blank.`,
+    pattern: `Accepted characters are A-Za-z `
+  },
+  series: {
+    required: `Series can't be blank.`,
+    whitespace: `Series can't be blank.`,
+    pattern: `Accepted characters are 0-9 `
+  },
+  playDay: {
+    required: `Play Day can't be blank.`,
+    whitespace: `Play Day can't be blank.`
+  },
+  playTime: {
+    required: `Play Time can't be blank.`,
+    whitespace: `Play Time can't be blank.`
+  },
+  drawTime: {
+    required: `Draw Time can't be blank.`,
+    whitespace: `Draw Time can't be blank.`
+  }
+}

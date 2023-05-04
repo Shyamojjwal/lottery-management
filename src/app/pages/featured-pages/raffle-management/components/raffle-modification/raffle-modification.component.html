@@ -1,1 +1,98 @@
-<p>raffle-modification works!</p>
+<div class="page-title pb-3">
+  <h3 class="d-inline-block" *ngIf="isNewEntry">Add New Raffle</h3>
+  <h3 class="d-inline-block" *ngIf="!isNewEntry">Modify Raffle Info</h3>
+  <div class="btn-group-v2 float-right">
+    <button class="btn btn-light mr-4" (click)="continueInfoModification()"
+      *ngIf="!isNewEntry && !isModify">Modify</button>
+    <button class="btn btn-success mr-4" *ngIf="isModify" (click)="saveModificationForm()"
+      [attr.disabled]="isFormSubmitted ? true : null">Save</button>
+    <button class="btn btn-secondary" [routerLink]="['/raffle-management']"
+      [attr.disabled]="isFormSubmitted ? true : null">Cancel</button>
+  </div>
+</div>
+<!-- Form Section Start -->
+<div class="form-section">
+  <form [formGroup]="itemModifyForm">
+    <div class="row">
+      <div class="col-md-8 col-xs-12">
+
+        <h5 class="form-section-title mb-3">Raffle Information</h5>
+
+        <div class="row">
+          <div class="col-md-6 form-group">
+            <label>Raffle Name</label>
+            <input type="text" placeholder="Raffle Name" class="form-control" formControlName="raffleName"
+              (focusout)="trimAndValidateUserForm('raffleName')" [readOnly]="isInputReadOnly || isPreview" />
+            <small class="form-text text-muted err-msg">{{validationMessages?.raffleName}}</small>
+          </div>
+          <div class="col-md-6 form-group">
+            <label>Raffle Code</label>
+            <input type="text" placeholder="Raffle Code" class="form-control" formControlName="raffleCode"
+              (focusout)="trimAndValidateUserForm('raffleCode')" [readOnly]="isInputReadOnly || isPreview" />
+            <small class="form-text text-muted err-msg">{{validationMessages?.raffleCode}}</small>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 form-group">
+            <label>Play Day</label>
+            <div class="input-group">
+              <input type="text" placeholder="Play Day" class="form-control" [matDatepicker]="datePicker"
+                [ngClass]="{'input-readOnly': !(isInputReadOnly || isPreview)}" formControlName="playDay"
+                (focusout)="trimAndValidateUserForm('playDay')" readOnly />
+              <div class="input-group-append input-grp-ico">
+                <mat-datepicker-toggle matIconSuffix [for]="datePicker"></mat-datepicker-toggle>
+                <mat-datepicker #datePicker (closed)="trimAndValidateUserForm('playDay')"></mat-datepicker>
+              </div>
+            </div>
+            <small class="form-text text-muted err-msg">{{validationMessages?.playDay}}</small>
+          </div>
+          <div class="col-md-6 form-group">
+            <label>Play Time</label>
+            <div class="input-group">
+              <input type="text" placeholder="Play Time" class="form-control" (focusout)="trimAndValidateUserForm('playTime')"
+                [ngClass]="{'input-readOnly': !(isInputReadOnly || isPreview)}" formControlName="playTime" readonly />
+              <div class="input-group-append input-grp-ico">
+                <span [ngxMatTimepicker]="timePicker" class="time-pick-ico cursor-pointer"><i
+                    class="pe-7s-clock"></i></span>
+              </div>
+              <ngx-mat-timepicker #timePicker (closed)="trimAndValidateUserForm('playTime')"></ngx-mat-timepicker>
+            </div>
+            <small class="form-text text-muted err-msg">{{validationMessages?.playTime}}</small>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 form-group">
+            <label>Series</label>
+            <input type="text" placeholder="Series" class="form-control" formControlName="series"
+              (focusout)="trimAndValidateUserForm('series')" [readOnly]="isInputReadOnly || isPreview" />
+            <small class="form-text text-muted err-msg">{{validationMessages?.series}}</small>
+          </div>
+          <div class="col-md-6 form-group">
+            <label>Draw Time</label>
+            <div class="input-group">
+              <input type="text" placeholder="Draw Time" class="form-control" (focusout)="trimAndValidateUserForm('drawTime')"
+                [ngClass]="{'input-readOnly': !(isInputReadOnly || isPreview)}" formControlName="drawTime" readonly />
+              <div class="input-group-append input-grp-ico">
+                <span [ngxMatTimepicker]="timePickerV2" class="time-pick-ico cursor-pointer"><i
+                    class="pe-7s-clock"></i></span>
+              </div>
+              <ngx-mat-timepicker #timePickerV2 (closed)="trimAndValidateUserForm('drawTime')" (timeChanged)="setFieldTimeValue($event, 'drawTime')"></ngx-mat-timepicker>
+            </div>
+            <small class="form-text text-muted err-msg">{{validationMessages?.drawTime}}</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<!-- Form Button Section -->
+<div class="footer-btn-group">
+  <button class="btn btn-light mr-4" (click)="continueInfoModification()"
+    *ngIf="!isNewEntry && !isModify">Modify</button>
+  <button class="btn btn-success mr-4" *ngIf="isModify" (click)="saveModificationForm()"
+    [attr.disabled]="isFormSubmitted ? true : null">Save</button>
+  <button class="btn btn-secondary" [routerLink]="['/group-management']"
+    [attr.disabled]="isFormSubmitted ? true : null">Cancel</button>
+</div>

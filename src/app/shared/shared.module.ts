@@ -19,13 +19,19 @@ import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontaweso
 import { ThemeOptions } from '@app-layouts/theme-options';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MatNativeDateModule } from "@angular/material/core";
+import { MatInputModule } from "@angular/material/input";
 
 
 const MODULES = [
   FormsModule,
   HttpClientModule,
   FontAwesomeModule,
-  ReactiveFormsModule,
+  ReactiveFormsModule,  
+  MatDatepickerModule,
+  MatNativeDateModule,
+  MatInputModule,
 ]
 
 const PROVIDERS = [
