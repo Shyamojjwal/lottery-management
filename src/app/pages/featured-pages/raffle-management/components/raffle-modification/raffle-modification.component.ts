@@ -7,7 +7,8 @@ import { checkFormValidation, makeAllFormControlAsDirty, noWhitespaceValidator }
 import { modifyRaffleValidationMsg } from '@app-shared/helper/validation-messages';
 import {MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS} from '@angular/material-moment-adapter';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
-import * as _moment from 'moment';
+import * as moment from 'moment';
+
 
 export const MY_FORMATS = {
   parse: {
@@ -121,7 +122,6 @@ export class RaffleModificationComponent implements OnInit {
   };
 
   setFieldTimeValue = (_inputEvent:any, _fieldName:string) => {
-    console.log("setFieldTimeValue: ", _inputEvent, _fieldName);
     this.itemModifyForm.get(_fieldName).setValue(_inputEvent);
     this.trimAndValidateUserForm(_fieldName);
   }

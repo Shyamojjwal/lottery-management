@@ -56,7 +56,7 @@
                 <span [ngxMatTimepicker]="timePicker" class="time-pick-ico cursor-pointer"><i
                     class="pe-7s-clock"></i></span>
               </div>
-              <ngx-mat-timepicker #timePicker (closed)="trimAndValidateUserForm('playTime')"></ngx-mat-timepicker>
+              <ngx-mat-timepicker #timePicker (closed)="trimAndValidateUserForm('playTime')" (timeChanged)="setFieldTimeValue($event, 'playTime')"></ngx-mat-timepicker>
             </div>
             <small class="form-text text-muted err-msg">{{validationMessages?.playTime}}</small>
           </div>
