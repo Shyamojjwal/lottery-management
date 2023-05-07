@@ -72,15 +72,15 @@
           <div class="col-md-6 form-group">
             <label>Draw Time</label>
             <div class="input-group">
-              <input type="text" placeholder="Draw Time" class="form-control" (focusout)="trimAndValidateUserForm('drawTime')"
-                [ngClass]="{'input-readOnly': !(isInputReadOnly || isPreview)}" formControlName="drawTime" readonly />
+              <input type="text" placeholder="Draw Time" class="form-control" (focusout)="trimAndValidateUserForm('drawsTime')"
+                [ngClass]="{'input-readOnly': !(isInputReadOnly || isPreview)}" formControlName="drawsTime" readonly />
               <div class="input-group-append input-grp-ico">
                 <span [ngxMatTimepicker]="timePickerV2" class="time-pick-ico cursor-pointer"><i
                     class="pe-7s-clock"></i></span>
               </div>
-              <ngx-mat-timepicker #timePickerV2 (closed)="trimAndValidateUserForm('drawTime')" (timeChanged)="setFieldTimeValue($event, 'drawTime')"></ngx-mat-timepicker>
+              <ngx-mat-timepicker #timePickerV2 (closed)="trimAndValidateUserForm('drawsTime')" (timeChanged)="setFieldTimeValue($event, 'drawsTime')"></ngx-mat-timepicker>
             </div>
-            <small class="form-text text-muted err-msg">{{validationMessages?.drawTime}}</small>
+            <small class="form-text text-muted err-msg">{{validationMessages?.drawsTime}}</small>
           </div>
         </div>
       </div>

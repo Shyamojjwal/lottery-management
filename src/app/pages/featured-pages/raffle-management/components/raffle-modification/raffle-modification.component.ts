@@ -5,8 +5,8 @@ import { RaffleService } from '../../services';
 import { appSettings } from '@app-core/config';
 import { checkFormValidation, makeAllFormControlAsDirty, noWhitespaceValidator } from '@app-shared/helper/shared-functions';
 import { modifyRaffleValidationMsg } from '@app-shared/helper/validation-messages';
-import {MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS} from '@angular/material-moment-adapter';
-import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
+import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import * as moment from 'moment';
 
 
@@ -36,7 +36,7 @@ export const MY_FORMATS = {
       deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
     },
 
-    {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS},
+    { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
   ],
 })
 export class RaffleModificationComponent implements OnInit {
@@ -54,6 +54,9 @@ export class RaffleModificationComponent implements OnInit {
   private itemInfo: any = null;
 
   public playTime: any = null;
+  public _drawTime: any = null;
+
+  private crntDate: any = moment().format('YYYY-MM-DD');
 
   constructor(
     private router: Router,
@@ -62,11 +65,13 @@ export class RaffleModificationComponent implements OnInit {
     private activatedRoute: ActivatedRoute
   ) { }
 
-  datePickerClosed = (_inputEvent:any) => {
+  datePickerClosed = (_inputEvent: any) => {
     console.log("datePickerClosed: ", _inputEvent)
   }
 
   ngOnInit(): void {
+
+    console.log("crntDate: ", this.crntDate)
     this.isNewEntry = this.router.url.includes('add-raffle');
     this.itemId = this.activatedRoute.snapshot.params['itemId'] || null;
 
@@ -104,12 +109,12 @@ export class RaffleModificationComponent implements OnInit {
       series: ["", [Validators.required]],
       playDay: [null, [Validators.required]],
       playTime: [null, [Validators.required]],
-      drawTime: [null, [Validators.required]],
+      drawsTime: [null, [Validators.required]],
     });
   }
 
   trimAndValidateUserForm = (_field: string) => {
-    const _filedValue = this.itemModifyForm.get(_field).value; 
+    const _filedValue = this.itemModifyForm.get(_field).value;
     if (_filedValue != undefined && _filedValue != null && typeof _filedValue == 'string') {
       this.itemModifyForm.get(_field).setValue(_filedValue.trim());
     }
@@ -121,9 +126,24 @@ export class RaffleModificationComponent implements OnInit {
     this.validationMessages = checkFormValidation(this.itemModifyForm, modifyRaffleValidationMsg);
   };
 
-  setFieldTimeValue = (_inputEvent:any, _fieldName:string) => {
+  setFieldTimeValue = (_inputEvent: any, _fieldName: string) => {
     this.itemModifyForm.get(_fieldName).setValue(_inputEvent);
     this.trimAndValidateUserForm(_fieldName);
+
+    if (_fieldName == 'drawsTime') {
+      var _drawTime = moment(`${this.crntDate} ${_inputEvent}`, 'YYYY-MM-DD hh:mm a');
+
+      this._drawTime = {
+        drawTime: {
+          hour: parseInt(_drawTime.format("HH")),
+          minute: parseInt(_drawTime.format("mm")),
+          second: parseInt(_drawTime.format("ss")),
+          nano: parseInt(_drawTime.format("ssss"))
+        }
+      };
+
+      // console.log("_drawTime: ", this._drawTime);
+    }
   }
 
   continueInfoModification = () => {
@@ -139,13 +159,20 @@ export class RaffleModificationComponent implements OnInit {
       return;
     }
 
-    this.isFormSubmitted = true;
-    var _payload: any = { ...this.itemModifyForm.value };
+    // this.isFormSubmitted = true;
+    var _payload: any = { ...this.itemModifyForm.value, ...this._drawTime };
     if (!this.isNewEntry) {
       _payload.raffleCode = this.itemId;
     }
 
-    // console.log("Payload: ", _payload, this.itemModifyForm.value);
+    _payload.series = parseInt(_payload.series);
+    _payload.playDay = moment(`${_payload.playDay}`).format("YYYY-MM-DD");
+    _payload.playTime = moment(`${this.crntDate} ${_payload.playTime}`, 'YYYY-MM-DD hh:mm a').format("HH:mm");
+
+    delete _payload.drawsTime;
+
+    console.log("_drawTime: ", this._drawTime);
+    console.log("Payload: ", _payload, this.itemModifyForm.value);
     // return;
 
     this.apiService.modifyItemInfo(_payload, this.isNewEntry).subscribe({

@@ -92,7 +92,7 @@ export const modifyRaffleValidationMsg = {
     required: `Play Time can't be blank.`,
     whitespace: `Play Time can't be blank.`
   },
-  drawTime: {
+  drawsTime: {
     required: `Draw Time can't be blank.`,
     whitespace: `Draw Time can't be blank.`
   }
