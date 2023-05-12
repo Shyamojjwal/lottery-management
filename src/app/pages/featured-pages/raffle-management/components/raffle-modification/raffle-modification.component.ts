@@ -109,7 +109,7 @@ export class RaffleModificationComponent implements OnInit {
       series: ["", [Validators.required]],
       playDay: [null, [Validators.required]],
       playTime: [null, [Validators.required]],
-      drawsTime: [null, [Validators.required]],
+      drawTime: [null, [Validators.required]],
     });
   }
 
@@ -130,20 +130,20 @@ export class RaffleModificationComponent implements OnInit {
     this.itemModifyForm.get(_fieldName).setValue(_inputEvent);
     this.trimAndValidateUserForm(_fieldName);
 
-    if (_fieldName == 'drawsTime') {
-      var _drawTime = moment(`${this.crntDate} ${_inputEvent}`, 'YYYY-MM-DD hh:mm a');
+    // if (_fieldName == 'drawsTime') {
+    //   var _drawTime = moment(`${this.crntDate} ${_inputEvent}`, 'YYYY-MM-DD hh:mm a');
 
-      this._drawTime = {
-        drawTime: {
-          hour: parseInt(_drawTime.format("HH")),
-          minute: parseInt(_drawTime.format("mm")),
-          second: parseInt(_drawTime.format("ss")),
-          nano: parseInt(_drawTime.format("ssss"))
-        }
-      };
+    //   this._drawTime = {
+    //     drawTime: {
+    //       hour: parseInt(_drawTime.format("HH")),
+    //       minute: parseInt(_drawTime.format("mm")),
+    //       second: parseInt(_drawTime.format("ss")),
+    //       nano: parseInt(_drawTime.format("ssss"))
+    //     }
+    //   };
 
-      // console.log("_drawTime: ", this._drawTime);
-    }
+    //   // console.log("_drawTime: ", this._drawTime);
+    // }
   }
 
   continueInfoModification = () => {
@@ -168,6 +168,7 @@ export class RaffleModificationComponent implements OnInit {
     _payload.series = parseInt(_payload.series);
     _payload.playDay = moment(`${_payload.playDay}`).format("YYYY-MM-DD");
     _payload.playTime = moment(`${this.crntDate} ${_payload.playTime}`, 'YYYY-MM-DD hh:mm a').format("HH:mm");
+    _payload.drawTime = moment(`${this.crntDate} ${_payload.drawTime}`, 'YYYY-MM-DD hh:mm a').format("HH:mm:ss");
 
     delete _payload.drawsTime;
 

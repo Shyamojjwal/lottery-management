@@ -22,6 +22,10 @@ const routes: Routes = [
   {
     path: "raffle-management",
     loadChildren: () => import('@app-featured-modules/raffle-management/raffle-management.module').then(m=>m.RaffleManagementModule)
+  },
+  {
+    path: "purchase-management",
+    loadChildren: () => import('@app-featured-modules/purchase/purchase.module').then(m=>m.PurchaseModule)
   }
 ];
 

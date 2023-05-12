@@ -2,11 +2,11 @@
   <h2 class="form-title">Sign In</h2>
   <form [formGroup]="userSignInForm" (ngSubmit)="doUserLogin()">
     <div class="form-group">
-      <label for="userAuth">Email Address</label>
+      <label for="userAuth">User Name</label>
       <input
         type="text"
         class="form-control"
-        placeholder="Email Address"
+        placeholder="User Name"
         formControlName="userAuth"
         [readOnly]="isFormReadOnly"
         (focusout)="trimAndValidateUserForm('userAuth')"

@@ -49,12 +49,12 @@
         </tbody>
         <tbody *ngIf="!isApiInProgress && filterArrayList.length > 0">
           <tr *ngFor="let item of filterArrayList">
-            <th>{{item?.raffleCode}}</th>
-            <th>{{item?.raffleName}}</th>
-            <th>{{item?.series}}</th>
-            <th>{{item?.playDay}}</th>
-            <th>{{item?.playTime}}</th>
-            <th>{{item?.drawTime}}</th>
+            <td>{{item?.raffleCode}}</td>
+            <td>{{item?.raffleName}}</td>
+            <td>{{item?.series}}</td>
+            <td>{{item?.playDay | date: "EEEE, YYYY-MM-dd"}}</td>
+            <td>{{item?.playTime}}</td>
+            <td>{{item?.drawTime}}</td>
             <!-- <td>
             <div class="action-sec">
               <span class="action-edit" [routerLink]="['/group-management', item.groupId, 'modify-group']"><i class="fa-sharp fa-solid fa-pen-to-square fa-beat-fade"></i></span>

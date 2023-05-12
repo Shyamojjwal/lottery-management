@@ -1,13 +1,13 @@
 export const userSignInValidationMessage = {
   userAuth: {
-    required: `Email Address can't be blank.`,
-    whitespace: `Email Address can't be blank.`,
-    pattern: `Invalid Email Address.`
+    required: `User Name can't be blank.`,
+    whitespace: `User Name can't be blank.`,
+    pattern: `Invalid User Name.`
   },
   userPass: {
     required: `Password can't be blank.`,
     whitespace: `Password can't be blank.`,
-    badCredential: `Email/Password doesn't valid`,
+    badCredential: `User Name/Password doesn't valid`,
   }
 }
 
@@ -92,7 +92,37 @@ export const modifyRaffleValidationMsg = {
     required: `Play Time can't be blank.`,
     whitespace: `Play Time can't be blank.`
   },
-  drawsTime: {
+  drawTime: {
+    required: `Draw Time can't be blank.`,
+    whitespace: `Draw Time can't be blank.`
+  }
+}
+
+export const modifyPurchaseValidationMsg = {
+  raffleName: {
+    required: `Raffle Name can't be blank.`,
+    whitespace: `Raffle Name can't be blank.`,
+    pattern: `Accepted characters are A-Za-z `
+  },
+  raffleCode: {
+    required: `Raffle Code can't be blank.`,
+    whitespace: `Raffle Code can't be blank.`,
+    pattern: `Accepted characters are A-Za-z `
+  },
+  series: {
+    required: `Series can't be blank.`,
+    whitespace: `Series can't be blank.`,
+    pattern: `Accepted characters are 0-9 `
+  },
+  playDay: {
+    required: `Play Day can't be blank.`,
+    whitespace: `Play Day can't be blank.`
+  },
+  playTime: {
+    required: `Play Time can't be blank.`,
+    whitespace: `Play Time can't be blank.`
+  },
+  drawTime: {
     required: `Draw Time can't be blank.`,
     whitespace: `Draw Time can't be blank.`
   }

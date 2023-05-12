@@ -1,0 +1,47 @@
+<div class="page-title pb-3">
+  <h3 class="d-inline-block" *ngIf="isNewEntry">Add New Purchase</h3>
+  <h3 class="d-inline-block" *ngIf="!isNewEntry">Modify Purchase</h3>
+  <div class="btn-group-v2 float-right">
+    <button class="btn btn-light mr-4" (click)="continueInfoModification()"
+      *ngIf="!isNewEntry && !isModify">Modify</button>
+    <button class="btn btn-success mr-4" *ngIf="isModify" (click)="saveModificationForm()"
+      [attr.disabled]="isFormSubmitted ? true : null">Save</button>
+    <button class="btn btn-secondary" [routerLink]="['/raffle-management']"
+      [attr.disabled]="isFormSubmitted ? true : null">Cancel</button>
+  </div>
+</div>
+<!-- Form Section Start -->
+<div class="form-section">
+  <form [formGroup]="itemModifyForm">
+    <div class="row">
+      <div class="col-md-8 col-xs-12">
+
+        <h5 class="form-section-title mb-3">Purchase Information</h5>
+
+        <div class="row">
+          <div class="col-md-6 form-group">
+            <label>Raffle Name</label>
+            <input type="text" placeholder="Raffle Name" class="form-control" formControlName="raffleName"
+              (focusout)="trimAndValidateUserForm('raffleName')" [readOnly]="isInputReadOnly || isPreview" />
+            <small class="form-text text-muted err-msg">{{validationMessages?.raffleName}}</small>
+          </div>
+          <div class="col-md-6 form-group">
+            <label>Raffle Code</label>
+            <input type="text" placeholder="Raffle Code" class="form-control" formControlName="raffleCode"
+              (focusout)="trimAndValidateUserForm('raffleCode')" [readOnly]="isInputReadOnly || isPreview" />
+            <small class="form-text text-muted err-msg">{{validationMessages?.raffleCode}}</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<!-- Form Button Section -->
+<div class="footer-btn-group">
+  <button class="btn btn-light mr-4" (click)="continueInfoModification()"
+    *ngIf="!isNewEntry && !isModify">Modify</button>
+  <button class="btn btn-success mr-4" *ngIf="isModify" (click)="saveModificationForm()"
+    [attr.disabled]="isFormSubmitted ? true : null">Save</button>
+  <button class="btn btn-secondary" [routerLink]="['/group-management']"
+    [attr.disabled]="isFormSubmitted ? true : null">Cancel</button>
+</div>
