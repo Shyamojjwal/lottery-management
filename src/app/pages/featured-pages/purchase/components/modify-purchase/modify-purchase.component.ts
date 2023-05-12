@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
 import { PurchaseService } from '../../services';
@@ -43,7 +43,7 @@ export class ModifyPurchaseComponent implements OnInit {
 
     this.initModifyForm();
 
-    if(this.isNewEntry) {
+    if (this.isNewEntry) {
       this.isPreview = false;
       this.isModify = true;
     } else {
@@ -69,7 +69,43 @@ export class ModifyPurchaseComponent implements OnInit {
   }
 
   initModifyForm = () => {
-    this.itemModifyForm = this.FB.group({});
+    const _this = this;
+    this.itemModifyForm = this.FB.group({
+      dsph: _this.FB.group({
+        memoNo: [''],
+        userId: ['', [Validators.required]],
+        dsphDt: ['', [Validators.required]],
+      }),
+      dsphDtlsLst: _this.FB.array([])
+    });
+    this.addNewItem();
+  }
+
+  get dsphDtlsLst() {
+    return this.itemModifyForm.controls['dsphDtlsLst'] as FormArray;
+  }
+
+  addNewItemToList = () => {
+    const _singleItemForm: FormGroup = this.FB.group({
+      raffleId: ['', [Validators.required]],
+      draw: ['', [Validators.required]],
+      drawDate: ['', [Validators.required]],
+      rflStrFrom: ['', [Validators.required]],
+      rflEndTo: ['', [Validators.required]],
+      grpId: ['', [Validators.required]],
+      qty: ['', [Validators.required]],
+      rate: ['', [Validators.required]]
+    })
+
+    this.dsphDtlsLst.push(_singleItemForm);
+  }
+
+  addNewItem = () => {
+    this.addNewItemToList();
+  }
+
+  removeItem = (_itemIndex: number) => {
+    this.dsphDtlsLst.removeAt(_itemIndex);
   }
 
   trimAndValidateUserForm = (_field: string) => {
@@ -101,7 +137,7 @@ export class ModifyPurchaseComponent implements OnInit {
     console.log("Payload: ", this.itemModifyForm.value);
     // return;
 
-    const _payload = {...this.itemModifyForm.value};
+    const _payload = { ...this.itemModifyForm.value };
 
     this.apiService.modifyItemInfo(_payload, this.isNewEntry).subscribe({
       next: (_res: any) => {

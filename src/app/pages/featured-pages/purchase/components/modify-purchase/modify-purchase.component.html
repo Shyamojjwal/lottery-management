@@ -18,20 +18,87 @@
 
         <h5 class="form-section-title mb-3">Purchase Information</h5>
 
-        <div class="row">
-          <div class="col-md-6 form-group">
-            <label>Raffle Name</label>
-            <input type="text" placeholder="Raffle Name" class="form-control" formControlName="raffleName"
-              (focusout)="trimAndValidateUserForm('raffleName')" [readOnly]="isInputReadOnly || isPreview" />
-            <small class="form-text text-muted err-msg">{{validationMessages?.raffleName}}</small>
+        <ng-container formGroupName="dsph">
+          <div class="row">
+            <div class="col-md-6 form-group">
+              <label>Selct Customer</label>
+              <select class="form-control" formControlName="userId">
+                <option value="">--- Select Customer ---</option>
+              </select>
+              <small class="form-text text-muted err-msg"></small>
+            </div>
+            <div class="col-md-6 form-group">
+              <label>Play Day</label>
+              <input type="text" placeholder="Play Day" class="form-control" [matDatepicker]="datePicker"
+                [ngClass]="{'input-readOnly': !(isInputReadOnly || isPreview)}" formControlName="dsphDt" readOnly
+                (click)="datePicker.open();" />
+              <mat-datepicker #datePicker></mat-datepicker>
+              <small class="form-text text-muted err-msg"></small>
+            </div>
           </div>
-          <div class="col-md-6 form-group">
-            <label>Raffle Code</label>
-            <input type="text" placeholder="Raffle Code" class="form-control" formControlName="raffleCode"
-              (focusout)="trimAndValidateUserForm('raffleCode')" [readOnly]="isInputReadOnly || isPreview" />
-            <small class="form-text text-muted err-msg">{{validationMessages?.raffleCode}}</small>
-          </div>
-        </div>
+        </ng-container>
+
+        <ng-container formArrayName="dsphDtlsLst">
+          <ng-container *ngFor="let _item of dsphDtlsLst.controls; let y = index">
+            <div class="single-item">
+              <div class="row">
+                <div class="col-md-6 form-group">
+                  <label>Raffel</label>
+                  <select class="form-control" formControlName="raffleId">
+                    <option value="">--- Select Raffle ---</option>
+                  </select>
+                  <small class="form-text text-muted err-msg"></small>
+                </div>
+                <div class="col-md-6 form-group">
+                  <label>Draw</label>
+                  <input class="form-control" formControlName="draw" placeholder="Draw" />
+                  <small class="form-text text-muted err-msg"></small>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6 form-group">
+                  <label>Draw Date</label>
+                  <input type="text" placeholder="Play Day" class="form-control" [matDatepicker]="drawDatePicker"
+                    [ngClass]="{'input-readOnly': !(isInputReadOnly || isPreview)}" formControlName="drawDate" readOnly
+                    (click)="drawDatePicker.open();" />
+                  <mat-datepicker #drawDatePicker></mat-datepicker>
+                </div>
+                <div class="col-md-6 form-group">
+                  <label>Group</label>
+                  <select class="form-control" formControlName="grpId">
+                    <option value="">--- Select Group ---</option>
+                  </select>
+                  <small class="form-text text-muted err-msg"></small>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6 form-group">
+                  <label>Raffel Start From</label>
+                  <input class="form-control" formControlName="rflStrFrom" placeholder="Raffle Start From" />
+                  <small class="form-text text-muted err-msg"></small>
+                </div>
+                <div class="col-md-6 form-group">
+                  <label>Raffel End To</label>
+                  <input class="form-control" formControlName="rflEndTo" placeholder="Raffle End To" />
+                  <small class="form-text text-muted err-msg"></small>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6 form-group">
+                  <label>Quantity</label>
+                  <input class="form-control" formControlName="qty" placeholder="Quantity" />
+                  <small class="form-text text-muted err-msg"></small>
+                </div>
+                <div class="col-md-6 form-group">
+                  <label>Rate</label>
+                  <input class="form-control" formControlName="rate" placeholder="Rate" />
+                  <small class="form-text text-muted err-msg"></small>
+                </div>
+              </div>
+            </div>
+
+          </ng-container>
+        </ng-container>
       </div>
     </div>
   </form>
