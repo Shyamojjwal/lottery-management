@@ -101,9 +101,12 @@ body.sidebar-hidden {
     width: 200px !important;
   }
 
-  input.form-control {
+  input.form-control, select.form-control {
     height: 1.8rem !important;
     padding: 0.5rem;
+  }
+  select.form-control {
+    padding: 0 !important;
   }
 
   input.mw-13 {

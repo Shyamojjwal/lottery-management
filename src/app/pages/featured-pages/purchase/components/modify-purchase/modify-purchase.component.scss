@@ -1,0 +1,11 @@
+.table-responsive {
+  table.table {
+    thead>tr>th {
+      width: 200px !important;
+
+      &.sl-count, &.btn-cont {
+        width: 40px !important;
+      }
+    }
+  }
+}

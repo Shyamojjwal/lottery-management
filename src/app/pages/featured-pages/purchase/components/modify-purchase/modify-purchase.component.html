@@ -18,19 +18,19 @@
 
         <h5 class="form-section-title mb-3">Purchase Information</h5>
 
-        <ng-container formGroupName="dsph">
+        <ng-container formGroupName="prch">
           <div class="row">
             <div class="col-md-6 form-group">
-              <label>Selct Customer</label>
-              <select class="form-control" formControlName="userId">
-                <option value="">--- Select Customer ---</option>
-              </select>
+              <label>Memo No.</label>
+              <input type="text" placeholder="Memo No" class="form-control"
+                [ngClass]="{'input-readOnly': !(isInputReadOnly || isPreview)}" formControlName="memoNo" readOnly
+                (click)="datePicker.open();" />
               <small class="form-text text-muted err-msg"></small>
             </div>
             <div class="col-md-6 form-group">
-              <label>Play Day</label>
-              <input type="text" placeholder="Play Day" class="form-control" [matDatepicker]="datePicker"
-                [ngClass]="{'input-readOnly': !(isInputReadOnly || isPreview)}" formControlName="dsphDt" readOnly
+              <label>Purchase Date</label>
+              <input type="text" placeholder="Purchase Date" class="form-control" [matDatepicker]="datePicker"
+                [ngClass]="{'input-readOnly': !(isInputReadOnly || isPreview)}" formControlName="prchDt" readOnly
                 (click)="datePicker.open();" />
               <mat-datepicker #datePicker></mat-datepicker>
               <small class="form-text text-muted err-msg"></small>
@@ -38,9 +38,109 @@
           </div>
         </ng-container>
 
-        <ng-container formArrayName="dsphDtlsLst">
-          <ng-container *ngFor="let _item of dsphDtlsLst.controls; let y = index">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <h5 class="form-section-title mb-3">All Item Information</h5>
+
+        <ng-container formArrayName="prchDtlsLst">
+          <div class="table-responsive" [ngClass]="{'item-rmv-btn': (prchDtlsLst.controls.length > 1)}">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th class="sl-count">Sl</th>
+                  <th>Raffel</th>
+                  <th>Draw</th>
+                  <th>Date</th>
+                  <th>From</th>
+                  <th>To</th>
+                  <th>Grp</th>
+                  <th>Qty</th>
+                  <th>Rate</th>
+                  <th *ngIf="prchDtlsLst.controls.length > 1" class="btn-cont">---</th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container *ngFor="let _item of prchDtlsLst.controls; let y = index">
+                  <tr [formGroupName]="y">
+                    <td>
+                      <div class="from-group">
+                        <span>{{y + 1}}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="from-group">
+                        <select class="form-control" formControlName="raffleId" (change)="populateOtherRaffleInfo(y)">
+                          <option value="" disabled>Select Raffle</option>
+                          <ng-container *ngFor="let raffle of raffleListArray">
+                            <option [value]="raffle.id">{{raffle.raffleName}}</option>
+                          </ng-container>
+                        </select>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="from-group">
+                        <input class="form-control" formControlName="draw" />
+                      </div>
+                    </td>
+                    <td>
+                      <div class="from-group">
+                        <input type="text" class="form-control input-readOnly" [matDatepicker]="drawDatePicker"
+                          formControlName="drawDate" readOnly (click)="drawDatePicker.open();" />
+                        <mat-datepicker #drawDatePicker></mat-datepicker>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="from-group">
+                        <input class="form-control" formControlName="rflStrFrom" />
+                      </div>
+                    </td>
+                    <td>
+                      <div class="from-group">
+                        <input class="form-control" formControlName="rflEndTo" />
+                      </div>
+                    </td>
+                    <td>
+                      <div class="from-group">
+                        <select class="form-control" formControlName="grpId">
+                          <option value="" disabled>Select Group</option>
+                          <ng-container *ngFor="let _grp of grpListArray">
+                            <option [value]="_grp.groupId">{{_grp.groupName}}</option>
+                          </ng-container>
+                        </select>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="from-group">
+                        <input class="form-control" formControlName="qty" />
+                      </div>
+                    </td>
+                    <td>
+                      <div class="from-group">
+                        <input class="form-control" formControlName="rate" />
+                      </div>
+                    </td>
+                    <td *ngIf="prchDtlsLst.controls.length > 1">
+                      <div class="icon-rmv" (click)="removeItem(y)"><fa-icon [icon]="iconTrash"></fa-icon></div>
+                    </td>
+                  </tr>
+                </ng-container>
+                <tr>
+                  <td [colSpan]="9">
+                    <button type="button" class="btn btn-primary pull-right" (click)="addNewItem();">Add Another
+                      Item</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </ng-container>
+
+        <!-- <ng-container formArrayName="prchDtlsLst">
+          <ng-container *ngFor="let _item of prchDtlsLst.controls; let y = index">
             <div class="single-item">
+              <div class="icon-rmv"><fa-icon [icon]="iconTrash"></fa-icon></div>
               <div class="row">
                 <div class="col-md-6 form-group">
                   <label>Raffel</label>
@@ -95,10 +195,11 @@
                   <small class="form-text text-muted err-msg"></small>
                 </div>
               </div>
+              <div class="icon-add" (click)="addNewItem();">Add New Item <fa-icon [icon]="iconAdd"></fa-icon></div>
             </div>
 
           </ng-container>
-        </ng-container>
+        </ng-container> -->
       </div>
     </div>
   </form>
