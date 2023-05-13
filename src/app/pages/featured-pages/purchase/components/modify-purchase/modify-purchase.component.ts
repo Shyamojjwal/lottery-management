@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PurchaseService } from '../../services';
-import { checkFormValidation, makeAllFormControlAsDirty } from '@app-shared/helper/shared-functions';
-import { modifyPurchaseValidationMsg } from '@app-shared/helper/validation-messages';
+import { checkFormValidation, makeAllFormArrayControlAsDirty, makeAllFormControlAsDirty } from '@app-shared/helper/shared-functions';
+import { purchaseValidationMsg } from '@app-shared/helper/validation-messages';
 
-import { faTrashAlt, faPlusCircle } from "@fortawesome/free-solid-svg-icons";
+import { faTrashAlt, faPlusCircle, faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
 import { Observable, forkJoin } from 'rxjs';
 import { RaffleService } from '@app-modules/featured-pages/raffle-management/services';
 import { GroupService } from '@app-modules/featured-pages/group-management/services';
@@ -48,6 +48,7 @@ export class ModifyPurchaseComponent implements OnInit {
 
   public iconTrash: any = faTrashAlt;
   public iconAdd: any = faPlusCircle;
+  public iconExclamation: any = faExclamationCircle;
 
   private crntUserInfo: any = null;
 
@@ -57,7 +58,10 @@ export class ModifyPurchaseComponent implements OnInit {
   public isInputReadOnly: boolean = true;
 
   public itemModifyForm: FormGroup | any;
-  public validationMessages: any = null;
+  public validationMessages: any = {
+    prch: null,
+    prchDtlsLst: []
+  };
   public isFormSubmitted: boolean = false;
 
   private itemId: any = null;
@@ -123,9 +127,9 @@ export class ModifyPurchaseComponent implements OnInit {
         console.log("Group Res: ", _grp);
         console.groupEnd();
         this.usersListArray = [...(_raffle?.data?.user || [])];
-        
+
         this.raffleListArray = [...(_raffle?.data?.raffles || [])];
-        
+
         this.grpListArray = [...(_grp?.data?.groups || [])];
       },
       error: ([_usersErr, _raffelErr, _grpErr]) => {
@@ -162,8 +166,16 @@ export class ModifyPurchaseComponent implements OnInit {
     this.addNewItem();
   }
 
+  get prch() {
+    return this.itemModifyForm.get('prch') as FormGroup;
+  }
+
   get prchDtlsLst() {
-    return this.itemModifyForm.controls['prchDtlsLst'] as FormArray;
+    return this.itemModifyForm.get('prchDtlsLst') as FormArray;
+  }
+
+  prchDtlsForm = (_index: any) => {
+    return this.prchDtlsLst.controls[_index] as FormGroup;
   }
 
   addNewItemToList = () => {
@@ -189,31 +201,51 @@ export class ModifyPurchaseComponent implements OnInit {
     this.prchDtlsLst.removeAt(_itemIndex);
   }
 
+  trimAndValidateItemForm = (_field: string, _fieldType: string, _arrayIndex: any = null) => {
+    if (_fieldType == 'objInput') {
+      var _filedValue = this.prch.get(_field)?.value || '';
+      if (_filedValue != undefined && _filedValue != null && typeof _filedValue == 'string') {
+        this.prch.get(_field)?.setValue(_filedValue.trim());
+      }
+    } else {
+      var _filedValue = this.prchDtlsLst.controls[_arrayIndex].get(_field)?.value || '';
+      if (_filedValue != undefined && _filedValue != null && typeof _filedValue == 'string') {
+        this.prchDtlsLst.controls[_arrayIndex].get(_field)?.setValue(_filedValue.trim());
+      }
+    }
+    this.validateItemForm(_arrayIndex);
+  }
+
+  validateItemForm = (_arrayIndex: any = null) => {
+    var _prchError: any = checkFormValidation(this.prch, purchaseValidationMsg.prch);
+    var _prchListErr: Array<any> = [];
+
+    if (_arrayIndex != null) {
+      const _listErr = checkFormValidation(this.prchDtlsForm(_arrayIndex), purchaseValidationMsg.prchDtlsLst);
+      _prchListErr.push(_listErr);
+    } else {
+      for (const [_index, _form] of this.prchDtlsLst.controls.entries()) {
+        const _listErr = checkFormValidation(this.prchDtlsForm(_index), purchaseValidationMsg.prchDtlsLst);
+        _prchListErr.push(_listErr);
+      }
+    }
+
+    this.validationMessages.prch = {..._prchError};
+    this.validationMessages.prchDtlsLst = [..._prchListErr];
+    console.log("validateItemForm: ", this.validationMessages);
+  };
+
   populateOtherRaffleInfo = (_arrayIndex: number) => {
     const _selectedObj = this.prchDtlsLst.controls[_arrayIndex];
     const _selectedRaffleId = _selectedObj.value.raffleId;
-    const _raffleInfo = this.raffleListArray.find((x:any) => x.id == parseInt(_selectedRaffleId));
+    const _raffleInfo = this.raffleListArray.find((x: any) => x.id == parseInt(_selectedRaffleId));
 
-    if(_raffleInfo != undefined) {
+    if (_raffleInfo != undefined) {
       this.prchDtlsLst.controls[_arrayIndex].patchValue({
         drawDate: new Date(_raffleInfo.playDay)
       })
     }
-    console.log("populateOtherRaffleInfo: ", _selectedObj)
   }
-
-  trimAndValidateUserForm = (_field: string) => {
-    const _filedValue = this.itemModifyForm.get(_field).value;
-    if (_filedValue != undefined && _filedValue != null && typeof _filedValue == 'string') {
-      this.itemModifyForm.get(_field).setValue(_filedValue.trim());
-    }
-
-    this.validateUserForm();
-  };
-
-  validateUserForm = () => {
-    this.validationMessages = checkFormValidation(this.itemModifyForm, modifyPurchaseValidationMsg);
-  };
 
   continueInfoModification = () => {
     this.isPreview = false;
@@ -221,9 +253,12 @@ export class ModifyPurchaseComponent implements OnInit {
   }
 
   saveModificationForm = () => {
+    console.log("saveModificationForm: ", this.prch, this.prchDtlsLst);
+    // return;
     if (!this.itemModifyForm.valid) {
-      makeAllFormControlAsDirty(this.itemModifyForm);
-      this.validateUserForm();
+      makeAllFormControlAsDirty(this.prch);
+      makeAllFormArrayControlAsDirty(this.prchDtlsLst);
+      this.validateItemForm();
       this.isFormSubmitted = false;
       return;
     }

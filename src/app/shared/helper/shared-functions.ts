@@ -1,16 +1,17 @@
 import { HttpParams } from '@angular/common/http';
-import { FormGroup, FormControl, AbstractControl } from '@angular/forms';
+import { FormGroup, FormControl, AbstractControl, FormArray } from '@angular/forms';
 // import * as randomStr from "random-string-gen";
 
 const img_ext_list = ['JPG', 'JPEG', 'PNG']
 
 export function checkFormValidation(form: FormGroup, listValidationMessage: any) {
     let showValidationMessages: any = {};
-
+    
     for (const _key of Object.keys(form.controls)) {
         let cur_control = form.get(_key);
         if (cur_control instanceof FormControl) {
             showValidationMessages[_key] = '';
+            console.log("checkFormValidation: ", cur_control, (cur_control.invalid && (cur_control.dirty || cur_control.touched)));
             if (cur_control.invalid && (cur_control.dirty || cur_control.touched)) {
                 let errors: any = cur_control.errors;
                 for (const _err of Object.keys(errors)) {
@@ -32,6 +33,15 @@ export function makeAllFormControlAsDirty(form: FormGroup | any) {
     Object.keys(form.controls).forEach((key: any) => {
         form.get(key).markAsDirty();
     });
+}
+
+export function makeAllFormArrayControlAsDirty(formArray: FormArray | any) {
+    formArray.controls.forEach((form:any) => {
+        Object.keys(form.controls).forEach((key: any) => {
+            form.get(key).markAsDirty();
+        });
+    });
+
 }
 
 export function loadDynamicScript(url: string, value: any): HTMLScriptElement | null {
