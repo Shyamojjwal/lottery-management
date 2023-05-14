@@ -11,7 +11,6 @@ export function checkFormValidation(form: FormGroup, listValidationMessage: any)
         let cur_control = form.get(_key);
         if (cur_control instanceof FormControl) {
             showValidationMessages[_key] = '';
-            console.log("checkFormValidation: ", cur_control, (cur_control.invalid && (cur_control.dirty || cur_control.touched)));
             if (cur_control.invalid && (cur_control.dirty || cur_control.touched)) {
                 let errors: any = cur_control.errors;
                 for (const _err of Object.keys(errors)) {

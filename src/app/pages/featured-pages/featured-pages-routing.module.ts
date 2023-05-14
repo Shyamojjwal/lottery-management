@@ -26,6 +26,10 @@ const routes: Routes = [
   {
     path: "purchase-management",
     loadChildren: () => import('@app-featured-modules/purchase/purchase.module').then(m=>m.PurchaseModule)
+  },
+  {
+    path: "dispatch-management",
+    loadChildren: () => import('@app-featured-modules/dispatch-management/dispatch-management.module').then(m=>m.DispatchManagementModule)
   }
 ];
 

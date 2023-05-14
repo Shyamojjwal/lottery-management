@@ -165,6 +165,10 @@ body.sidebar-hidden {
     width: 200px !important;
   }
 
+  tbody > tr > td .form-group {
+    margin-bottom: 0 !important;
+  }
+
   input.form-control,
   select.form-control {
     height: 1.8rem !important;
@@ -172,7 +176,10 @@ body.sidebar-hidden {
   }
 
   select.form-control {
-    padding: 0 !important;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    padding: 0 0.5rem !important;
   }
 
   input.mw-13 {

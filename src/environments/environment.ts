@@ -5,5 +5,5 @@
 export const environment = {
   production: false,
   cryptoJSKey: 'ASDFG12345678@123ce4a9d9c',
-  baseUrl: 'https://viewers-configurations-supported-laws.trycloudflare.com/'
+  baseUrl: 'https://minnesota-mg-enzyme-allowed.trycloudflare.com/'
 };

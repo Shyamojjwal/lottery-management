@@ -65,6 +65,12 @@ export class SidebarMenuService {
       "icon": "<i class=\"pe-7s-server\"></i>",
       "link": "/purchase-management"
     },
+    {
+      "title": "Dispatch Management",
+      "type": "simple",
+      "icon": "<i class=\"pe-7s-server\"></i>",
+      "link": "/dispatch-management"
+    },
     // {
     //   "title": "User Management",
     //   "type": "dropdown",

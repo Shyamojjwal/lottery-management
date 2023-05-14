@@ -1,51 +1,23 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PurchaseService } from '../../services';
-import { checkFormValidation, makeAllFormArrayControlAsDirty, makeAllFormControlAsDirty } from '@app-shared/helper/shared-functions';
-import { purchaseValidationMsg } from '@app-shared/helper/validation-messages';
-
-import { faTrashAlt, faPlusCircle, faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
-import { Observable, forkJoin } from 'rxjs';
+import { faExclamationCircle, faPlusCircle, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { DispatchService } from '../../services';
 import { RaffleService } from '@app-modules/featured-pages/raffle-management/services';
 import { GroupService } from '@app-modules/featured-pages/group-management/services';
 import { UserService } from '@app-modules/featured-pages/user-management/services';
-import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
-import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { AuthenticationService } from '@app-core/authentication';
 import * as moment from 'moment';
-
-
-export const MY_FORMATS = {
-  parse: {
-    dateInput: 'LL',
-  },
-  display: {
-    dateInput: 'LL',
-    monthYearLabel: 'MMM YYYY',
-    dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'MMMM YYYY',
-  },
-};
+import { checkFormValidation, makeAllFormArrayControlAsDirty, makeAllFormControlAsDirty } from '@app-shared/helper/shared-functions';
+import { Observable, forkJoin } from 'rxjs';
+import { dispatchValidationMsg } from '@app-shared/helper/validation-messages';
 
 @Component({
-  selector: 'app-modify-purchase',
-  templateUrl: './modify-purchase.component.html',
-  styleUrls: ['./modify-purchase.component.scss'],
-  providers: [
-    // `MomentDateAdapter` can be automatically provided by importing `MomentDateModule` in your
-    // application's root module. We provide it at the component level here, due to limitations of
-    // our example generation script.
-    {
-      provide: DateAdapter,
-      useClass: MomentDateAdapter,
-      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
-    },
-
-    { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
-  ],
+  selector: 'app-modify-dispatch',
+  templateUrl: './modify-dispatch.component.html',
+  styleUrls: ['./modify-dispatch.component.scss']
 })
-export class ModifyPurchaseComponent implements OnInit {
+export class ModifyDispatchComponent implements OnInit {
 
   public iconTrash: any = faTrashAlt;
   public iconAdd: any = faPlusCircle;
@@ -60,8 +32,8 @@ export class ModifyPurchaseComponent implements OnInit {
 
   public itemModifyForm: FormGroup | any;
   public validationMessages: any = {
-    prch: null,
-    prchDtlsLst: []
+    dsph: null,
+    dsphDtlsLst: []
   };
   public isFormSubmitted: boolean = false;
 
@@ -80,7 +52,7 @@ export class ModifyPurchaseComponent implements OnInit {
   constructor(
     private router: Router,
     private FB: FormBuilder,
-    private _apiService: PurchaseService,
+    private _apiService: DispatchService,
     private _raffleService: RaffleService,
     private _grpService: GroupService,
     private _userService: UserService,
@@ -90,8 +62,8 @@ export class ModifyPurchaseComponent implements OnInit {
 
   ngOnInit(): void {
     this.crntUserInfo = this._authService.getUser();
-    console.log("crntUserInfo: ", this.crntUserInfo)
-    this.isNewEntry = this.router.url.includes('new-purchase');
+    
+    this.isNewEntry = this.router.url.includes('new-dispatch');
     this.itemId = this.activatedRoute.snapshot.params['itemId'] || null;
 
     this.initModifyForm();
@@ -186,26 +158,26 @@ export class ModifyPurchaseComponent implements OnInit {
   initModifyForm = () => {
     const _this = this;
     this.itemModifyForm = this.FB.group({
-      prch: _this.FB.group({
+      dsph: _this.FB.group({
         memoNo: ['', [Validators.required]],
         userId: [_this.crntUserInfo.id, [Validators.required]],
-        prchDt: ['', [Validators.required]],
+        dsphDt: ['', [Validators.required]],
       }),
-      prchDtlsLst: _this.FB.array([])
+      dsphDtlsLst: _this.FB.array([])
     });
     this.addNewItem();
   }
 
-  get prch() {
-    return this.itemModifyForm.get('prch') as FormGroup;
+  get dsph() {
+    return this.itemModifyForm.get('dsph') as FormGroup;
   }
 
-  get prchDtlsLst() {
-    return this.itemModifyForm.get('prchDtlsLst') as FormArray;
+  get dsphDtlsLst() {
+    return this.itemModifyForm.get('dsphDtlsLst') as FormArray;
   }
 
-  prchDtlsForm = (_index: any) => {
-    return this.prchDtlsLst.controls[_index] as FormGroup;
+  dsphDtlsForm = (_index: any) => {
+    return this.dsphDtlsLst.controls[_index] as FormGroup;
   }
 
   addNewItemToList = () => {
@@ -220,7 +192,7 @@ export class ModifyPurchaseComponent implements OnInit {
       rate: ['', [Validators.required]]
     })
 
-    this.prchDtlsLst.push(_singleItemForm);
+    this.dsphDtlsLst.push(_singleItemForm);
   }
 
   /*
@@ -230,17 +202,17 @@ export class ModifyPurchaseComponent implements OnInit {
   */
 
   addNewItem = () => {
-    makeAllFormArrayControlAsDirty(this.prchDtlsLst);
+    makeAllFormArrayControlAsDirty(this.dsphDtlsLst);
     this.validateItemForm();
 
-    if (this.prchDtlsLst.valid) {
+    if (this.dsphDtlsLst.valid) {
       this.addNewItemToList();
     }
   }
 
   removeItem = (_itemIndex: number) => {
-    this.prchDtlsLst.removeAt(_itemIndex);
-    makeAllFormArrayControlAsDirty(this.prchDtlsLst);
+    this.dsphDtlsLst.removeAt(_itemIndex);
+    makeAllFormArrayControlAsDirty(this.dsphDtlsLst);
     this.validateItemForm();
   }
 
@@ -253,7 +225,7 @@ export class ModifyPurchaseComponent implements OnInit {
   inputOnlyInt = (_inputEvent: Event | any, _arrayIndex: number, _field: string) => {
     setTimeout(() => {
       var _val = (_inputEvent.target.value).match(/\d/g)?.join('') || '';
-      this.prchDtlsForm(_arrayIndex).get(_field)?.setValue(_val);
+      this.dsphDtlsForm(_arrayIndex).get(_field)?.setValue(_val);
     }, 1000);
   }
 
@@ -264,39 +236,39 @@ export class ModifyPurchaseComponent implements OnInit {
   */
 
   validateObjectFieldOnBlur = (_field: string) => {
-    var _fieldValue = this.prch.get(_field)?.value;
+    var _fieldValue = this.dsph.get(_field)?.value;
 
     if (typeof _fieldValue !== 'object' && !Array.isArray(_fieldValue)) {
-      _fieldValue = (this.prch.get(_field)?.value).toString().trim() || '';
-      this.prch.get(_field)?.setValue(_fieldValue.trim());
+      _fieldValue = (this.dsph.get(_field)?.value).toString().trim() || '';
+      this.dsph.get(_field)?.setValue(_fieldValue.trim());
     }
 
-    this.prch.get(_field)?.markAsDirty();
+    this.dsph.get(_field)?.markAsDirty();
     this.validateItemForm();
   }
 
   validateArrayFieldOnBlur = (_arrayIndex: number, _field: string) => {
-    var _fieldValue = this.prchDtlsForm(_arrayIndex).get(_field)?.value;
+    var _fieldValue = this.dsphDtlsForm(_arrayIndex).get(_field)?.value;
 
     if (typeof _fieldValue !== 'object' && !Array.isArray(_fieldValue)) {
       _fieldValue = _fieldValue.toString().trim() || '';
-      this.prchDtlsForm(_arrayIndex).get(_field)?.setValue(_fieldValue);
+      this.dsphDtlsForm(_arrayIndex).get(_field)?.setValue(_fieldValue);
     }
-    this.prchDtlsForm(_arrayIndex).get(_field)?.markAsDirty();
+    this.dsphDtlsForm(_arrayIndex).get(_field)?.markAsDirty();
     this.validateItemForm();
   }
 
   validateItemForm = () => {
-    var _prchError: any = checkFormValidation(this.prch, purchaseValidationMsg.prch);
-    var _prchListErr: Array<any> = [];
+    var _dsphError: any = checkFormValidation(this.dsph, dispatchValidationMsg.dsph);
+    var _dsphListErr: Array<any> = [];
 
-    for (const [_index, _form] of this.prchDtlsLst.controls.entries()) {
-      const _listErr = checkFormValidation(this.prchDtlsForm(_index), purchaseValidationMsg.prchDtlsLst);
-      _prchListErr.push(_listErr);
+    for (const [_index, _form] of this.dsphDtlsLst.controls.entries()) {
+      const _listErr = checkFormValidation(this.dsphDtlsForm(_index), dispatchValidationMsg.dsphDtlsLst);
+      _dsphListErr.push(_listErr);
     }
 
-    this.validationMessages.prch = { ..._prchError };
-    this.validationMessages.prchDtlsLst = [..._prchListErr];
+    this.validationMessages.dsph = { ..._dsphError };
+    this.validationMessages.dsphDtlsLst = [..._dsphListErr];
   };
 
   /*
@@ -308,17 +280,17 @@ export class ModifyPurchaseComponent implements OnInit {
   datePickerDateChange = (_event: any, _field: string, _fieldType: string = 'objectField', _arrayIndex: number = 0) => {
     console.log("datePickerDateChange: ", _event, _field, _fieldType, _arrayIndex);
     // if(_fieldType === 'objectField') {
-    // this.prch.get(_field)?.setValue()
+    // this.dsph.get(_field)?.setValue()
     // }
   }
 
   populateOtherRaffleInfo = (_arrayIndex: number) => {
-    const _selectedObj = this.prchDtlsLst.controls[_arrayIndex];
+    const _selectedObj = this.dsphDtlsLst.controls[_arrayIndex];
     const _selectedRaffleId = _selectedObj.value.raffleId;
     const _raffleInfo = this.raffleListArray.find((x: any) => x.id == parseInt(_selectedRaffleId));
 
     if (_raffleInfo != undefined && moment(_raffleInfo.playDay, "YYYY-MM-DD").isValid()) {
-      this.prchDtlsLst.controls[_arrayIndex].patchValue({
+      this.dsphDtlsLst.controls[_arrayIndex].patchValue({
         drawDate: new Date(_raffleInfo.playDay)
       })
     }
@@ -332,8 +304,8 @@ export class ModifyPurchaseComponent implements OnInit {
 
   saveModificationForm = () => {
     if (!this.itemModifyForm.valid) {
-      makeAllFormControlAsDirty(this.prch);
-      makeAllFormArrayControlAsDirty(this.prchDtlsLst);
+      makeAllFormControlAsDirty(this.dsph);
+      makeAllFormArrayControlAsDirty(this.dsphDtlsLst);
       this.validateItemForm();
       this.isFormSubmitted = false;
       return;
@@ -341,8 +313,8 @@ export class ModifyPurchaseComponent implements OnInit {
 
     const _payload = { ...this.itemModifyForm.value };
 
-    _payload.prch.prchDt = moment(_payload.prch.prchDt).format("YYYY-MM-DD");
-    _payload.prchDtlsLst = _payload.prchDtlsLst.map((_x: any) => {
+    _payload.dsph.dsphDt = moment(_payload.dsph.dsphDt).format("YYYY-MM-DD");
+    _payload.dsphDtlsLst = _payload.dsphDtlsLst.map((_x: any) => {
       _x.qty = moment(_x.qty);
       _x.rate = moment(_x.rate);
       _x.draw = parseInt(_x.draw);
