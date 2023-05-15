@@ -7,6 +7,7 @@ import { modifyUserValidationMsg } from '@app-shared/helper/validation-messages'
 import { UserService } from '../../services';
 import { IUser } from '@app-shared/models/user.model';
 import { PasswordValidators } from '@app-shared/helper/password-validator';
+import { SharedService } from '@app-core/services';
 
 
 
@@ -36,19 +37,22 @@ export class UserModificationComponent implements OnInit {
     private router: Router,
     private FB: FormBuilder,
     private apiService: UserService,
+    private _sharedService: SharedService,
     private activatedRoute: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
+    
     this.isNewEntry = this.router.url.includes('new-user');
     this.userCode = this.activatedRoute.snapshot.params['userCode'] || null;
-
+    
     this.initModifyForm();
-
+    
     if (this.isNewEntry) {
       this.isPreview = false;
       this.isModify = true;
     } else {
+      this._sharedService.showProgress();
       this.isPreview = true;
       this.isModify = false;
       this.loadUserInfo();
@@ -109,6 +113,7 @@ export class UserModificationComponent implements OnInit {
           phoneNumber: this.userInfo.phoneNumber,
           address: this.userInfo.address
         })
+        this._sharedService.hideProgress();
       },
       error: (_err: any) => {
         console.error("Error: ", _err);
@@ -141,12 +146,16 @@ export class UserModificationComponent implements OnInit {
   };
 
   saveModificationForm = () => {
+    this._sharedService.showProgress();
+
     if (!this.userModifyForm.valid) {
       makeAllFormControlAsDirty(this.userModifyForm);
       this.validateUserForm();
       this.isFormSubmitted = false;
+      this._sharedService.hideProgress();
       return;
     }
+
     this.isFormSubmitted = true;
     var _payload: any = { ...this.userModifyForm.value };
     if (!this.isNewEntry) {
@@ -162,11 +171,13 @@ export class UserModificationComponent implements OnInit {
     this.apiService.submitModifyForm(_payload, this.isNewEntry).subscribe({
       next: (_res: any) => {
         console.error("Modify User Success: ", _res);
+        this._sharedService.hideProgress();
         this.router.navigate(['/user-management']);
       },
       error: (_err: any) => {
         console.error("Modify User Error: ", _err);
         this.isFormSubmitted = false;
+        this._sharedService.hideProgress();
       }
     })
   }

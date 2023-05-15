@@ -1,6 +1,7 @@
 import { AfterViewChecked, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { SharedService } from '@app-core/services';
 import { AuthService } from '@app-modules/auth-pages/services';
 import { AppCookieService } from '@app-services/app-cookie.service';
 import { checkFormValidation, makeAllFormControlAsDirty, noWhitespaceValidator } from '@app-shared/helper/shared-functions';
@@ -22,6 +23,7 @@ export class LoginComponent implements OnInit, AfterViewChecked {
     private router: Router,
     private FB: FormBuilder,
     private _apiService: AuthService,
+    private _sharedService: SharedService,
     private _cookieService: AppCookieService
   ) { }
 
@@ -64,11 +66,13 @@ export class LoginComponent implements OnInit, AfterViewChecked {
   };
 
   doUserLogin = () => {
-    console.log("userSignInForm: ", this.userSignInForm);
+    this._sharedService.showProgress();
+
     if (!this.userSignInForm.valid) {
       makeAllFormControlAsDirty(this.userSignInForm);
       this.validateUserForm();
       this.isFormSubmitted = false;
+      this._sharedService.hideProgress();
       return;
     }
 
@@ -92,6 +96,7 @@ export class LoginComponent implements OnInit, AfterViewChecked {
         this.validateUserForm();
 
         this.isFormSubmitted = false;
+        this._sharedService.hideProgress();
       }
     });
   }
@@ -102,11 +107,13 @@ export class LoginComponent implements OnInit, AfterViewChecked {
         console.log("User Info: ", _res);
         this._cookieService.setUserInfo(_res);
         setTimeout(() => {
+          this._sharedService.hideProgress();
           this.router.navigate(['/dashboard']);
         }, 500);
       },
       error: (_err: any) => {
         console.error("_err: ", _err);
+        this._sharedService.hideProgress();
       }
     })
   }

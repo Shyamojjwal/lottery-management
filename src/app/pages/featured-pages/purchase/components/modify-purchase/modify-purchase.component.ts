@@ -14,6 +14,7 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { AuthenticationService } from '@app-core/authentication';
 import * as moment from 'moment';
+import { SharedService } from '@app-core/services';
 
 
 export const MY_FORMATS = {
@@ -85,10 +86,13 @@ export class ModifyPurchaseComponent implements OnInit {
     private _grpService: GroupService,
     private _userService: UserService,
     private _authService: AuthenticationService,
+    private _sharedService: SharedService,
     private activatedRoute: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
+    this._sharedService.showProgress();
+
     this.crntUserInfo = this._authService.getUser();
     console.log("crntUserInfo: ", this.crntUserInfo)
     this.isNewEntry = this.router.url.includes('new-purchase');
@@ -149,6 +153,7 @@ export class ModifyPurchaseComponent implements OnInit {
         this.raffleListArray = [...(_raffle?.data?.raffles || [])];
 
         this.grpListArray = [...(_grp?.data?.groups || [])];
+        this._sharedService.hideProgress();
       },
       error: ([_usersErr, _raffelErr, _grpErr]) => {
         console.group("loadDependencyList Error")
@@ -156,6 +161,7 @@ export class ModifyPurchaseComponent implements OnInit {
         console.error("Raffle Error: ", _raffelErr);
         console.error("Group Error: ", _grpErr);
         console.groupEnd();
+        this._sharedService.hideProgress();
       }
     })
   }
@@ -335,13 +341,18 @@ export class ModifyPurchaseComponent implements OnInit {
   */
 
   saveModificationForm = () => {
+    this._sharedService.showProgress();
+    
     if (!this.itemModifyForm.valid) {
       makeAllFormControlAsDirty(this.prch);
       makeAllFormArrayControlAsDirty(this.prchDtlsLst);
       this.validateItemForm();
       this.isFormSubmitted = false;
+      this._sharedService.hideProgress();
       return;
     }
+    
+    this.isFormSubmitted = true;
 
     const _payload = { ...this.itemModifyForm.value };
 
@@ -361,10 +372,12 @@ export class ModifyPurchaseComponent implements OnInit {
 
     this._apiService.modifyItemInfo(_payload, this.isNewEntry).subscribe({
       next: (_res: any) => {
+        this._sharedService.hideProgress();
         console.log("Modify Raffle Success: ", _res);
         this.router.navigate(['/purchase-management']);
       },
       error: (_err: any) => {
+        this._sharedService.hideProgress();
         console.error("Modify Raffle Error: ", _err);
         this.isFormSubmitted = false;
       }

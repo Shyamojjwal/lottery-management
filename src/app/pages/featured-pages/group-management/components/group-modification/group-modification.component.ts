@@ -5,6 +5,7 @@ import { GroupService } from '../../services';
 import { checkFormValidation, makeAllFormControlAsDirty, noWhitespaceValidator } from '@app-shared/helper/shared-functions';
 import { modifyGroupValidationMsg } from '@app-shared/helper/validation-messages';
 import { appSettings } from '@app-core/config';
+import { SharedService } from '@app-core/services';
 
 @Component({
   selector: 'app-group-modification',
@@ -29,10 +30,13 @@ export class GroupModificationComponent implements OnInit {
     private router: Router,
     private FB: FormBuilder,
     private apiService: GroupService,
+    private _sharedService: SharedService,
     private activatedRoute: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
+    this._sharedService.showProgress();
+
     this.isNewEntry = this.router.url.includes('add-group');
     this.groupId = this.activatedRoute.snapshot.params['groupId'] || null;
 
@@ -56,9 +60,11 @@ export class GroupModificationComponent implements OnInit {
     this.apiService.getItemInfo(this.groupId).subscribe({
       next: (_res:any) => {
         console.log("Item Info: ", _res);
+        this._sharedService.showProgress();
       },
       error: (_err:any) => {
         console.log("Item Info Error: ", _err);
+        this._sharedService.hideProgress();
       }
     })
   }
@@ -85,12 +91,16 @@ export class GroupModificationComponent implements OnInit {
   }
 
   saveModificationForm = () => {
+    this._sharedService.showProgress();
+
     if (!this.itemModifyForm.valid) {
       makeAllFormControlAsDirty(this.itemModifyForm);
       this.validateUserForm();
       this.isFormSubmitted = false;
+      this._sharedService.hideProgress();
       return;
     }
+
     this.isFormSubmitted = true;
     var _payload: any = { ...this.itemModifyForm.value };
     if (!this.isNewEntry) {
@@ -103,11 +113,13 @@ export class GroupModificationComponent implements OnInit {
     this.apiService.modifyItemInfo(_payload, this.isNewEntry).subscribe({
       next: (_res: any) => {
         console.error("Modify Group Success: ", _res);
+        this._sharedService.hideProgress();
         this.router.navigate(['/group-management']);
       },
       error: (_err: any) => {
         console.error("Modify Group Error: ", _err);
         this.isFormSubmitted = false;
+        this._sharedService.hideProgress();
       }
     })
   }

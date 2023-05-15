@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../services';
 import { IUser } from '@app-shared/models/user.model';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { SharedService } from '@app-core/services';
 
 @Component({
   selector: 'app-user-list',
@@ -19,10 +20,13 @@ export class UserListComponent implements OnInit {
 
   constructor(
     private FB: FormBuilder,
-    private apiService: UserService
+    private apiService: UserService,
+    private _sharedService: SharedService
   ) { }
 
   ngOnInit(): void {
+    this._sharedService.showProgress();
+
     this.initFilterForm();
     this.loadAllUserList();
   }
@@ -86,9 +90,11 @@ export class UserListComponent implements OnInit {
 
         // console.log(this.userList)
         this.isApiInProgress = false;
+        this._sharedService.hideProgress();
       },
       error: (_err: any) => {
         console.error("User List Error: ", _err)
+        this._sharedService.hideProgress();
       }
     })
   }

@@ -2,15 +2,22 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthLayoutComponent, FeaturedLayoutComponent } from '@app-layouts/layout-blueprints';
-import { FooterComponent, HeaderComponent, HeaderUserboxComponent, SidebarComponent, SidebarHeaderComponent, SidebarMenuComponent } from '@app-layouts/layout-components';
+import {
+  FooterComponent,
+  HeaderComponent,
+  SidebarComponent,
+  SidebarMenuComponent,
+  HeaderUserboxComponent,
+  SidebarHeaderComponent,
+} from '@app-layouts/layout-components';
 import { SharedModule } from '@app-shared/shared.module';
 import { NgProgressModule } from 'ngx-progressbar';
 import { BsDropdownModule } from "ngx-bootstrap/dropdown";
+import { MatProgressBarModule } from "@angular/material/progress-bar";
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HTTPInterceptorProvider } from '@app-interceptor/index';
-import { LoadingBarRouterModule } from "@ngx-loading-bar/router";
 
 const _declarations: Array<any> = [
   AppComponent,
@@ -29,7 +36,7 @@ const _MODULES: Array<any> = [
   BrowserModule,
   NgProgressModule,
   AppRoutingModule,
-  LoadingBarRouterModule,
+  MatProgressBarModule,
   BrowserAnimationsModule,
   BsDropdownModule.forRoot()
 ]

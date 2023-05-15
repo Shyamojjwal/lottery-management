@@ -22,10 +22,16 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatNativeDateModule } from "@angular/material/core";
 import { MatInputModule } from "@angular/material/input";
+import { ProgressBarComponent } from './components';
+import { CommonModule } from '@angular/common';
 
+const SHARED_COMPONETS = [
+  ProgressBarComponent
+]
 
 const MODULES = [
   FormsModule,
+  CommonModule,
   HttpClientModule,
   FontAwesomeModule,
   ReactiveFormsModule,  
@@ -39,9 +45,9 @@ const PROVIDERS = [
 ]
 
 @NgModule({
-  declarations: [],
+  declarations: [...SHARED_COMPONETS],
   imports: [...MODULES],
-  exports: [...MODULES],
+  exports: [...MODULES, ...SHARED_COMPONETS],
   providers: [...PROVIDERS]
 })
 export class SharedModule {
