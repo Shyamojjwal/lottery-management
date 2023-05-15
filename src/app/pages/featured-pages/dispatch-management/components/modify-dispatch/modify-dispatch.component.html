@@ -1,1 +1,256 @@
-<p>modify-dispatch works!</p>
+<div class="page-title pb-3">
+  <h3 class="d-inline-block" *ngIf="isNewEntry">Add New Dishpatch</h3>
+  <h3 class="d-inline-block" *ngIf="!isNewEntry">Modify Dishpatch</h3>
+  <div class="btn-group-v2 float-right">
+    <button class="btn btn-light mr-4" (click)="continueInfoModification()"
+      *ngIf="!isNewEntry && !isModify">Modify</button>
+    <button class="btn btn-success mr-4" *ngIf="isModify" (click)="saveModificationForm()"
+      [attr.disabled]="isFormSubmitted ? true : null">Save</button>
+    <button class="btn btn-secondary" [routerLink]="['/dispatch-management']"
+      [attr.disabled]="isFormSubmitted ? true : null">Cancel</button>
+  </div>
+</div>
+<!-- Form Section Start -->
+<div class="form-section">
+  <form [formGroup]="itemModifyForm">
+    <div class="row">
+      <div class="col-md-8 col-xs-12">
+
+        <h5 class="form-section-title mb-3">Purchase Information</h5>
+
+        <ng-container formGroupName="dsph">
+          <div class="row">
+            <div class="col-md-6 form-group">
+              <label>Memo No.</label>
+              <input type="text" placeholder="Memo No" class="form-control"
+                [ngClass]="{'input-readOnly': !(isInputReadOnly || isPreview)}" formControlName="memoNo"
+                (focusout)="validateObjectFieldOnBlur('memoNo')" (keyup)="inputOnlyInt($event, 'memoNo')"/>
+              <small class="form-text err-msg">{{validationMessages?.dsph?.memoNo}}</small>
+            </div>
+            <div class="col-md-6 form-group">
+              <label>Dispatch Date</label>
+              <input type="text" placeholder="Dispatch Date" class="form-control" [matDatepicker]="datePicker"
+                [ngClass]="{'input-readOnly': !(isInputReadOnly || isPreview)}" formControlName="dsphDt" readOnly
+                (click)="datePicker.open();"/>
+              <mat-datepicker #datePicker (closed)="validateObjectFieldOnBlur('dsphDt')"></mat-datepicker>
+              <small class="form-text err-msg">{{validationMessages?.dsph?.dsphDt}}</small>
+            </div>
+          </div>
+        </ng-container>
+
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <h5 class="form-section-title mb-3">All Item Information</h5>
+
+        <ng-container formArrayName="dsphDtlsLst">
+          <div class="table-responsive" [ngClass]="{'item-rmv-btn': (dsphDtlsLst.controls.length > 1)}">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th class="sl-count">Sl</th>
+                  <th>Raffel</th>
+                  <th>Draw</th>
+                  <th>Date</th>
+                  <th>From</th>
+                  <th>To</th>
+                  <th>Grp</th>
+                  <th>Qty</th>
+                  <th>Rate</th>
+                  <th *ngIf="dsphDtlsLst.controls.length > 1" class="btn-cont">---</th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container *ngFor="let _item of dsphDtlsLst.controls; let y = index">
+                  <tr [formGroupName]="y">
+                    <td>
+                      <div class="form-group">
+                        <span>{{y + 1}}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="form-group tooltip-cont"
+                        [ngClass]="{'input-err': validationMessages?.dsphDtlsLst[y]?.raffleId}">
+                        <!-- <div class="form-group"> -->
+                        <select class="form-control" formControlName="raffleId" (change)="populateOtherRaffleInfo(y)" (blur)="validateArrayFieldOnBlur(y, 'raffleId')">
+                          <option value="" disabled>Select Raffle</option>
+                          <ng-container *ngFor="let raffle of raffleListArray">
+                            <option [value]="raffle.id">{{raffle.raffleName}}</option>
+                          </ng-container>
+                        </select>
+                        <!-- <small class="form-text err-msg">{{validationMessages?.dsphDtlsLst[y]?.raffleId}}</small> -->
+
+                        <span class="err-ico"><fa-icon [icon]="iconExclamation"></fa-icon></span>
+                        <span class="err-tooltip-txt">{{validationMessages?.dsphDtlsLst[y]?.raffleId}}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="form-group tooltip-cont" [ngClass]="{'input-err': validationMessages?.dsphDtlsLst[y]?.draw}">
+                        <input class="form-control" formControlName="draw" (keyup)="inputOnlyInt($event, 'draw', true, y)" (blur)="validateArrayFieldOnBlur(y, 'draw')"/>
+
+                        <!-- <small class="form-text err-msg">{{validationMessages?.dsphDtlsLst[y]?.draw}}</small> -->
+
+                        <span class="err-ico"><fa-icon [icon]="iconExclamation"></fa-icon></span>
+                        <span class="err-tooltip-txt">{{validationMessages?.dsphDtlsLst[y]?.draw}}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="form-group tooltip-cont" [ngClass]="{'input-err': validationMessages?.dsphDtlsLst[y]?.drawDate}">
+                        <input type="text" class="form-control input-readOnly" [matDatepicker]="drawDatePicker"
+                          formControlName="drawDate" readOnly (click)="drawDatePicker.open();" (blur)="validateArrayFieldOnBlur(y, 'drawDate')"/>
+                        <mat-datepicker #drawDatePicker (closed)="validateObjectFieldOnBlur('prchDt')"></mat-datepicker>
+
+                        <!-- <small class="form-text err-msg">{{validationMessages?.dsphDtlsLst[y]?.drawDate}}</small> -->
+
+                        <span class="err-ico"><fa-icon [icon]="iconExclamation"></fa-icon></span>
+                        <span class="err-tooltip-txt">{{validationMessages?.dsphDtlsLst[y]?.drawDate}}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="form-group tooltip-cont" [ngClass]="{'input-err': validationMessages?.dsphDtlsLst[y]?.rflStrFrom}">
+                        <input class="form-control" formControlName="rflStrFrom" (keyup)="inputOnlyInt($event, 'rflStrFrom', true, y)" (blur)="validateArrayFieldOnBlur(y, 'rflStrFrom')"/>
+
+                        <!-- <small class="form-text err-msg">{{validationMessages?.dsphDtlsLst[y]?.rflStrFrom}}</small> -->
+
+                        <span class="err-ico"><fa-icon [icon]="iconExclamation"></fa-icon></span>
+                        <span class="err-tooltip-txt">{{validationMessages?.dsphDtlsLst[y]?.rflStrFrom}}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="form-group tooltip-cont" [ngClass]="{'input-err': validationMessages?.dsphDtlsLst[y]?.rflEndTo}">
+                        <input class="form-control" formControlName="rflEndTo" (keyup)="inputOnlyInt($event, 'rflEndTo', true, y)" (blur)="validateArrayFieldOnBlur(y, 'rflEndTo')"/>
+
+                        <!-- <small class="form-text err-msg">{{validationMessages?.dsphDtlsLst[y]?.rflEndTo}}</small> -->
+
+                        <span class="err-ico"><fa-icon [icon]="iconExclamation"></fa-icon></span>
+                        <span class="err-tooltip-txt">{{validationMessages?.dsphDtlsLst[y]?.rflEndTo}}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="form-group tooltip-cont" [ngClass]="{'input-err': validationMessages?.dsphDtlsLst[y]?.grpId}">
+                        <select class="form-control" formControlName="grpId" (blur)="validateArrayFieldOnBlur(y, 'grpId')">
+                          <option value="" disabled>Select Group</option>
+                          <ng-container *ngFor="let _grp of grpListArray">
+                            <option [value]="_grp.groupId">{{_grp.groupName}}</option>
+                          </ng-container>
+                        </select>
+
+                        <!-- <small class="form-text err-msg">{{validationMessages?.dsphDtlsLst[y]?.grpId}}</small> -->
+
+                        <span class="err-ico"><fa-icon [icon]="iconExclamation"></fa-icon></span>
+                        <span class="err-tooltip-txt">{{validationMessages?.dsphDtlsLst[y]?.grpId}}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="form-group tooltip-cont" [ngClass]="{'input-err': validationMessages?.dsphDtlsLst[y]?.qty}">
+                        <input class="form-control" formControlName="qty" (keyup)="inputOnlyInt($event, 'qty', true, y)" (blur)="validateArrayFieldOnBlur(y, 'qty')"/>
+
+                        <!-- <small class="form-text err-msg">{{validationMessages?.dsphDtlsLst[y]?.qty}}</small> -->
+
+                        <span class="err-ico"><fa-icon [icon]="iconExclamation"></fa-icon></span>
+                        <span class="err-tooltip-txt">{{validationMessages?.dsphDtlsLst[y]?.qty}}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="form-group tooltip-cont" [ngClass]="{'input-err': validationMessages?.dsphDtlsLst[y]?.rate}">
+                        <input class="form-control" formControlName="rate" (keyup)="inputOnlyInt($event, 'rate', true, y)" (blur)="validateArrayFieldOnBlur(y, 'rate')"/>
+
+                        <!-- <small class="form-text err-msg">{{validationMessages?.dsphDtlsLst[y]?.rate}}</small> -->
+
+                        <span class="err-ico"><fa-icon [icon]="iconExclamation"></fa-icon></span>
+                        <span class="err-tooltip-txt">{{validationMessages?.dsphDtlsLst[y]?.rate}}</span>
+                      </div>
+                    </td>
+                    <td *ngIf="dsphDtlsLst.controls.length > 1">
+                      <div class="icon-rmv" (click)="removeItem(y)"><fa-icon [icon]="iconTrash"></fa-icon></div>
+                    </td>
+                  </tr>
+                </ng-container>
+                <tr>
+                  <td [colSpan]="9">
+                    <button type="button" class="btn btn-primary pull-right" (click)="addNewItem();">Add Another
+                      Item</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </ng-container>
+
+        <!-- <ng-container formArrayName="dsphDtlsLst">
+          <ng-container *ngFor="let _item of dsphDtlsLst.controls; let y = index">
+            <div class="single-item">
+              <div class="icon-rmv"><fa-icon [icon]="iconTrash"></fa-icon></div>
+              <div class="row">
+                <div class="col-md-6 form-group">
+                  <label>Raffel</label>
+                  <select class="form-control" formControlName="raffleId">
+                    <option value="">--- Select Raffle ---</option>
+                  </select>
+                  <small class="form-text err-msg"></small>
+                </div>
+                <div class="col-md-6 form-group">
+                  <label>Draw</label>
+                  <input class="form-control" formControlName="draw" placeholder="Draw" />
+                  <small class="form-text err-msg"></small>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6 form-group">
+                  <label>Draw Date</label>
+                  <input type="text" placeholder="Play Day" class="form-control" [matDatepicker]="drawDatePicker"
+                    [ngClass]="{'input-readOnly': !(isInputReadOnly || isPreview)}" formControlName="drawDate" readOnly
+                    (click)="drawDatePicker.open();" />
+                  <mat-datepicker #drawDatePicker></mat-datepicker>
+                </div>
+                <div class="col-md-6 form-group">
+                  <label>Group</label>
+                  <select class="form-control" formControlName="grpId">
+                    <option value="">--- Select Group ---</option>
+                  </select>
+                  <small class="form-text err-msg"></small>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6 form-group">
+                  <label>Raffel Start From</label>
+                  <input class="form-control" formControlName="rflStrFrom" placeholder="Raffle Start From" />
+                  <small class="form-text err-msg"></small>
+                </div>
+                <div class="col-md-6 form-group">
+                  <label>Raffel End To</label>
+                  <input class="form-control" formControlName="rflEndTo" placeholder="Raffle End To" />
+                  <small class="form-text err-msg"></small>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6 form-group">
+                  <label>Quantity</label>
+                  <input class="form-control" formControlName="qty" placeholder="Quantity" />
+                  <small class="form-text err-msg"></small>
+                </div>
+                <div class="col-md-6 form-group">
+                  <label>Rate</label>
+                  <input class="form-control" formControlName="rate" placeholder="Rate" />
+                  <small class="form-text err-msg"></small>
+                </div>
+              </div>
+              <div class="icon-add" (click)="addNewItem();">Add New Item <fa-icon [icon]="iconAdd"></fa-icon></div>
+            </div>
+
+          </ng-container>
+        </ng-container> -->
+      </div>
+    </div>
+  </form>
+</div>
+<!-- Form Button Section -->
+<div class="footer-btn-group">
+  <button class="btn btn-light mr-4" (click)="continueInfoModification()"
+    *ngIf="!isNewEntry && !isModify">Modify</button>
+  <button class="btn btn-success mr-4" *ngIf="isModify" (click)="saveModificationForm()"
+    [attr.disabled]="isFormSubmitted ? true : null">Save</button>
+  <button class="btn btn-secondary" [routerLink]="['/dispatch-management']"
+    [attr.disabled]="isFormSubmitted ? true : null">Cancel</button>
+</div>

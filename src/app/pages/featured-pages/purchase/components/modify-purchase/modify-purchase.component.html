@@ -24,7 +24,7 @@
               <label>Memo No.</label>
               <input type="text" placeholder="Memo No" class="form-control"
                 [ngClass]="{'input-readOnly': !(isInputReadOnly || isPreview)}" formControlName="memoNo"
-                (focusout)="validateObjectFieldOnBlur('memoNo')" />
+                (focusout)="validateObjectFieldOnBlur('memoNo')" (keyup)="inputOnlyInt($event, 'memoNo')"/>
               <small class="form-text err-msg">{{validationMessages?.prch?.memoNo}}</small>
             </div>
             <div class="col-md-6 form-group">
@@ -87,7 +87,7 @@
                     </td>
                     <td>
                       <div class="form-group tooltip-cont" [ngClass]="{'input-err': validationMessages?.prchDtlsLst[y]?.draw}">
-                        <input class="form-control" formControlName="draw" (keyup)="inputOnlyInt($event, y, 'draw')" (blur)="validateArrayFieldOnBlur(y, 'draw')"/>
+                        <input class="form-control" formControlName="draw" (keyup)="inputOnlyInt($event, 'draw', true, y)" (blur)="validateArrayFieldOnBlur(y, 'draw')"/>
 
                         <!-- <small class="form-text err-msg">{{validationMessages?.prchDtlsLst[y]?.draw}}</small> -->
 
@@ -109,7 +109,7 @@
                     </td>
                     <td>
                       <div class="form-group tooltip-cont" [ngClass]="{'input-err': validationMessages?.prchDtlsLst[y]?.rflStrFrom}">
-                        <input class="form-control" formControlName="rflStrFrom" (keyup)="inputOnlyInt($event, y, 'rflStrFrom')" (blur)="validateArrayFieldOnBlur(y, 'rflStrFrom')"/>
+                        <input class="form-control" formControlName="rflStrFrom" (keyup)="inputOnlyInt($event, 'rflStrFrom', true, y)" (blur)="validateArrayFieldOnBlur(y, 'rflStrFrom')"/>
 
                         <!-- <small class="form-text err-msg">{{validationMessages?.prchDtlsLst[y]?.rflStrFrom}}</small> -->
 
@@ -119,7 +119,7 @@
                     </td>
                     <td>
                       <div class="form-group tooltip-cont" [ngClass]="{'input-err': validationMessages?.prchDtlsLst[y]?.rflEndTo}">
-                        <input class="form-control" formControlName="rflEndTo" (keyup)="inputOnlyInt($event, y, 'rflEndTo')" (blur)="validateArrayFieldOnBlur(y, 'rflEndTo')"/>
+                        <input class="form-control" formControlName="rflEndTo" (keyup)="inputOnlyInt($event, 'rflEndTo', true, y)" (blur)="validateArrayFieldOnBlur(y, 'rflEndTo')"/>
 
                         <!-- <small class="form-text err-msg">{{validationMessages?.prchDtlsLst[y]?.rflEndTo}}</small> -->
 
@@ -144,7 +144,7 @@
                     </td>
                     <td>
                       <div class="form-group tooltip-cont" [ngClass]="{'input-err': validationMessages?.prchDtlsLst[y]?.qty}">
-                        <input class="form-control" formControlName="qty" (keyup)="inputOnlyInt($event, y, 'qty')" (blur)="validateArrayFieldOnBlur(y, 'qty')"/>
+                        <input class="form-control" formControlName="qty" (keyup)="inputOnlyInt($event, 'qty', true, y)" (blur)="validateArrayFieldOnBlur(y, 'qty')"/>
 
                         <!-- <small class="form-text err-msg">{{validationMessages?.prchDtlsLst[y]?.qty}}</small> -->
 
@@ -154,7 +154,7 @@
                     </td>
                     <td>
                       <div class="form-group tooltip-cont" [ngClass]="{'input-err': validationMessages?.prchDtlsLst[y]?.rate}">
-                        <input class="form-control" formControlName="rate" (keyup)="inputOnlyInt($event, y, 'rate')" (blur)="validateArrayFieldOnBlur(y, 'rate')"/>
+                        <input class="form-control" formControlName="rate" (keyup)="inputOnlyInt($event, 'rate', true, y)" (blur)="validateArrayFieldOnBlur(y, 'rate')"/>
 
                         <!-- <small class="form-text err-msg">{{validationMessages?.prchDtlsLst[y]?.rate}}</small> -->
 

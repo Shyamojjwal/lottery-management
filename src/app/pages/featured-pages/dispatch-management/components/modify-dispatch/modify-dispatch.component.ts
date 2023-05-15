@@ -222,10 +222,14 @@ export class ModifyDispatchComponent implements OnInit {
     -----------------------------------------------------------------
   */
 
-  inputOnlyInt = (_inputEvent: Event | any, _arrayIndex: number, _field: string) => {
+  inputOnlyInt = (_inputEvent: Event | any, _field: string, _isArrayInput: boolean = false, _arrayIndex: number = 0) => {
     setTimeout(() => {
       var _val = (_inputEvent.target.value).match(/\d/g)?.join('') || '';
-      this.dsphDtlsForm(_arrayIndex).get(_field)?.setValue(_val);
+      if(_isArrayInput) {
+        this.dsphDtlsForm(_arrayIndex).get(_field)?.setValue(_val);
+      } else {
+        this.dsph.get(_field)?.setValue(_val);
+      }
     }, 1000);
   }
 
@@ -313,13 +317,14 @@ export class ModifyDispatchComponent implements OnInit {
 
     const _payload = { ...this.itemModifyForm.value };
 
+    _payload.dsph.memoNo = parseInt(_payload.dsph.memoNo);
     _payload.dsph.dsphDt = moment(_payload.dsph.dsphDt).format("YYYY-MM-DD");
     _payload.dsphDtlsLst = _payload.dsphDtlsLst.map((_x: any) => {
-      _x.qty = moment(_x.qty);
-      _x.rate = moment(_x.rate);
+      _x.qty = parseInt(_x.qty);
+      _x.rate = parseInt(_x.rate);
       _x.draw = parseInt(_x.draw);
-      _x.grpId = moment(_x.grpId);
-      _x.rflEndTo = moment(_x.rflEndTo);
+      _x.grpId = parseInt(_x.grpId);
+      _x.rflEndTo = parseInt(_x.rflEndTo);
       _x.raffleId = parseInt(_x.raffleId);
       _x.rflStrFrom = parseInt(_x.rflStrFrom);
       _x.drawDate = moment(_x.drawDate).format("YYYY-MM-DD");
@@ -329,7 +334,7 @@ export class ModifyDispatchComponent implements OnInit {
     this._apiService.modifyItemInfo(_payload, this.isNewEntry).subscribe({
       next: (_res: any) => {
         console.log("Modify Raffle Success: ", _res);
-        this.router.navigate(['/purchase-management']);
+        this.router.navigate(['/dispatch-management']);
       },
       error: (_err: any) => {
         console.error("Modify Raffle Error: ", _err);
