@@ -30,6 +30,10 @@ const routes: Routes = [
   {
     path: "dispatch-management",
     loadChildren: () => import('@app-featured-modules/dispatch-management/dispatch-management.module').then(m=>m.DispatchManagementModule)
+  },
+  {
+    path: "draw-date-returns-management",
+    loadChildren: () => import('@app-featured-modules/draw-date-return/draw-date-return.module').then(m=>m.DrawDateReturnModule)
   }
 ];
 
