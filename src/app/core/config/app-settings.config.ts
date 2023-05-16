@@ -1,6 +1,7 @@
 export const appSettings = {
   appTitle: 'Lottery Management System',
   credentialsKey: 'lottery-user_token',
+  credentialsRememberKey: 'lottery-user_crt_info',
   userInfo: 'lottery-user_info',
   ajaxTimeout: 300000,
   RegExp: {

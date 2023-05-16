@@ -11,6 +11,14 @@ export const userSignInValidationMessage = {
   }
 }
 
+export const userForgotPassValidationMessage = {
+  userAuth: {
+    required: `Username or Email can't be blank.`,
+    whitespace: `Username or Email can't be blank.`,
+    wrongUserName: `Invalid Username or Email`,
+  }
+}
+
 export const modifyUserValidationMsg = {
   username: {
     required: `Username can't be blank.`,

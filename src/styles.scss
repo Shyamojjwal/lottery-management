@@ -75,15 +75,29 @@ body.sidebar-hidden {
 }
 
 .auth-layout {
-  .remember-forgot {
+  .auth-page-container {
+    .form-group {
+      margin-bottom: 0.5rem !important;
+    }
 
-    a,
-    a:visited {
-      color: #1a237e;
-      font-weight: 500;
-      text-decoration: underline;
+    .error-cont {
+      height: 1rem;
+      margin-top: 5px;
+      font-size: 14px;
+      color: #f44336;
+    }
+
+    .remember-forgot {
+
+      a,
+      a:visited {
+        color: #1a237e;
+        font-weight: 500;
+        text-decoration: underline;
+      }
     }
   }
+
 }
 
 .app-content--inner__wrapper {

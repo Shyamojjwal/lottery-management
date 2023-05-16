@@ -7,7 +7,7 @@ import { StorageService } from '@app-services/index';
   providedIn: 'root'
 })
 export class AuthenticationService {
-  constructor(private _cookieService: CookieService, private storageService: StorageService) { }
+  constructor(private _cookieService: CookieService, private _storageService: StorageService) { }
 
   private credentials: string = appSettings.credentialsKey;
   private userCredential: string = appSettings.userInfo;
@@ -20,7 +20,7 @@ export class AuthenticationService {
    * @developer Shyamojjwal Shit
    */
   public isAuthenticated(): boolean {
-    if (this._cookieService.get(this.credentials)) {
+    if (this._storageService.get(this.credentials)) {
       return true;
     }
     return false;
@@ -33,8 +33,8 @@ export class AuthenticationService {
    * @developer Shyamojjwal Shit
    */
   public clearUserInfo() {
-    this._cookieService.delete(this.credentials);
-    this._cookieService.delete(this.userCredential);
+    this._storageService.remove(this.credentials);
+    this._storageService.remove(this.userCredential);
   }
 
   /**
@@ -45,7 +45,7 @@ export class AuthenticationService {
    * @developer Rahul Kundu
    */
   public getToken(): string {
-    return this._cookieService.get(this.credentials);
+    return this._storageService.get(this.credentials);
   }
 
   /**
@@ -56,7 +56,7 @@ export class AuthenticationService {
    * @developer Rahul Kundu
    */
   public getUser(): any {
-    const _userInfo: any = this._cookieService.get(this.userCredential);
+    const _userInfo: any = this._storageService.get(this.userCredential);
 
     return JSON.parse(_userInfo);
   }

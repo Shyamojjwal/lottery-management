@@ -9,6 +9,7 @@ export class AppCookieService {
 
   private credentials: string = appSettings.credentialsKey;
   private userCredential: string = appSettings.userInfo;
+  private userLoginRemember: string = appSettings.credentialsRememberKey;
 
   constructor(private _cookieService: CookieService) { }
 
@@ -34,5 +35,20 @@ export class AppCookieService {
 
   getToken = () => {
     return this._cookieService.get(this.credentials)
+  }
+
+  setRememberMeInfo = (_loginInfo: any) => {
+    this._cookieService.set(
+      this.userLoginRemember,
+      JSON.stringify(_loginInfo),
+      {
+        path: '/'
+      }
+    );
+  }
+
+  getRememberMeInfo = () => {
+    var _rememberInfo = this._cookieService.get(this.userLoginRemember);
+    return JSON.parse(_rememberInfo);
   }
 }

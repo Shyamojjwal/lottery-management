@@ -17,4 +17,8 @@ export class AuthService {
   getCrntUserInfo = () => {
     return this._apiService.get("current_user");
   }
+
+  userForgotPass = (email_or_username:string) => {
+    return this._apiService.post(`user/forgot-password?emailOrUsername=${email_or_username}`, {});
+  }
 }

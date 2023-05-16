@@ -2,10 +2,12 @@ import { AfterViewChecked, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SharedService } from '@app-core/services';
+import { AppStorageService } from '@app-core/services/app-storage.service';
 import { AuthService } from '@app-modules/auth-pages/services';
 import { AppCookieService } from '@app-services/app-cookie.service';
 import { checkFormValidation, makeAllFormControlAsDirty, noWhitespaceValidator } from '@app-shared/helper/shared-functions';
 import { userSignInValidationMessage } from '@app-shared/helper/validation-messages';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-login',
@@ -24,11 +26,13 @@ export class LoginComponent implements OnInit, AfterViewChecked {
     private FB: FormBuilder,
     private _apiService: AuthService,
     private _sharedService: SharedService,
-    private _cookieService: AppCookieService
+    private _cookieService: AppCookieService,
+    private _storageService: AppStorageService
   ) { }
 
   ngOnInit(): void {
     this.initLoginForm();
+    this.checkRememberMe();
   }
 
   ngAfterViewChecked(): void {
@@ -82,7 +86,13 @@ export class LoginComponent implements OnInit, AfterViewChecked {
     this._apiService.userSignIn(_payload).subscribe({
       next: (_res: any) => {
         console.log(_res);
-        this._cookieService.setUserToken(_res.token);
+
+        // Setup Remember Me Info
+        if (this.userSignInForm.value.rememberMe) {
+          this._cookieService.setRememberMeInfo(this.userSignInForm.value);
+        }
+
+        this._storageService.setUserToken(_res.token);
         this.loadCrntUserInfo();
       },
       error: (_err: any) => {
@@ -101,7 +111,7 @@ export class LoginComponent implements OnInit, AfterViewChecked {
     this._apiService.getCrntUserInfo().subscribe({
       next: (_res: any) => {
         console.log("User Info: ", _res);
-        this._cookieService.setUserInfo(_res);
+        this._storageService.setUserInfo(_res);
         setTimeout(() => {
           this._sharedService.hideProgress();
           this.router.navigate(['/dashboard']);
@@ -112,6 +122,14 @@ export class LoginComponent implements OnInit, AfterViewChecked {
         this._sharedService.hideProgress();
       }
     })
+  }
+
+  checkRememberMe = () => {
+    const _rememberInfo = this._cookieService.getRememberMeInfo();
+
+    if (_rememberInfo.rememberMe) {
+      this.userSignInForm.patchValue(_rememberInfo);
+    }
   }
 
 }
