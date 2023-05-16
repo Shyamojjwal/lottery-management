@@ -5,7 +5,7 @@ import { PurchaseService } from '../../services';
 import { checkFormValidation, makeAllFormArrayControlAsDirty, makeAllFormControlAsDirty } from '@app-shared/helper/shared-functions';
 import { purchaseValidationMsg } from '@app-shared/helper/validation-messages';
 
-import { faTrashAlt, faPlusCircle, faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
+import { faTrashAlt, faPlusCircle, faExclamationCircle, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { Observable, forkJoin } from 'rxjs';
 import { RaffleService } from '@app-modules/featured-pages/raffle-management/services';
 import { GroupService } from '@app-modules/featured-pages/group-management/services';
@@ -50,6 +50,7 @@ export class ModifyPurchaseComponent implements OnInit {
 
   public iconTrash: any = faTrashAlt;
   public iconAdd: any = faPlusCircle;
+  public iconSearch: any = faSearch;
   public iconExclamation: any = faExclamationCircle;
 
   private crntUserInfo: any = null;
@@ -95,7 +96,8 @@ export class ModifyPurchaseComponent implements OnInit {
 
     this.crntUserInfo = this._authService.getUser();
     console.log("crntUserInfo: ", this.crntUserInfo)
-    this.isNewEntry = this.router.url.includes('new-purchase');
+    this.isNewEntry = this.router.url.includes('purchase-management');
+    // this.isNewEntry = this.router.url.includes('new-purchase');
     this.itemId = this.activatedRoute.snapshot.params['itemId'] || null;
 
     this.initModifyForm();
@@ -183,6 +185,23 @@ export class ModifyPurchaseComponent implements OnInit {
     })
   }
 
+  searchItemMemo = () => {
+    const _prchDt: string = this.prch.value.prchDt;
+
+    console.log("searchItemMemo: ", _prchDt);
+
+    if (_prchDt && _prchDt != undefined && _prchDt != '') {
+      this._apiService.getItemInfoByDate(_prchDt).subscribe({
+        next: (_res: any) => {
+          console.log("searchItemMemo: ", _res);
+        },
+        error: (_err: any) => {
+          console.error("SearchItemMemo Err: ", _err)
+        }
+      })
+    }
+  }
+
   /*
     ----------------------------------------------------------------------
     =========== Initiate Form & it's form fields =======================
@@ -246,8 +265,8 @@ export class ModifyPurchaseComponent implements OnInit {
 
   removeItem = (_itemIndex: number) => {
     this.prchDtlsLst.removeAt(_itemIndex);
-    makeAllFormArrayControlAsDirty(this.prchDtlsLst);
-    this.validateItemForm();
+    // makeAllFormArrayControlAsDirty(this.prchDtlsLst);
+    // this.validateItemForm();
   }
 
   /*
@@ -342,7 +361,7 @@ export class ModifyPurchaseComponent implements OnInit {
 
   saveModificationForm = () => {
     this._sharedService.showProgress();
-    
+
     if (!this.itemModifyForm.valid) {
       makeAllFormControlAsDirty(this.prch);
       makeAllFormArrayControlAsDirty(this.prchDtlsLst);
@@ -351,7 +370,7 @@ export class ModifyPurchaseComponent implements OnInit {
       this._sharedService.hideProgress();
       return;
     }
-    
+
     this.isFormSubmitted = true;
 
     const _payload = { ...this.itemModifyForm.value };
@@ -374,7 +393,8 @@ export class ModifyPurchaseComponent implements OnInit {
       next: (_res: any) => {
         this._sharedService.hideProgress();
         console.log("Modify Raffle Success: ", _res);
-        this.router.navigate(['/purchase-management']);
+        // this.router.navigate(['/purchase-management']);
+        this.resetForm();
       },
       error: (_err: any) => {
         this._sharedService.hideProgress();
@@ -382,6 +402,19 @@ export class ModifyPurchaseComponent implements OnInit {
         this.isFormSubmitted = false;
       }
     })
+  }
+
+  resetForm = () => {
+    // do your code
+    this.validationMessages = {
+      prch: null,
+      prchDtlsLst: []
+    };
+
+    this.prch.reset();
+    this.itemModifyForm.controls.prchDtlsLst = this.FB.array([]);
+    
+    this.addNewItem();
   }
 
 }

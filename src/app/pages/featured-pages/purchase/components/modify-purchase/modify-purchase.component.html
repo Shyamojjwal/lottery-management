@@ -6,7 +6,7 @@
       *ngIf="!isNewEntry && !isModify">Modify</button>
     <button class="btn btn-success mr-4" *ngIf="isModify" (click)="saveModificationForm()"
       [attr.disabled]="isFormSubmitted ? true : null">Save</button>
-    <button class="btn btn-secondary" [routerLink]="['/purchase-management']"
+    <button class="btn btn-secondary" (click)="resetForm()"
       [attr.disabled]="isFormSubmitted ? true : null">Cancel</button>
   </div>
 </div>
@@ -73,7 +73,8 @@
                       <div class="form-group tooltip-cont"
                         [ngClass]="{'input-err': validationMessages?.prchDtlsLst[y]?.raffleId}">
                         <!-- <div class="form-group"> -->
-                        <select class="form-control" formControlName="raffleId" (change)="populateOtherRaffleInfo(y)" (blur)="validateArrayFieldOnBlur(y, 'raffleId')">
+                        <select class="form-control" formControlName="raffleId" (change)="populateOtherRaffleInfo(y)"
+                          (blur)="validateArrayFieldOnBlur(y, 'raffleId')">
                           <option value="" disabled>Select Raffle</option>
                           <ng-container *ngFor="let raffle of raffleListArray">
                             <option [value]="raffle.id">{{raffle.raffleName}}</option>
@@ -86,8 +87,11 @@
                       </div>
                     </td>
                     <td>
-                      <div class="form-group tooltip-cont" [ngClass]="{'input-err': validationMessages?.prchDtlsLst[y]?.draw}">
-                        <input class="form-control" formControlName="draw" (keyup)="inputOnlyInt($event, 'draw', true, y)" (blur)="validateArrayFieldOnBlur(y, 'draw')"/>
+                      <div class="form-group tooltip-cont"
+                        [ngClass]="{'input-err': validationMessages?.prchDtlsLst[y]?.draw}">
+                        <input class="form-control" formControlName="draw"
+                          (keyup)="inputOnlyInt($event, 'draw', true, y)"
+                          (blur)="validateArrayFieldOnBlur(y, 'draw')" />
 
                         <!-- <small class="form-text err-msg">{{validationMessages?.prchDtlsLst[y]?.draw}}</small> -->
 
@@ -96,9 +100,11 @@
                       </div>
                     </td>
                     <td>
-                      <div class="form-group tooltip-cont" [ngClass]="{'input-err': validationMessages?.prchDtlsLst[y]?.drawDate}">
+                      <div class="form-group tooltip-cont"
+                        [ngClass]="{'input-err': validationMessages?.prchDtlsLst[y]?.drawDate}">
                         <input type="text" class="form-control input-readOnly" [matDatepicker]="drawDatePicker"
-                          formControlName="drawDate" readOnly (click)="drawDatePicker.open();" (blur)="validateArrayFieldOnBlur(y, 'drawDate')"/>
+                          formControlName="drawDate" readOnly (click)="drawDatePicker.open();"
+                          (blur)="validateArrayFieldOnBlur(y, 'drawDate')" />
                         <mat-datepicker #drawDatePicker (closed)="validateObjectFieldOnBlur('prchDt')"></mat-datepicker>
 
                         <!-- <small class="form-text err-msg">{{validationMessages?.prchDtlsLst[y]?.drawDate}}</small> -->
@@ -108,8 +114,11 @@
                       </div>
                     </td>
                     <td>
-                      <div class="form-group tooltip-cont" [ngClass]="{'input-err': validationMessages?.prchDtlsLst[y]?.rflStrFrom}">
-                        <input class="form-control" formControlName="rflStrFrom" (keyup)="inputOnlyInt($event, 'rflStrFrom', true, y)" (blur)="validateArrayFieldOnBlur(y, 'rflStrFrom')"/>
+                      <div class="form-group tooltip-cont"
+                        [ngClass]="{'input-err': validationMessages?.prchDtlsLst[y]?.rflStrFrom}">
+                        <input class="form-control" formControlName="rflStrFrom"
+                          (keyup)="inputOnlyInt($event, 'rflStrFrom', true, y)"
+                          (blur)="validateArrayFieldOnBlur(y, 'rflStrFrom')" />
 
                         <!-- <small class="form-text err-msg">{{validationMessages?.prchDtlsLst[y]?.rflStrFrom}}</small> -->
 
@@ -118,8 +127,11 @@
                       </div>
                     </td>
                     <td>
-                      <div class="form-group tooltip-cont" [ngClass]="{'input-err': validationMessages?.prchDtlsLst[y]?.rflEndTo}">
-                        <input class="form-control" formControlName="rflEndTo" (keyup)="inputOnlyInt($event, 'rflEndTo', true, y)" (blur)="validateArrayFieldOnBlur(y, 'rflEndTo')"/>
+                      <div class="form-group tooltip-cont"
+                        [ngClass]="{'input-err': validationMessages?.prchDtlsLst[y]?.rflEndTo}">
+                        <input class="form-control" formControlName="rflEndTo"
+                          (keyup)="inputOnlyInt($event, 'rflEndTo', true, y)"
+                          (blur)="validateArrayFieldOnBlur(y, 'rflEndTo')" />
 
                         <!-- <small class="form-text err-msg">{{validationMessages?.prchDtlsLst[y]?.rflEndTo}}</small> -->
 
@@ -128,8 +140,10 @@
                       </div>
                     </td>
                     <td>
-                      <div class="form-group tooltip-cont" [ngClass]="{'input-err': validationMessages?.prchDtlsLst[y]?.grpId}">
-                        <select class="form-control" formControlName="grpId" (blur)="validateArrayFieldOnBlur(y, 'grpId')">
+                      <div class="form-group tooltip-cont"
+                        [ngClass]="{'input-err': validationMessages?.prchDtlsLst[y]?.grpId}">
+                        <select class="form-control" formControlName="grpId"
+                          (blur)="validateArrayFieldOnBlur(y, 'grpId')">
                           <option value="" disabled>Select Group</option>
                           <ng-container *ngFor="let _grp of grpListArray">
                             <option [value]="_grp.groupId">{{_grp.groupName}}</option>
@@ -143,8 +157,10 @@
                       </div>
                     </td>
                     <td>
-                      <div class="form-group tooltip-cont" [ngClass]="{'input-err': validationMessages?.prchDtlsLst[y]?.qty}">
-                        <input class="form-control" formControlName="qty" (keyup)="inputOnlyInt($event, 'qty', true, y)" (blur)="validateArrayFieldOnBlur(y, 'qty')"/>
+                      <div class="form-group tooltip-cont"
+                        [ngClass]="{'input-err': validationMessages?.prchDtlsLst[y]?.qty}">
+                        <input class="form-control" formControlName="qty" (keyup)="inputOnlyInt($event, 'qty', true, y)"
+                          (blur)="validateArrayFieldOnBlur(y, 'qty')" />
 
                         <!-- <small class="form-text err-msg">{{validationMessages?.prchDtlsLst[y]?.qty}}</small> -->
 
@@ -153,8 +169,11 @@
                       </div>
                     </td>
                     <td>
-                      <div class="form-group tooltip-cont" [ngClass]="{'input-err': validationMessages?.prchDtlsLst[y]?.rate}">
-                        <input class="form-control" formControlName="rate" (keyup)="inputOnlyInt($event, 'rate', true, y)" (blur)="validateArrayFieldOnBlur(y, 'rate')"/>
+                      <div class="form-group tooltip-cont"
+                        [ngClass]="{'input-err': validationMessages?.prchDtlsLst[y]?.rate}">
+                        <input class="form-control" formControlName="rate"
+                          (keyup)="inputOnlyInt($event, 'rate', true, y)"
+                          (blur)="validateArrayFieldOnBlur(y, 'rate')" />
 
                         <!-- <small class="form-text err-msg">{{validationMessages?.prchDtlsLst[y]?.rate}}</small> -->
 
@@ -251,6 +270,6 @@
     *ngIf="!isNewEntry && !isModify">Modify</button>
   <button class="btn btn-success mr-4" *ngIf="isModify" (click)="saveModificationForm()"
     [attr.disabled]="isFormSubmitted ? true : null">Save</button>
-  <button class="btn btn-secondary" [routerLink]="['/purchase-management']"
+  <button class="btn btn-secondary" (click)="resetForm()"
     [attr.disabled]="isFormSubmitted ? true : null">Cancel</button>
 </div>

@@ -44,15 +44,10 @@ export class LoginComponent implements OnInit, AfterViewChecked {
       userPass: ['', [Validators.required, noWhitespaceValidator]]
     })
   }
+
   get g() {
     return this.userSignInForm.controls;
-  }
-
-  // public noWhitespaceValidator = (control: FormControl) => {
-  //   const isWhitespace = (control.value || '').trim().length === 0;
-  //   const isValid = !isWhitespace;
-  //   return isValid ? null : { required: true };
-  // };
+  };
 
   trimAndValidateUserForm = (_field: string) => {
     this.userSignInForm.get(_field).setValue(this.userSignInForm.get(_field).value.trim());

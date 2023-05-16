@@ -121,8 +121,8 @@ body.sidebar-hidden {
       &::before {
         content: '';
         position: absolute;
-        display: block;    
-        width: 0px;        
+        display: block;
+        width: 0px;
         left: auto;
         right: 0;
         bottom: 4px;
@@ -165,7 +165,7 @@ body.sidebar-hidden {
     width: 200px !important;
   }
 
-  tbody > tr > td .form-group {
+  tbody>tr>td .form-group {
     margin-bottom: 0 !important;
   }
 
@@ -235,24 +235,36 @@ body {
 }
 
 .input-group {
-  .input-group-append.input-grp-ico {
-    background-color: #f8f9ff;
-    border: 1px solid #d1d2db;
-    border-radius: 0 0.29rem 0.29rem 0;
-
-    .time-pick-ico {
-      width: 40px;
-      height: 100%;
+  .input-group-append {
+    &.input-ico {
+      background-color: #f8f9ff;
+      border: 1px solid #d1d2db;
+      border-radius: 0 0.29rem 0.29rem 0;
+      width: 32px;
       display: flex;
-      align-items: center;
       justify-content: center;
+      align-items: center;
+    }
 
-      i {
-        font-weight: 600;
-        width: 24px;
-        height: 24px;
-        font-size: 1.425rem;
-        transition: all 0.2s ease-in-out;
+    &.input-grp-ico {
+      background-color: #f8f9ff;
+      border: 1px solid #d1d2db;
+      border-radius: 0 0.29rem 0.29rem 0;
+
+      .time-pick-ico {
+        width: 40px;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        i {
+          font-weight: 600;
+          width: 24px;
+          height: 24px;
+          font-size: 1.425rem;
+          transition: all 0.2s ease-in-out;
+        }
       }
     }
   }

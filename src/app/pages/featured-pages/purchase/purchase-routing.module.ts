@@ -5,7 +5,8 @@ import { ModifyPurchaseComponent, PurchaseListComponent } from './components';
 const routes: Routes = [
   {
     path: "",
-    component: PurchaseListComponent
+    // component: PurchaseListComponent
+    component: ModifyPurchaseComponent
   },
   {
     path: "new-purchase",

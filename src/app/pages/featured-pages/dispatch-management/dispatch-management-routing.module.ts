@@ -5,7 +5,8 @@ import { DispatchListComponent, ModifyDispatchComponent } from './components';
 const routes: Routes = [
   {
     path: "",
-    component: DispatchListComponent
+    // component: DispatchListComponent
+    component: ModifyDispatchComponent
   },
   {
     path: "new-dispatch",

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { faExclamationCircle, faPlusCircle, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { faExclamationCircle, faPlusCircle, faSearch, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { DispatchService } from '../../services';
 import { RaffleService } from '@app-modules/featured-pages/raffle-management/services';
 import { GroupService } from '@app-modules/featured-pages/group-management/services';
@@ -21,6 +21,7 @@ export class ModifyDispatchComponent implements OnInit {
 
   public iconTrash: any = faTrashAlt;
   public iconAdd: any = faPlusCircle;
+  public iconSearch: any = faSearch;
   public iconExclamation: any = faExclamationCircle;
 
   private crntUserInfo: any = null;
@@ -63,7 +64,8 @@ export class ModifyDispatchComponent implements OnInit {
   ngOnInit(): void {
     this.crntUserInfo = this._authService.getUser();
     
-    this.isNewEntry = this.router.url.includes('new-dispatch');
+    this.isNewEntry = this.router.url.includes('dispatch-management');
+    // this.isNewEntry = this.router.url.includes('new-dispatch');
     this.itemId = this.activatedRoute.snapshot.params['itemId'] || null;
 
     this.initModifyForm();
@@ -149,6 +151,23 @@ export class ModifyDispatchComponent implements OnInit {
     })
   }
 
+  searchItemMemo = () => {
+    const _dsphDt: string = this.dsph.value.dsphDt;
+    
+    console.log("searchItemMemo: ", _dsphDt);
+
+    if(_dsphDt && _dsphDt != undefined && _dsphDt != '') {
+      this._apiService.getItemInfoByDate(_dsphDt).subscribe({
+        next: (_res:any) => {
+          console.log("searchItemMemo: ", _res);
+        },
+        error: (_err:any) => {
+          console.error("SearchItemMemo Err: ", _err)
+        }
+      })
+    }
+  }
+
   /*
     ----------------------------------------------------------------------
     =========== Initiate Form & it's form fields =======================
@@ -212,8 +231,6 @@ export class ModifyDispatchComponent implements OnInit {
 
   removeItem = (_itemIndex: number) => {
     this.dsphDtlsLst.removeAt(_itemIndex);
-    makeAllFormArrayControlAsDirty(this.dsphDtlsLst);
-    this.validateItemForm();
   }
 
   /*
@@ -334,13 +351,27 @@ export class ModifyDispatchComponent implements OnInit {
     this._apiService.modifyItemInfo(_payload, this.isNewEntry).subscribe({
       next: (_res: any) => {
         console.log("Modify Raffle Success: ", _res);
-        this.router.navigate(['/dispatch-management']);
+        // this.router.navigate(['/dispatch-management']);
+        this.resetForm();
       },
       error: (_err: any) => {
         console.error("Modify Raffle Error: ", _err);
         this.isFormSubmitted = false;
       }
     })
+  }
+
+  resetForm = () => {
+    // do your functionality
+    this.validationMessages = {
+      dsph: null,
+      dsphDtlsLst: []
+    };
+
+    this.dsph.reset();
+    this.itemModifyForm.controls.dsphDtlsLst = this.FB.array([]);
+    
+    this.addNewItem();
   }
 
 }

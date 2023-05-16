@@ -10,12 +10,12 @@ export class DispatchService {
     private _apiService: ApiService
   ) { }
 
-  loadAllItems = () => {
-    return this._apiService.get("getAllRaffle");
-  }
-
   getItemInfo = (itemId: number | string) => {
     return this._apiService.get(`getPurchaseByPrchId?prchId=${itemId}`);
+  }
+  
+  getItemInfoByDate = (_date: string) => {
+    return this._apiService.get(`getPurchaseListBycurrentDate?prchDt=${_date}`);
   }
 
   modifyItemInfo = (_payload: any, isNewEntry: boolean = true) => {
