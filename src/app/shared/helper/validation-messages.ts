@@ -98,67 +98,31 @@ export const modifyRaffleValidationMsg = {
   }
 }
 
-export const purchaseValidationMsg = {
+export const itemObjectArrayFieldValidationMsg = {
 
-  prch: {
+  objFieldMsg: {
     memoNo: {
       required: `Memo Number can't be blank.`,
       whitespace: `Memo Number can't be blank.`
     },
     prchDt: {
-      required: `Purchase can't be blank.`,
-      whitespace: `Purchase can't be blank.`
-    }
-  },
-  prchDtlsLst: {
-    raffleId: {
-      required: `Raffle can't be blank.`,
-      whitespace: `Raffle can't be blank.`
-    },
-    draw: {
-      required: `Draw can't be blank.`,
-      whitespace: `Draw can't be blank.`
-    },
-    drawDate: {
-      required: `Draw Date can't be blank.`,
-      whitespace: `Draw Date can't be blank.`
-    },
-    rflStrFrom: {
-      required: `From can't be blank.`,
-      whitespace: `From can't be blank.`
-    },
-    rflEndTo: {
-      required: `To can't be blank.`,
-      whitespace: `To can't be blank.`
-    },
-    grpId: {
-      required: `Group can't be blank.`,
-      whitespace: `Group can't be blank.`
-    },
-    qty: {
-      required: `quantity can't be blank.`,
-      whitespace: `quantity can't be blank.`
-    },
-    rate: {
-      required: `Rate can't be blank.`,
-      whitespace: `Rate can't be blank.`
-    },
-  }
-}
-
-export const dispatchValidationMsg = {
-
-  dsph: {
-    memoNo: {
-      required: `Memo Number can't be blank.`,
-      whitespace: `Memo Number can't be blank.`
+      required: `Purchase Date can't be blank.`,
+      whitespace: `Purchase Date can't be blank.`
     },
     dsphDt: {
-      required: `Dispatch can't be blank.`,
-      whitespace: `Dispatch can't be blank.`
+      required: `Dispatch Date can't be blank.`,
+      whitespace: `Dispatch Date can't be blank.`
+    },
+    drwDateReturnDate: {
+      required: `Return Date can't be blank.`,
+      whitespace: `Return Date can't be blank.`
+    },
+    advReturnDate: {
+      required: `Return Date can't be blank.`,
+      whitespace: `Return Date can't be blank.`
     }
   },
-  dsphDtlsLst: {
+  arrayFieldMsg: {
     raffleId: {
       required: `Raffle can't be blank.`,
       whitespace: `Raffle can't be blank.`

@@ -10,12 +10,38 @@ import { AuthenticationService } from '@app-core/authentication';
 import * as moment from 'moment';
 import { checkFormValidation, makeAllFormArrayControlAsDirty, makeAllFormControlAsDirty } from '@app-shared/helper/shared-functions';
 import { Observable, forkJoin } from 'rxjs';
-import { dispatchValidationMsg } from '@app-shared/helper/validation-messages';
+import { itemObjectArrayFieldValidationMsg } from '@app-shared/helper/validation-messages';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
+
+export const MY_FORMATS = {
+  parse: {
+    dateInput: 'LL',
+  },
+  display: {
+    dateInput: 'LL',
+    monthYearLabel: 'MMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY',
+  },
+};
 
 @Component({
   selector: 'app-modify-dispatch',
   templateUrl: './modify-dispatch.component.html',
-  styleUrls: ['./modify-dispatch.component.scss']
+  styleUrls: ['./modify-dispatch.component.scss'],
+  providers: [
+    // `MomentDateAdapter` can be automatically provided by importing `MomentDateModule` in your
+    // application's root module. We provide it at the component level here, due to limitations of
+    // our example generation script.
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
+    },
+
+    { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
+  ],
 })
 export class ModifyDispatchComponent implements OnInit {
 
@@ -280,11 +306,11 @@ export class ModifyDispatchComponent implements OnInit {
   }
 
   validateItemForm = () => {
-    var _dsphError: any = checkFormValidation(this.dsph, dispatchValidationMsg.dsph);
+    var _dsphError: any = checkFormValidation(this.dsph, itemObjectArrayFieldValidationMsg.objFieldMsg);
     var _dsphListErr: Array<any> = [];
 
     for (const [_index, _form] of this.dsphDtlsLst.controls.entries()) {
-      const _listErr = checkFormValidation(this.dsphDtlsForm(_index), dispatchValidationMsg.dsphDtlsLst);
+      const _listErr = checkFormValidation(this.dsphDtlsForm(_index), itemObjectArrayFieldValidationMsg.arrayFieldMsg);
       _dsphListErr.push(_listErr);
     }
 

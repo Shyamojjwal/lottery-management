@@ -5,7 +5,8 @@ import { ListComponent, ModificationComponent } from './components';
 const routes: Routes = [
   {
     path: "",
-    component: ListComponent
+    // component: ListComponent
+    component: ModificationComponent
   },
   {
     path: "new-draw-date-return",

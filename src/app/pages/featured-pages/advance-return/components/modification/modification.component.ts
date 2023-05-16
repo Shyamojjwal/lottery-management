@@ -1,21 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PurchaseService } from '../../services';
-import { checkFormValidation, makeAllFormArrayControlAsDirty, makeAllFormControlAsDirty } from '@app-shared/helper/shared-functions';
-import { itemObjectArrayFieldValidationMsg } from '@app-shared/helper/validation-messages';
-
-import { faTrashAlt, faPlusCircle, faExclamationCircle, faSearch } from "@fortawesome/free-solid-svg-icons";
-import { Observable, forkJoin } from 'rxjs';
+import { faExclamationCircle, faPlusCircle, faSearch, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { RaffleService } from '@app-modules/featured-pages/raffle-management/services';
 import { GroupService } from '@app-modules/featured-pages/group-management/services';
 import { UserService } from '@app-modules/featured-pages/user-management/services';
-import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
-import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { AuthenticationService } from '@app-core/authentication';
 import * as moment from 'moment';
+import { checkFormValidation, makeAllFormArrayControlAsDirty, makeAllFormControlAsDirty } from '@app-shared/helper/shared-functions';
+import { Observable, forkJoin } from 'rxjs';
+import { itemObjectArrayFieldValidationMsg } from '@app-shared/helper/validation-messages';
+import { AdvanceReturnService } from '../../services';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { SharedService } from '@app-core/services';
-
 
 export const MY_FORMATS = {
   parse: {
@@ -30,9 +28,9 @@ export const MY_FORMATS = {
 };
 
 @Component({
-  selector: 'app-modify-purchase',
-  templateUrl: './modify-purchase.component.html',
-  styleUrls: ['./modify-purchase.component.scss'],
+  selector: 'app-modification',
+  templateUrl: './modification.component.html',
+  styleUrls: ['./modification.component.scss'],
   providers: [
     // `MomentDateAdapter` can be automatically provided by importing `MomentDateModule` in your
     // application's root module. We provide it at the component level here, due to limitations of
@@ -46,7 +44,7 @@ export const MY_FORMATS = {
     { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
   ],
 })
-export class ModifyPurchaseComponent implements OnInit {
+export class ModificationComponent implements OnInit {
 
   public iconTrash: any = faTrashAlt;
   public iconAdd: any = faPlusCircle;
@@ -62,8 +60,8 @@ export class ModifyPurchaseComponent implements OnInit {
 
   public itemModifyForm: FormGroup | any;
   public validationMessages: any = {
-    prch: null,
-    prchDtlsLst: []
+    objFieldErr: null,
+    arrFieldErr: []
   };
   public isFormSubmitted: boolean = false;
 
@@ -82,22 +80,22 @@ export class ModifyPurchaseComponent implements OnInit {
   constructor(
     private router: Router,
     private FB: FormBuilder,
-    private _apiService: PurchaseService,
-    private _raffleService: RaffleService,
     private _grpService: GroupService,
     private _userService: UserService,
-    private _authService: AuthenticationService,
+    private _raffleService: RaffleService,
     private _sharedService: SharedService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private _apiService: AdvanceReturnService,
+    private _authService: AuthenticationService,
   ) { }
 
   ngOnInit(): void {
     this._sharedService.showProgress();
 
     this.crntUserInfo = this._authService.getUser();
-    console.log("crntUserInfo: ", this.crntUserInfo)
-    this.isNewEntry = this.router.url.includes('purchase-management');
-    // this.isNewEntry = this.router.url.includes('new-purchase');
+    
+    this.isNewEntry = this.router.url.includes('advance-return-management');
+    // this.isNewEntry = this.router.url.includes('new-dispatch');
     this.itemId = this.activatedRoute.snapshot.params['itemId'] || null;
 
     this.initModifyForm();
@@ -175,31 +173,31 @@ export class ModifyPurchaseComponent implements OnInit {
   */
 
   loadItemInfo = () => {
-    this._apiService.getItemInfo(this.itemId).subscribe({
-      next: (_res: any) => {
-        console.log("Item Info: ", _res);
-      },
-      error: (_err: any) => {
-        console.log("Item Info Error: ", _err);
-      }
-    })
+    // this._apiService.getItemInfo(this.itemId).subscribe({
+    //   next: (_res: any) => {
+    //     console.log("Item Info: ", _res);
+    //   },
+    //   error: (_err: any) => {
+    //     console.log("Item Info Error: ", _err);
+    //   }
+    // })
   }
 
   searchItemMemo = () => {
-    const _prchDt: string = this.prch.value.prchDt;
+    // const _date: string = this.advanceReturn.value.advReturnDate;
+    
+    // console.log("searchItemMemo: ", _advReturnDate);
 
-    console.log("searchItemMemo: ", _prchDt);
-
-    if (_prchDt && _prchDt != undefined && _prchDt != '') {
-      this._apiService.getItemInfoByDate(_prchDt).subscribe({
-        next: (_res: any) => {
-          console.log("searchItemMemo: ", _res);
-        },
-        error: (_err: any) => {
-          console.error("SearchItemMemo Err: ", _err)
-        }
-      })
-    }
+    // if(_advReturnDate && _date != undefined && _date != '') {
+    //   this._apiService.getItemInfoByDate(_date).subscribe({
+    //     next: (_res:any) => {
+    //       console.log("searchItemMemo: ", _res);
+    //     },
+    //     error: (_err:any) => {
+    //       console.error("SearchItemMemo Err: ", _err)
+    //     }
+    //   })
+    // }
   }
 
   /*
@@ -211,26 +209,26 @@ export class ModifyPurchaseComponent implements OnInit {
   initModifyForm = () => {
     const _this = this;
     this.itemModifyForm = this.FB.group({
-      prch: _this.FB.group({
+      advanceReturn: _this.FB.group({
         memoNo: ['', [Validators.required]],
         userId: [_this.crntUserInfo.id, [Validators.required]],
-        prchDt: ['', [Validators.required]],
+        advReturnDate: ['', [Validators.required]],
       }),
-      prchDtlsLst: _this.FB.array([])
+      advanceReturnDetailsList: _this.FB.array([])
     });
     this.addNewItem();
   }
 
-  get prch() {
-    return this.itemModifyForm.get('prch') as FormGroup;
+  get advanceReturn() {
+    return this.itemModifyForm.get('advanceReturn') as FormGroup;
   }
 
-  get prchDtlsLst() {
-    return this.itemModifyForm.get('prchDtlsLst') as FormArray;
+  get advanceReturnDetailsList() {
+    return this.itemModifyForm.get('advanceReturnDetailsList') as FormArray;
   }
 
-  prchDtlsForm = (_index: any) => {
-    return this.prchDtlsLst.controls[_index] as FormGroup;
+  advanceReturnDtlsForm = (_index: any) => {
+    return this.advanceReturnDetailsList.controls[_index] as FormGroup;
   }
 
   addNewItemToList = () => {
@@ -245,7 +243,7 @@ export class ModifyPurchaseComponent implements OnInit {
       rate: ['', [Validators.required]]
     })
 
-    this.prchDtlsLst.push(_singleItemForm);
+    this.advanceReturnDetailsList.push(_singleItemForm);
   }
 
   /*
@@ -255,18 +253,16 @@ export class ModifyPurchaseComponent implements OnInit {
   */
 
   addNewItem = () => {
-    makeAllFormArrayControlAsDirty(this.prchDtlsLst);
+    makeAllFormArrayControlAsDirty(this.advanceReturnDetailsList);
     this.validateItemForm();
 
-    if (this.prchDtlsLst.valid) {
+    if (this.advanceReturnDetailsList.valid) {
       this.addNewItemToList();
     }
   }
 
   removeItem = (_itemIndex: number) => {
-    this.prchDtlsLst.removeAt(_itemIndex);
-    // makeAllFormArrayControlAsDirty(this.prchDtlsLst);
-    // this.validateItemForm();
+    this.advanceReturnDetailsList.removeAt(_itemIndex);
   }
 
   /*
@@ -278,10 +274,10 @@ export class ModifyPurchaseComponent implements OnInit {
   inputOnlyInt = (_inputEvent: Event | any, _field: string, _isArrayInput: boolean = false, _arrayIndex: number = 0) => {
     setTimeout(() => {
       var _val = (_inputEvent.target.value).match(/\d/g)?.join('') || '';
-      if (_isArrayInput) {
-        this.prchDtlsForm(_arrayIndex).get(_field)?.setValue(_val);
+      if(_isArrayInput) {
+        this.advanceReturnDtlsForm(_arrayIndex).get(_field)?.setValue(_val);
       } else {
-        this.prch.get(_field)?.setValue(_val);
+        this.advanceReturn.get(_field)?.setValue(_val);
       }
     }, 1000);
   }
@@ -293,39 +289,39 @@ export class ModifyPurchaseComponent implements OnInit {
   */
 
   validateObjectFieldOnBlur = (_field: string) => {
-    var _fieldValue = this.prch.get(_field)?.value;
+    var _fieldValue = this.advanceReturn.get(_field)?.value;
 
     if (typeof _fieldValue !== 'object' && !Array.isArray(_fieldValue)) {
-      _fieldValue = (this.prch.get(_field)?.value).toString().trim() || '';
-      this.prch.get(_field)?.setValue(_fieldValue.trim());
+      _fieldValue = (this.advanceReturn.get(_field)?.value).toString().trim() || '';
+      this.advanceReturn.get(_field)?.setValue(_fieldValue.trim());
     }
 
-    this.prch.get(_field)?.markAsDirty();
+    this.advanceReturn.get(_field)?.markAsDirty();
     this.validateItemForm();
   }
 
   validateArrayFieldOnBlur = (_arrayIndex: number, _field: string) => {
-    var _fieldValue = this.prchDtlsForm(_arrayIndex).get(_field)?.value;
+    var _fieldValue = this.advanceReturnDtlsForm(_arrayIndex).get(_field)?.value;
 
     if (typeof _fieldValue !== 'object' && !Array.isArray(_fieldValue)) {
       _fieldValue = _fieldValue.toString().trim() || '';
-      this.prchDtlsForm(_arrayIndex).get(_field)?.setValue(_fieldValue);
+      this.advanceReturnDtlsForm(_arrayIndex).get(_field)?.setValue(_fieldValue);
     }
-    this.prchDtlsForm(_arrayIndex).get(_field)?.markAsDirty();
+    this.advanceReturnDtlsForm(_arrayIndex).get(_field)?.markAsDirty();
     this.validateItemForm();
   }
 
   validateItemForm = () => {
-    var _prchError: any = checkFormValidation(this.prch, itemObjectArrayFieldValidationMsg.objFieldMsg);
-    var _prchListErr: Array<any> = [];
+    var _advanceReturnError: any = checkFormValidation(this.advanceReturn, itemObjectArrayFieldValidationMsg.objFieldMsg);
+    var _advanceReturnListErr: Array<any> = [];
 
-    for (const [_index, _form] of this.prchDtlsLst.controls.entries()) {
-      const _listErr = checkFormValidation(this.prchDtlsForm(_index), itemObjectArrayFieldValidationMsg.arrayFieldMsg);
-      _prchListErr.push(_listErr);
+    for (const [_index, _form] of this.advanceReturnDetailsList.controls.entries()) {
+      const _listErr = checkFormValidation(this.advanceReturnDtlsForm(_index), itemObjectArrayFieldValidationMsg.arrayFieldMsg);
+      _advanceReturnListErr.push(_listErr);
     }
 
-    this.validationMessages.prch = { ..._prchError };
-    this.validationMessages.prchDtlsLst = [..._prchListErr];
+    this.validationMessages.objFieldErr = { ..._advanceReturnError };
+    this.validationMessages.arrFieldErr = [..._advanceReturnListErr];
   };
 
   /*
@@ -337,17 +333,17 @@ export class ModifyPurchaseComponent implements OnInit {
   datePickerDateChange = (_event: any, _field: string, _fieldType: string = 'objectField', _arrayIndex: number = 0) => {
     console.log("datePickerDateChange: ", _event, _field, _fieldType, _arrayIndex);
     // if(_fieldType === 'objectField') {
-    // this.prch.get(_field)?.setValue()
+    // this.advanceReturn.get(_field)?.setValue()
     // }
   }
 
   populateOtherRaffleInfo = (_arrayIndex: number) => {
-    const _selectedObj = this.prchDtlsLst.controls[_arrayIndex];
+    const _selectedObj = this.advanceReturnDetailsList.controls[_arrayIndex];
     const _selectedRaffleId = _selectedObj.value.raffleId;
     const _raffleInfo = this.raffleListArray.find((x: any) => x.id == parseInt(_selectedRaffleId));
 
     if (_raffleInfo != undefined && moment(_raffleInfo.playDay, "YYYY-MM-DD").isValid()) {
-      this.prchDtlsLst.controls[_arrayIndex].patchValue({
+      this.advanceReturnDetailsList.controls[_arrayIndex].patchValue({
         drawDate: new Date(_raffleInfo.playDay)
       })
     }
@@ -363,21 +359,19 @@ export class ModifyPurchaseComponent implements OnInit {
     this._sharedService.showProgress();
 
     if (!this.itemModifyForm.valid) {
-      makeAllFormControlAsDirty(this.prch);
-      makeAllFormArrayControlAsDirty(this.prchDtlsLst);
+      makeAllFormControlAsDirty(this.advanceReturn);
+      makeAllFormArrayControlAsDirty(this.advanceReturnDetailsList);
       this.validateItemForm();
       this.isFormSubmitted = false;
       this._sharedService.hideProgress();
       return;
     }
 
-    this.isFormSubmitted = true;
-
     const _payload = { ...this.itemModifyForm.value };
 
-    _payload.prch.memoNo = parseInt(_payload.prch.memoNo);
-    _payload.prch.prchDt = moment(_payload.prch.prchDt).format("YYYY-MM-DD");
-    _payload.prchDtlsLst = _payload.prchDtlsLst.map((_x: any) => {
+    _payload.advanceReturn.memoNo = parseInt(_payload.advanceReturn.memoNo);
+    _payload.advanceReturn.advReturnDate = moment(_payload.advanceReturn.advReturnDate).format("YYYY-MM-DD");
+    _payload.advanceReturnDetailsList = _payload.advanceReturnDetailsList.map((_x: any) => {
       _x.qty = parseInt(_x.qty);
       _x.rate = parseInt(_x.rate);
       _x.draw = parseInt(_x.draw);
@@ -391,30 +385,29 @@ export class ModifyPurchaseComponent implements OnInit {
 
     this._apiService.modifyItemInfo(_payload, this.isNewEntry).subscribe({
       next: (_res: any) => {
-        this._sharedService.hideProgress();
         console.log("Modify Raffle Success: ", _res);
-        // this.router.navigate(['/purchase-management']);
+        // this.router.navigate(['/dispatch-management']);
         this.resetForm();
+        this._sharedService.hideProgress();
       },
       error: (_err: any) => {
-        this._sharedService.hideProgress();
         console.error("Modify Raffle Error: ", _err);
         this.isFormSubmitted = false;
+        this._sharedService.hideProgress();
       }
     })
   }
 
   resetForm = () => {
-    // do your code
+    // do your functionality
     this.validationMessages = {
-      prch: null,
-      prchDtlsLst: []
+      objFieldErr: null,
+      arrFieldErr: []
     };
 
-    this.prch.reset();
-    this.itemModifyForm.controls.prchDtlsLst = this.FB.array([]);
+    this.advanceReturn.reset();
+    this.itemModifyForm.controls.advanceReturnDetailsList = this.FB.array([]);
     
     this.addNewItem();
   }
-
 }

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { DrawDateReturnRoutingModule } from './draw-date-return-routing.module';
 import { ListComponent, ModificationComponent } from './components';
+import { SharedModule } from '@app-shared/shared.module';
 
 
 @NgModule({
@@ -12,6 +13,7 @@ import { ListComponent, ModificationComponent } from './components';
   ],
   imports: [
     CommonModule,
+    SharedModule,
     DrawDateReturnRoutingModule
   ]
 })

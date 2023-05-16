@@ -197,6 +197,18 @@ body.sidebar-hidden {
   }
 }
 
+.table-responsive {
+  table.table {
+    thead>tr>th {
+      width: 200px !important;
+
+      &.sl-count, &.btn-cont {
+        width: 40px !important;
+      }
+    }
+  }
+}
+
 // Form input & title css
 .form-section {
   padding-bottom: 10px;

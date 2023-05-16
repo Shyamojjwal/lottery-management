@@ -1,5 +1,5 @@
 <div class="page-title pb-3">
-  <h3 class="d-inline-block">Draw Date Return Management</h3>
+  <h3 class="d-inline-block">Advance Return Management</h3>
   <div class="btn-group-v2 float-right">
     <button class="btn btn-light mr-4" (click)="continueInfoModification()"
       *ngIf="!isNewEntry && !isModify">Modify</button>
@@ -15,24 +15,24 @@
     <div class="row">
       <div class="col-md-8 col-xs-12">
 
-        <h5 class="form-section-title mb-3">Basic Information</h5>
+        <h5 class="form-section-title mb-3">Purchase Information</h5>
 
-        <ng-container formGroupName="drawDateReturn">
+        <ng-container formGroupName="advanceReturn">
           <div class="row">
             <div class="col-md-6 form-group">
               <label>Memo No.</label>
               <input type="text" placeholder="Memo No" class="form-control"
                 [ngClass]="{'input-readOnly': !(isInputReadOnly || isPreview)}" formControlName="memoNo"
-                (focusout)="validateObjectFieldOnBlur('memoNo')" (keyup)="inputOnlyInt($event, 'memoNo')"/>
+                (focusout)="validateObjectFieldOnBlur('memoNo')" (keyup)="inputOnlyInt($event, 'memoNo')" />
               <small class="form-text err-msg">{{validationMessages?.objFieldErr?.memoNo}}</small>
             </div>
             <div class="col-md-6 form-group">
               <label>Advance Return Date</label>
               <input type="text" placeholder="Return Date" class="form-control" [matDatepicker]="datePicker"
-                [ngClass]="{'input-readOnly': !(isInputReadOnly || isPreview)}" formControlName="drwDateReturnDate" readOnly
-                (click)="datePicker.open();"/>
-              <mat-datepicker #datePicker (closed)="validateObjectFieldOnBlur('drwDateReturnDate')"></mat-datepicker>
-              <small class="form-text err-msg">{{validationMessages?.objFieldErr?.drwDateReturnDate}}</small>
+                [ngClass]="{'input-readOnly': !(isInputReadOnly || isPreview)}" formControlName="advReturnDate" readOnly
+                (click)="datePicker.open();" />
+              <mat-datepicker #datePicker (closed)="validateObjectFieldOnBlur('advReturnDate')"></mat-datepicker>
+              <small class="form-text err-msg">{{validationMessages?.objFieldErr?.advReturnDate}}</small>
             </div>
           </div>
         </ng-container>
@@ -43,8 +43,8 @@
       <div class="col-md-12">
         <h5 class="form-section-title mb-3">All Item Information</h5>
 
-        <ng-container formArrayName="drawDateReturnDetails">
-          <div class="table-responsive" [ngClass]="{'item-rmv-btn': (drawDateReturnDetails.controls.length > 1)}">
+        <ng-container formArrayName="advanceReturnDetailsList">
+          <div class="table-responsive" [ngClass]="{'item-rmv-btn': (advanceReturnDetailsList.controls.length > 1)}">
             <table class="table">
               <thead>
                 <tr>
@@ -57,11 +57,11 @@
                   <th>Grp</th>
                   <th>Qty</th>
                   <th>Rate</th>
-                  <th *ngIf="drawDateReturnDetails.controls.length > 1" class="btn-cont">---</th>
+                  <th *ngIf="advanceReturnDetailsList.controls.length > 1" class="btn-cont">---</th>
                 </tr>
               </thead>
               <tbody>
-                <ng-container *ngFor="let _item of drawDateReturnDetails.controls; let y = index">
+                <ng-container *ngFor="let _item of advanceReturnDetailsList.controls; let y = index">
                   <tr [formGroupName]="y">
                     <td>
                       <div class="form-group">
@@ -180,7 +180,7 @@
                         <span class="err-tooltip-txt">{{validationMessages?.arrFieldErr[y]?.rate}}</span>
                       </div>
                     </td>
-                    <td *ngIf="drawDateReturnDetails.controls.length > 1">
+                    <td *ngIf="advanceReturnDetailsList.controls.length > 1">
                       <div class="icon-rmv" (click)="removeItem(y)"><fa-icon [icon]="iconTrash"></fa-icon></div>
                     </td>
                   </tr>

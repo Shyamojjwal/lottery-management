@@ -60,6 +60,10 @@ export class SidebarMenuService {
       "link": "/raffle-management"
     },
     {
+      "title": "Purchase & Dispatch",
+      "type": "header"
+    },
+    {
       "title": "Purchase Management",
       "type": "simple",
       "icon": "<i class=\"pe-7s-server\"></i>",
@@ -70,6 +74,22 @@ export class SidebarMenuService {
       "type": "simple",
       "icon": "<i class=\"pe-7s-server\"></i>",
       "link": "/dispatch-management"
+    },
+    {
+      "title": "Returns",
+      "type": "header"
+    },
+    {
+      "title": "Draw Date Return",
+      "type": "simple",
+      "icon": "<i class=\"pe-7s-server\"></i>",
+      "link": "/draw-date-return-management"
+    },
+    {
+      "title": "Advance Return",
+      "type": "simple",
+      "icon": "<i class=\"pe-7s-server\"></i>",
+      "link": "/advance-return-management"
     },
     // {
     //   "title": "User Management",

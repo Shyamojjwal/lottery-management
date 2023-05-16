@@ -9,31 +9,35 @@ const routes: Routes = [
   },
   {
     path: "dashboard",
-    loadChildren: () => import('@app-featured-modules/dashboard/dashboard.module').then(m=>m.DashboardModule)
+    loadChildren: () => import('@app-featured-modules/dashboard/dashboard.module').then(m => m.DashboardModule)
   },
   {
     path: "user-management",
-    loadChildren: () => import('@app-featured-modules/user-management/user-management.module').then(m=>m.UserManagementModule)
+    loadChildren: () => import('@app-featured-modules/user-management/user-management.module').then(m => m.UserManagementModule)
   },
   {
     path: "group-management",
-    loadChildren: () => import('@app-featured-modules/group-management/group-management.module').then(m=>m.GroupManagementModule)
+    loadChildren: () => import('@app-featured-modules/group-management/group-management.module').then(m => m.GroupManagementModule)
   },
   {
     path: "raffle-management",
-    loadChildren: () => import('@app-featured-modules/raffle-management/raffle-management.module').then(m=>m.RaffleManagementModule)
+    loadChildren: () => import('@app-featured-modules/raffle-management/raffle-management.module').then(m => m.RaffleManagementModule)
   },
   {
     path: "purchase-management",
-    loadChildren: () => import('@app-featured-modules/purchase/purchase.module').then(m=>m.PurchaseModule)
+    loadChildren: () => import('@app-featured-modules/purchase/purchase.module').then(m => m.PurchaseModule)
   },
   {
     path: "dispatch-management",
-    loadChildren: () => import('@app-featured-modules/dispatch-management/dispatch-management.module').then(m=>m.DispatchManagementModule)
+    loadChildren: () => import('@app-featured-modules/dispatch-management/dispatch-management.module').then(m => m.DispatchManagementModule)
   },
   {
-    path: "draw-date-returns-management",
-    loadChildren: () => import('@app-featured-modules/draw-date-return/draw-date-return.module').then(m=>m.DrawDateReturnModule)
+    path: "draw-date-return-management",
+    loadChildren: () => import('@app-featured-modules/draw-date-return/draw-date-return.module').then(m => m.DrawDateReturnModule)
+  },
+  {
+    path: "advance-return-management",
+    loadChildren: () => import('@app-featured-modules/advance-return/advance-return.module').then(m => m.AdvanceReturnModule)
   }
 ];
 
