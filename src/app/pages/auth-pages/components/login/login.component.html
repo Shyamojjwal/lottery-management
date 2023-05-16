@@ -1,30 +1,44 @@
-<section class="signin-sec">
-  <h2 class="form-title">Sign In</h2>
-  <form [formGroup]="userSignInForm" (ngSubmit)="doUserLogin()">
-    <div class="form-group">
-      <label for="userAuth">User Name</label>
-      <input
-        type="text"
-        class="form-control"
-        placeholder="User Name"
-        formControlName="userAuth"
-        [readOnly]="isFormReadOnly"
-        (focusout)="trimAndValidateUserForm('userAuth')"
-      />
-      <div class="error-cont">{{ validationMessages?.userAuth }}</div>
+<section class="auth-page-container">
+  <div class="row">
+    <div class="col-md-12">
+      <h2 class="form-title">Sign In</h2>
+      <form [formGroup]="userSignInForm" (ngSubmit)="doUserLogin()">
+        <div class="form-group">
+          <label for="userAuth">User Name</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="User Name"
+            formControlName="userAuth"
+            [readOnly]="isFormReadOnly"
+            (focusout)="trimAndValidateUserForm('userAuth')"
+          />
+          <div class="error-cont">{{ validationMessages?.userAuth }}</div>
+        </div>
+        <div class="form-group">
+          <label for="userAuth">Password</label>
+          <input
+            type="password"
+            class="form-control"
+            placeholder="Password"
+            formControlName="userPass"
+            [readOnly]="isFormReadOnly"
+            (focusout)="trimAndValidateUserForm('userPass')"
+          />
+          <div class="error-cont">{{ validationMessages?.userPass }}</div>
+        </div>
+        <div class="remember-forgot">
+          <div class="row">
+            <div class="col-md-6">
+              <p><mat-checkbox formControlName="rememberMe">Remember Me</mat-checkbox></p>
+            </div>
+            <div class="col-md-6">
+              <p>Forgot Password? <a [routerLink]="['/auth/forgot-password']">Click Here</a></p>
+            </div>
+          </div>
+        </div>
+        <button class="btn btn-outline-primary full-width" type="submit" [disabled]="isFormSubmitted">Sign In</button>
+      </form>
     </div>
-    <div class="form-group">
-      <label for="userAuth">Password</label>
-      <input
-        type="password"
-        class="form-control"
-        placeholder="Password"
-        formControlName="userPass"
-        [readOnly]="isFormReadOnly"
-        (focusout)="trimAndValidateUserForm('userPass')"
-      />
-      <div class="error-cont">{{ validationMessages?.userPass }}</div>
-    </div>
-    <button class="btn btn-outline-primary" type="submit" [disabled]="isFormSubmitted">Sign In</button>
-  </form>
+  </div>
 </section>

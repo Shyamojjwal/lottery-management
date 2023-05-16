@@ -70,6 +70,22 @@ body.sidebar-hidden {
   cursor: pointer;
 }
 
+.full-width {
+  width: 100% !important;
+}
+
+.auth-layout {
+  .remember-forgot {
+
+    a,
+    a:visited {
+      color: #1a237e;
+      font-weight: 500;
+      text-decoration: underline;
+    }
+  }
+}
+
 .app-content--inner__wrapper {
   .page-title {
     margin-bottom: 2rem;
@@ -202,7 +218,8 @@ body.sidebar-hidden {
     thead>tr>th {
       width: 200px !important;
 
-      &.sl-count, &.btn-cont {
+      &.sl-count,
+      &.btn-cont {
         width: 40px !important;
       }
     }

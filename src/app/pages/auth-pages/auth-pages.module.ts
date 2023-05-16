@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { AuthPagesRoutingModule } from './auth-pages-routing.module';
-import { LoginComponent, ResetPasswordComponent } from './components';
+import { LoginComponent, ResetPasswordComponent, ForgotPasswordComponent } from './components';
 import { SharedModule } from '@app-shared/shared.module';
 
 
@@ -10,6 +10,7 @@ import { SharedModule } from '@app-shared/shared.module';
   declarations: [
     LoginComponent,
     ResetPasswordComponent,
+    ForgotPasswordComponent,
   ],
   imports: [
     CommonModule,

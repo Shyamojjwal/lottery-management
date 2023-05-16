@@ -24,6 +24,8 @@ import { MatNativeDateModule } from "@angular/material/core";
 import { MatInputModule } from "@angular/material/input";
 import { ProgressBarComponent } from './components';
 import { CommonModule } from '@angular/common';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+
 
 const SHARED_COMPONETS = [
   ProgressBarComponent
@@ -38,6 +40,7 @@ const MODULES = [
   MatDatepickerModule,
   MatNativeDateModule,
   MatInputModule,
+  MatCheckboxModule,
 ]
 
 const PROVIDERS = [

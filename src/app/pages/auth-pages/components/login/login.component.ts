@@ -41,7 +41,8 @@ export class LoginComponent implements OnInit, AfterViewChecked {
     this.userSignInForm = this.FB.group({
       // userAuth: ['', [Validators.required, Validators.pattern(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/), this.noWhitespaceValidator]],
       userAuth: ['', [Validators.required, noWhitespaceValidator]],
-      userPass: ['', [Validators.required, noWhitespaceValidator]]
+      userPass: ['', [Validators.required, noWhitespaceValidator]],
+      rememberMe: [false]
     })
   }
 
