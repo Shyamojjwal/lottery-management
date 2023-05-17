@@ -12,6 +12,10 @@ const routes: Routes = [
     loadChildren: () => import('@app-featured-modules/dashboard/dashboard.module').then(m => m.DashboardModule)
   },
   {
+    path: "user-profile",
+    loadChildren: () => import('@app-featured-modules/user-profile/user-profile.module').then(m => m.UserProfileModule)
+  },
+  {
     path: "user-management",
     loadChildren: () => import('@app-featured-modules/user-management/user-management.module').then(m => m.UserManagementModule)
   },

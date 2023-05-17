@@ -8,6 +8,7 @@ import { UserService } from '../../services';
 import { IUser } from '@app-shared/models/user.model';
 import { PasswordValidators } from '@app-shared/helper/password-validator';
 import { SharedService } from '@app-core/services';
+import { NotifyService } from '@app-core/services/notify.service';
 
 
 
@@ -38,6 +39,7 @@ export class UserModificationComponent implements OnInit {
     private FB: FormBuilder,
     private apiService: UserService,
     private _sharedService: SharedService,
+    private _notifyService: NotifyService,
     private activatedRoute: ActivatedRoute
   ) { }
 
@@ -172,6 +174,11 @@ export class UserModificationComponent implements OnInit {
       next: (_res: any) => {
         console.error("Modify User Success: ", _res);
         this._sharedService.hideProgress();
+        if(this.isNewEntry) {
+          this._notifyService.success('User added successfully.');
+        } else {
+          this._notifyService.success('User Details has been updated Successfully.');
+        }
         this.router.navigate(['/user-management']);
       },
       error: (_err: any) => {

@@ -6,6 +6,7 @@ import { checkFormValidation, makeAllFormControlAsDirty, noWhitespaceValidator }
 import { modifyGroupValidationMsg } from '@app-shared/helper/validation-messages';
 import { appSettings } from '@app-core/config';
 import { SharedService } from '@app-core/services';
+import { NotifyService } from '@app-core/services/notify.service';
 
 @Component({
   selector: 'app-group-modification',
@@ -30,6 +31,7 @@ export class GroupModificationComponent implements OnInit {
     private router: Router,
     private FB: FormBuilder,
     private apiService: GroupService,
+    private _notifyService: NotifyService,
     private _sharedService: SharedService,
     private activatedRoute: ActivatedRoute
   ) { }
@@ -114,6 +116,11 @@ export class GroupModificationComponent implements OnInit {
       next: (_res: any) => {
         console.error("Modify Group Success: ", _res);
         this._sharedService.hideProgress();
+        if(this.isNewEntry) {
+          this._notifyService.success('Group added successfully.');
+        } else {
+          this._notifyService.success('Group Info has been updated Successfully.');
+        }
         this.router.navigate(['/group-management']);
       },
       error: (_err: any) => {

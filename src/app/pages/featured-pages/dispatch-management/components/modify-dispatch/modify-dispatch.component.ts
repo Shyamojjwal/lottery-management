@@ -13,6 +13,7 @@ import { Observable, forkJoin } from 'rxjs';
 import { itemObjectArrayFieldValidationMsg } from '@app-shared/helper/validation-messages';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
+import { NotifyService } from '@app-core/services/notify.service';
 
 export const MY_FORMATS = {
   parse: {
@@ -79,12 +80,13 @@ export class ModifyDispatchComponent implements OnInit {
   constructor(
     private router: Router,
     private FB: FormBuilder,
-    private _apiService: DispatchService,
-    private _raffleService: RaffleService,
     private _grpService: GroupService,
     private _userService: UserService,
+    private _apiService: DispatchService,
+    private _notifyService: NotifyService,
+    private _raffleService: RaffleService,
+    private activatedRoute: ActivatedRoute,
     private _authService: AuthenticationService,
-    private activatedRoute: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
@@ -377,7 +379,9 @@ export class ModifyDispatchComponent implements OnInit {
     this._apiService.modifyItemInfo(_payload, this.isNewEntry).subscribe({
       next: (_res: any) => {
         console.log("Modify Raffle Success: ", _res);
-        // this.router.navigate(['/dispatch-management']);
+        
+        this._notifyService.success('Dispatch Information has been submitted successfully.');
+
         this.resetForm();
       },
       error: (_err: any) => {

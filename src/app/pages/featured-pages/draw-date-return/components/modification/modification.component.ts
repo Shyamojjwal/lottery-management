@@ -14,6 +14,7 @@ import { itemObjectArrayFieldValidationMsg } from '@app-shared/helper/validation
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { SharedService } from '@app-core/services';
+import { NotifyService } from '@app-core/services/notify.service';
 
 export const MY_FORMATS = {
   parse: {
@@ -85,6 +86,7 @@ export class ModificationComponent implements OnInit {
     private _grpService: GroupService,
     private _userService: UserService,
     private _sharedService: SharedService,
+    private _notifyService: NotifyService,
     private activatedRoute: ActivatedRoute,
     private _authService: AuthenticationService,
   ) { }
@@ -386,7 +388,9 @@ export class ModificationComponent implements OnInit {
     this._apiService.modifyItemInfo(_payload, this.isNewEntry).subscribe({
       next: (_res: any) => {
         console.log("Modify Raffle Success: ", _res);
-        // this.router.navigate(['/dispatch-management']);
+        
+        this._notifyService.success('Draw Date Return Information has been submitted successfully.');
+        
         this.resetForm();
         this._sharedService.hideProgress();
       },

@@ -1,20 +1,20 @@
-import { AfterViewChecked, Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SharedService } from '@app-core/services';
 import { AppStorageService } from '@app-core/services/app-storage.service';
+import { NotifyService } from '@app-core/services/notify.service';
 import { AuthService } from '@app-modules/auth-pages/services';
 import { AppCookieService } from '@app-services/app-cookie.service';
 import { checkFormValidation, makeAllFormControlAsDirty, noWhitespaceValidator } from '@app-shared/helper/shared-functions';
 import { userSignInValidationMessage } from '@app-shared/helper/validation-messages';
-import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit, AfterViewChecked {
+export class LoginComponent implements OnInit {
 
   public userSignInForm: FormGroup | any;
   public validationMessages: any = null;
@@ -26,16 +26,15 @@ export class LoginComponent implements OnInit, AfterViewChecked {
     private FB: FormBuilder,
     private _apiService: AuthService,
     private _sharedService: SharedService,
+    private _notifyService: NotifyService,
     private _cookieService: AppCookieService,
-    private _storageService: AppStorageService
+    private _storageService: AppStorageService,
   ) { }
 
   ngOnInit(): void {
     this.initLoginForm();
     this.checkRememberMe();
-  }
 
-  ngAfterViewChecked(): void {
     setTimeout(() => {
       this.isFormReadOnly = false;
     }, 1000);
@@ -112,8 +111,9 @@ export class LoginComponent implements OnInit, AfterViewChecked {
       next: (_res: any) => {
         console.log("User Info: ", _res);
         this._storageService.setUserInfo(_res);
+        this._sharedService.hideProgress();
+        this._notifyService.success('You are successfully logged in. Please wait, we are redirecting you.')
         setTimeout(() => {
-          this._sharedService.hideProgress();
           this.router.navigate(['/dashboard']);
         }, 500);
       },

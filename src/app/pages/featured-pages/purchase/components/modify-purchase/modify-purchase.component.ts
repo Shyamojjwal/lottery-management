@@ -15,6 +15,7 @@ import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/mat
 import { AuthenticationService } from '@app-core/authentication';
 import * as moment from 'moment';
 import { SharedService } from '@app-core/services';
+import { NotifyService } from '@app-core/services/notify.service';
 
 
 export const MY_FORMATS = {
@@ -88,6 +89,7 @@ export class ModifyPurchaseComponent implements OnInit {
     private _userService: UserService,
     private _authService: AuthenticationService,
     private _sharedService: SharedService,
+    private _notifyService: NotifyService,
     private activatedRoute: ActivatedRoute
   ) { }
 
@@ -265,8 +267,6 @@ export class ModifyPurchaseComponent implements OnInit {
 
   removeItem = (_itemIndex: number) => {
     this.prchDtlsLst.removeAt(_itemIndex);
-    // makeAllFormArrayControlAsDirty(this.prchDtlsLst);
-    // this.validateItemForm();
   }
 
   /*
@@ -334,13 +334,6 @@ export class ModifyPurchaseComponent implements OnInit {
     ---------------------------------------------------------------------------
   */
 
-  datePickerDateChange = (_event: any, _field: string, _fieldType: string = 'objectField', _arrayIndex: number = 0) => {
-    console.log("datePickerDateChange: ", _event, _field, _fieldType, _arrayIndex);
-    // if(_fieldType === 'objectField') {
-    // this.prch.get(_field)?.setValue()
-    // }
-  }
-
   populateOtherRaffleInfo = (_arrayIndex: number) => {
     const _selectedObj = this.prchDtlsLst.controls[_arrayIndex];
     const _selectedRaffleId = _selectedObj.value.raffleId;
@@ -393,7 +386,9 @@ export class ModifyPurchaseComponent implements OnInit {
       next: (_res: any) => {
         this._sharedService.hideProgress();
         console.log("Modify Raffle Success: ", _res);
-        // this.router.navigate(['/purchase-management']);
+        
+        this._notifyService.success('Purchase Information has been submitted successfully.');
+        
         this.resetForm();
       },
       error: (_err: any) => {

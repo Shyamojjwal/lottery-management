@@ -8,6 +8,8 @@ import { modifyRaffleValidationMsg } from '@app-shared/helper/validation-message
 import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import * as moment from 'moment';
+import { NotifyService } from '@app-core/services/notify.service';
+import { SharedService } from '@app-core/services';
 
 
 export const MY_FORMATS = {
@@ -62,6 +64,8 @@ export class RaffleModificationComponent implements OnInit {
     private router: Router,
     private FB: FormBuilder,
     private apiService: RaffleService,
+    private _notifyService: NotifyService,
+    private _sharedService: SharedService,
     private activatedRoute: ActivatedRoute
   ) { }
 
@@ -71,8 +75,7 @@ export class RaffleModificationComponent implements OnInit {
 
   ngOnInit(): void {
 
-    console.log("crntDate: ", this.crntDate)
-    this.isNewEntry = this.router.url.includes('add-raffle');
+   this.isNewEntry = this.router.url.includes('add-raffle');
     this.itemId = this.activatedRoute.snapshot.params['itemId'] || null;
 
     this.initModifyForm();
@@ -81,6 +84,7 @@ export class RaffleModificationComponent implements OnInit {
       this.isPreview = false;
       this.isModify = true;
     } else {
+      this._sharedService.showProgress();
       this.isPreview = true;
       this.isModify = false;
       this.loadItemInfo();
@@ -95,9 +99,11 @@ export class RaffleModificationComponent implements OnInit {
     this.apiService.getItemInfoByCode(this.itemId).subscribe({
       next: (_res: any) => {
         console.log("Item Info: ", _res);
+        this._sharedService.hideProgress();
       },
       error: (_err: any) => {
         console.log("Item Info Error: ", _err);
+        this._sharedService.hideProgress();
       }
     })
   }
@@ -129,21 +135,6 @@ export class RaffleModificationComponent implements OnInit {
   setFieldTimeValue = (_inputEvent: any, _fieldName: string) => {
     this.itemModifyForm.get(_fieldName).setValue(_inputEvent);
     this.trimAndValidateUserForm(_fieldName);
-
-    // if (_fieldName == 'drawsTime') {
-    //   var _drawTime = moment(`${this.crntDate} ${_inputEvent}`, 'YYYY-MM-DD hh:mm a');
-
-    //   this._drawTime = {
-    //     drawTime: {
-    //       hour: parseInt(_drawTime.format("HH")),
-    //       minute: parseInt(_drawTime.format("mm")),
-    //       second: parseInt(_drawTime.format("ss")),
-    //       nano: parseInt(_drawTime.format("ssss"))
-    //     }
-    //   };
-
-    //   // console.log("_drawTime: ", this._drawTime);
-    // }
   }
 
   continueInfoModification = () => {
@@ -152,38 +143,49 @@ export class RaffleModificationComponent implements OnInit {
   }
 
   saveModificationForm = () => {
+    this._sharedService.showProgress();
+    
     if (!this.itemModifyForm.valid) {
       makeAllFormControlAsDirty(this.itemModifyForm);
       this.validateUserForm();
       this.isFormSubmitted = false;
+      this._sharedService.hideProgress();
       return;
     }
-
+    
     // this.isFormSubmitted = true;
     var _payload: any = { ...this.itemModifyForm.value, ...this._drawTime };
     if (!this.isNewEntry) {
       _payload.raffleCode = this.itemId;
     }
-
+    
     _payload.series = parseInt(_payload.series);
     _payload.playDay = moment(`${_payload.playDay}`).format("YYYY-MM-DD");
     _payload.playTime = moment(`${this.crntDate} ${_payload.playTime}`, 'YYYY-MM-DD hh:mm a').format("HH:mm");
     _payload.drawTime = moment(`${this.crntDate} ${_payload.drawTime}`, 'YYYY-MM-DD hh:mm a').format("HH:mm:ss");
-
+    
     delete _payload.drawsTime;
-
+    
     console.log("_drawTime: ", this._drawTime);
     console.log("Payload: ", _payload, this.itemModifyForm.value);
     // return;
-
+    
     this.apiService.modifyItemInfo(_payload, this.isNewEntry).subscribe({
       next: (_res: any) => {
         console.error("Modify Raffle Success: ", _res);
+        this._sharedService.hideProgress();
+        if(this.isNewEntry) {
+          this._notifyService.success('Raffle added successfully.');
+        } else {
+          this._notifyService.success('Raffle information has been updated Successfully.');
+        }
+        
         this.router.navigate(['/raffle-management']);
       },
       error: (_err: any) => {
         console.error("Modify Raffle Error: ", _err);
         this.isFormSubmitted = false;
+        this._sharedService.hideProgress();
       }
     })
   }
