@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NavigationStart, Router, Event } from '@angular/router';
 import { SharedService } from '@app-core/services';
 
 @Component({
@@ -17,16 +18,11 @@ export class ProgressBarComponent implements OnInit {
   private timingInterval: any;
 
   constructor(
+    private router: Router,
     private _sharedService: SharedService
   ) {
     this._sharedService.prgBarSubscriber$.subscribe((_isProgressShown: any) => {
       this.isApiProgessEnd = !_isProgressShown;
-
-      // if (_isProgressShown) {
-      //   this.totalApiCall += 1;
-      // } else if (!_isProgressShown && this.totalApiCall > 0) {
-      //   this.totalApiCall -= 1;
-      // }
       this.setProgressValue();
 
       console.log("prgBarSubscriber: ", _isProgressShown, this.totalApiCall)
@@ -37,7 +33,9 @@ export class ProgressBarComponent implements OnInit {
   }
 
   setProgressValue = () => {
-    if (!this.isApiProgessEnd) {
+    if (!this.isApiProgessEnd && this.progressbarValue == 0) {
+      this.progressbarValue = 10;
+      
       this.timingInterval = setInterval(() => {
         if (this.progressbarValue <= 25) {
           this.progressbarValue += 5;
@@ -48,7 +46,7 @@ export class ProgressBarComponent implements OnInit {
         } else if (this.progressbarValue <= 95) {
           this.progressbarValue += 0.05;
         }
-      }, 1000);
+      }, 500);
     } else {
       this.progressbarValue = 100;
       setTimeout(() => {
