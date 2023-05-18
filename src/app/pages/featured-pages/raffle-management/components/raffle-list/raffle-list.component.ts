@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { RaffleService } from '../../services';
 import { SharedService } from '@app-core/services';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-raffle-list',
@@ -23,16 +24,22 @@ export class RaffleListComponent implements OnInit {
 
   ngOnInit(): void {
     this._sharedService.showProgress();
-    
+
     this.loadItemList();
     this.initFilterList();
   }
-  
+
   loadItemList = () => {
     this.apiService.loadAllItems().subscribe({
       next: (_res: any) => {
         console.log("Response: ", _res);
-        this.allItemList = this.filterArrayList = [...(_res?.data?.raffles || [])];
+        this.allItemList = this.filterArrayList = [...(_res?.data?.raffles?.map((x: any) => {
+          var _playDateTime: any = x.playDay + " " + x.playTime;
+
+          x.playDay = !isNaN(Date.parse(x.playDay)) ? x.playDay : null;
+          x.playTime = !isNaN(Date.parse(_playDateTime)) ? x.playTime : null;
+          return x;
+        }) || [])];
         this.isApiInProgress = false;
         this._sharedService.hideProgress();
       },

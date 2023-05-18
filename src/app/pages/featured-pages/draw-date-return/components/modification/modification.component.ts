@@ -332,13 +332,6 @@ export class ModificationComponent implements OnInit {
     ---------------------------------------------------------------------------
   */
 
-  datePickerDateChange = (_event: any, _field: string, _fieldType: string = 'objectField', _arrayIndex: number = 0) => {
-    console.log("datePickerDateChange: ", _event, _field, _fieldType, _arrayIndex);
-    // if(_fieldType === 'objectField') {
-    // this.drawDateReturn.get(_field)?.setValue()
-    // }
-  }
-
   populateOtherRaffleInfo = (_arrayIndex: number) => {
     const _selectedObj = this.drawDateReturnDetails.controls[_arrayIndex];
     const _selectedRaffleId = _selectedObj.value.raffleId;
@@ -368,6 +361,8 @@ export class ModificationComponent implements OnInit {
       this._sharedService.hideProgress();
       return;
     }
+
+    this.isFormSubmitted = true;
 
     const _payload = { ...this.itemModifyForm.value };
 

@@ -1,1 +1,1 @@
-<div class="app-prg-bar" id="appPrgBar" [ngStyle]="{'width': progressbarValue+'%'}"></div>
+<div class="app-prg-bar" *ngIf="isProgressVisible" id="appPrgBar" [ngStyle]="{'width': progressbarValue+'%'}"></div>

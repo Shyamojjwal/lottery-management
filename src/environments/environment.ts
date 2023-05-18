@@ -5,5 +5,5 @@
 export const environment = {
   production: false,
   cryptoJSKey: 'ASDFG12345678@123ce4a9d9c',
-  baseUrl: 'https://enrolled-voices-black-degree.trycloudflare.com/'
+  baseUrl: 'https://ip-error-significance-accommodations.trycloudflare.com/'
 };

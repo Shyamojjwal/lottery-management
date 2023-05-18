@@ -48,7 +48,8 @@ export class AppCookieService {
   }
 
   getRememberMeInfo = () => {
-    var _rememberInfo = this._cookieService.get(this.userLoginRemember);
-    return JSON.parse(_rememberInfo);
+    var _rememberInfo = JSON.parse(this._cookieService.get(this.userLoginRemember)) || null;
+    
+    return typeof _rememberInfo == 'object' ? _rememberInfo : null;
   }
 }

@@ -112,7 +112,7 @@ export class LoginComponent implements OnInit {
         console.log("User Info: ", _res);
         this._storageService.setUserInfo(_res);
         this._sharedService.hideProgress();
-        this._notifyService.success('You are successfully logged in. Please wait, we are redirecting you.')
+        this._notifyService.success('You are successfully logged in.')
         setTimeout(() => {
           this.router.navigate(['/dashboard']);
         }, 500);
@@ -125,9 +125,10 @@ export class LoginComponent implements OnInit {
   }
 
   checkRememberMe = () => {
-    const _rememberInfo = this._cookieService.getRememberMeInfo();
+    const _rememberInfo:any = this._cookieService.getRememberMeInfo();
+    console.log("_rememberInfo: ", _rememberInfo)
 
-    if (_rememberInfo.rememberMe) {
+    if (_rememberInfo?.rememberMe) {
       this.userSignInForm.patchValue(_rememberInfo);
     }
   }

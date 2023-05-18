@@ -364,10 +364,11 @@ export class ModificationComponent implements OnInit {
       makeAllFormControlAsDirty(this.advanceReturn);
       makeAllFormArrayControlAsDirty(this.advanceReturnDetailsList);
       this.validateItemForm();
-      this.isFormSubmitted = false;
       this._sharedService.hideProgress();
       return;
     }
+    
+    this.isFormSubmitted = true;
 
     const _payload = { ...this.itemModifyForm.value };
 

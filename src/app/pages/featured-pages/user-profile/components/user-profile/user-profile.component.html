@@ -1,1 +1,110 @@
-<p>user-profile works!</p>
+<div class="page-title pb-3">
+  <h3 class="d-inline-block">User Profile</h3>
+</div>
+<!-- Form Section Start -->
+<div class="form-section">
+  <div class="row">
+    <div class="col-md-7 col-sm-12 border-right">
+      <form [formGroup]="userForm">
+        <div class="row">
+          <div class="col-md-12">
+
+            <h5 class="form-section-title mb-3">User Information</h5>
+
+            <div class="row">
+              <div class="col-md-6 form-group">
+                <label>User Name</label>
+                <input type="text" placeholder="User Name" class="form-control" formControlName="username"
+                  (focusout)="trimAndValidateUserForm('username')" [attr.disabled]="true" />
+                <small class="form-text text-muted err-msg">{{userInfoErrMsg?.username}}</small>
+              </div>
+              <div class="col-md-6 form-group">
+                <label>User Code</label>
+                <input type="text" placeholder="Generate User Code" class="form-control active-readOnly"
+                  formControlName="userCode" [attr.disabled]="true" />
+                <small class="form-text text-muted err-msg">{{userInfoErrMsg?.userCode}}</small>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 form-group">
+                <label>First Name</label>
+                <input type="text" placeholder="First Name" class="form-control" formControlName="firstName"
+                  (focusout)="trimAndValidateUserForm('firstName')" [attr.disabled]="true">
+                <small class="form-text text-muted err-msg">{{userInfoErrMsg?.firstName}}</small>
+              </div>
+              <div class="col-md-6 form-group">
+                <label>Last Name</label>
+                <input type="text" placeholder="Last Name" class="form-control" formControlName="lastName"
+                  (focusout)="trimAndValidateUserForm('lastName')" [attr.disabled]="true">
+                <small class="form-text text-muted err-msg">{{userInfoErrMsg?.lastName}}</small>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 form-group">
+                <label>Email Address</label>
+                <input type="text" placeholder="Email Address" class="form-control" formControlName="email"
+                  (focusout)="trimAndValidateUserForm('email')" [attr.disabled]="true" />
+                <small class="form-text text-muted err-msg">{{userInfoErrMsg?.email}}</small>
+              </div>
+              <div class="col-md-6 form-group">
+                <label>Phone Number</label>
+                <input type="text" placeholder="Phone Number" class="form-control" formControlName="phoneNumber"
+                  (focusout)="trimAndValidateUserForm('phoneNumber')" [attr.disabled]="true">
+                <small class="form-text text-muted err-msg">{{userInfoErrMsg?.phoneNumber}}</small>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 form-group">
+                <label>Category</label>
+                <select class="form-control" formControlName="userCategory"
+                  (focusout)="trimAndValidateUserForm('userCategory')" [attr.disabled]="true">
+                  <option value="">--- Select Category ---</option>
+                  <option *ngFor="let _cat of userCategoryList" [value]="_cat">{{_cat}}</option>
+                </select>
+                <small class="form-text text-muted err-msg">{{userInfoErrMsg?.userCategory}}</small>
+              </div>
+              <div class="col-md-6 form-group">
+                <label>Address</label>
+                <textarea placeholder="Address" class="form-control" formControlName="address"
+                  (focusout)="trimAndValidateUserForm('address')" col="2" [attr.disabled]="true"></textarea>
+                <small class="form-text text-muted err-msg">{{userInfoErrMsg?.address}}</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="col-md-5 col-sm-12">
+      <form [formGroup]="passwordForm" (ngSubmit)="modifyUserCredential()">
+        <h5 class="form-section-title mb-3">Change Password</h5>
+
+        <div class="row">
+          <div class="col-md-12 form-group">
+            <label>Old Password</label>
+            <input type="password" placeholder="Old Password" class="form-control" formControlName="oldPassword"
+              (focusout)="trimAndValidateUserCrtForm('oldPassword')">
+            <small class="form-text text-muted err-msg">{{userPasswordErrMsg?.oldPassword}}</small>
+          </div>
+          <div class="col-md-12 form-group">
+            <label>New Password</label>
+            <input type="password" placeholder="New Password" class="form-control" formControlName="newPassword"
+              (focusout)="trimAndValidateUserCrtForm('newPassword')">
+            <small class="form-text text-muted err-msg">{{userPasswordErrMsg?.newPassword}}</small>
+          </div>
+          <div class="col-md-12 form-group">
+            <label>Confirm Password</label>
+            <input type="password" placeholder="Confirm Password" class="form-control" formControlName="cnfPassword"
+              (focusout)="trimAndValidateUserCrtForm('cnfPassword')" />
+            <small class="form-text text-muted err-msg">{{userPasswordErrMsg?.cnfPassword}}</small>
+          </div>
+          <div class="col-md-12">
+            <div class="btn-sec-grp">
+              <button type="submit" class="btn btn-info" [disabled]="isPassFormSubmitted ? true : false">Change Password</button>
+              <button type="button" class="btn btn-dark" (click)="resetPasswordForm();" [attr.disabled]="isPassFormSubmitted ? true : false">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

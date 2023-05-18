@@ -8,6 +8,7 @@ import { checkFormValidation, makeAllFormControlAsDirty, noWhitespaceValidator }
 import { appSettings } from '@app-core/config';
 import { PasswordValidators } from '@app-shared/helper/password-validator';
 import { modifyUserProValidationMsg } from '@app-shared/helper/validation-messages';
+import { IUser } from '@app-shared/models/user.model';
 
 @Component({
   selector: 'app-user-profile',
@@ -24,6 +25,8 @@ export class UserProfileComponent implements OnInit {
   public passwordForm: FormGroup | any;
   public isPassFormSubmitted: boolean = false;
   public userPasswordErrMsg: any = null;
+
+  public userCategoryList: Array<any> = ['Stockiest', 'SubStockiest', 'Seller'];
 
   private crntUserInfo: any = null;
 
@@ -59,16 +62,13 @@ export class UserProfileComponent implements OnInit {
     });
 
     this.passwordForm = this.FB.group({
-      username: ['', [Validators.required]],
+      username: [''],
       oldPassword: ['', [Validators.required, noWhitespaceValidator]],
       newPassword: ['', [Validators.required, noWhitespaceValidator]],
-      cnfPassword: ['', [Validators.required]],
-    }, {
-      validator: PasswordValidators.MatchValidator(
-        'newPassword',
-        'cnfPassword'
-      )
-    })
+      cnfPassword: ['', [Validators.required]]
+    },{
+      validators: [PasswordValidators.MatchValidator('newPassword', 'cnfPassword')]
+    });
   }
 
   trimAndValidateUserForm = (_field: string) => {
@@ -99,14 +99,41 @@ export class UserProfileComponent implements OnInit {
     this._apiService.getCrntUserInfo().subscribe({
       next: (_res: any) => {
         console.log("Load Crnt User Info: ", _res);
+
+        this.crntUserInfo = { ..._res.data.user } as IUser
+
+        this.userForm.patchValue({
+          userCode: this.crntUserInfo.userCode,
+          username: this.crntUserInfo.username,
+          firstName: this.crntUserInfo.firstName,
+          lastName: this.crntUserInfo.lastName,
+          email: this.crntUserInfo.email,
+          phoneNumber: this.crntUserInfo.phoneNumber,
+          address: this.crntUserInfo.address
+        })
+
+        this.passwordForm.get("username").setValue(this.crntUserInfo.username);
+
         this._sharedService.hideProgress();
+
+        console.log("loadCrntUserInfo: ", this.passwordForm.value);
       },
       error: (_err: any) => {
         console.error("Load Crnt User Info Err: ", _err);
+        this._sharedService.hideProgress();
         this._notify.error("Unable to fetch the User information")
       }
     });
   }
+
+  /*
+    --------------------- Reset Form -------------
+  */
+
+    resetPasswordForm = () => {
+      this.userPasswordErrMsg = null;
+      this.passwordForm.reset();
+    }
 
   /*
     --------------------- Calling Web Services for update user info & password -------------
@@ -119,6 +146,7 @@ export class UserProfileComponent implements OnInit {
       makeAllFormControlAsDirty(this.passwordForm);
       this.validatePasswordForm()
       this._sharedService.hideProgress();
+      return;
     }
 
     this.isUserFormSubmitted = true;
@@ -139,26 +167,34 @@ export class UserProfileComponent implements OnInit {
     });
   }
 
-  modifyUserCredential = (_payload: any) => {
+  modifyUserCredential = () => {
     this._sharedService.showProgress();
 
     if (!this.passwordForm.valid) {
       makeAllFormControlAsDirty(this.passwordForm);
       this.validatePasswordForm()
       this._sharedService.hideProgress();
+      return;
     }
 
-    this.isUserFormSubmitted = true;
-    this._apiService.modifyUserCredential(this.passwordForm.value).subscribe({
+    this.isPassFormSubmitted = true;
+
+    var _payload:any = {...this.passwordForm.value};
+    delete _payload.cnfPassword;
+
+    this._apiService.modifyUserCredential(_payload).subscribe({
       next: (_res: any) => {
         this._sharedService.hideProgress();
         console.log("Password Changed: ", _res);
         this._notify.success("Pasword has been changed successfully.")
         this.passwordForm.reset();
+        this.isPassFormSubmitted = false;
       },
       error: (_err: any) => {
         console.log("Password Changed Error: ", _err)
         this._sharedService.hideProgress();
+        this.isPassFormSubmitted = false;
+        this.passwordForm.get('oldPassword').setErrors({wrongPass: true})
         this._notify.error("Something Errors! Please check your inputs.")
       }
     });
