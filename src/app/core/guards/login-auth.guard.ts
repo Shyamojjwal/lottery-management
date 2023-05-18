@@ -18,7 +18,8 @@ export class LoginAuthGuard implements CanActivate {
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     const isLoggedIn = this._authService.isAuthenticated();
     if (isLoggedIn) {
-      this._router.navigate(['/'])
+      // this._router.navigate(['/'])
+      this._router.navigate(['/user-management'])
       return false;
     }
     return true;

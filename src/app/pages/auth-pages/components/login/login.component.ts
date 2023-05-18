@@ -114,7 +114,8 @@ export class LoginComponent implements OnInit {
         this._sharedService.hideProgress();
         this._notifyService.success('You are successfully logged in.')
         setTimeout(() => {
-          this.router.navigate(['/dashboard']);
+          // this.router.navigate(['/dashboard']);
+          this.router.navigate(['/user-management']);
         }, 500);
       },
       error: (_err: any) => {
