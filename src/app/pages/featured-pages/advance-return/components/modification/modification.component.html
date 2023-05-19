@@ -13,26 +13,38 @@
 <div class="form-section">
   <form [formGroup]="itemModifyForm">
     <div class="row">
-      <div class="col-md-8 col-xs-12">
+      <div class="col-md-12 col-xs-12">
 
-        <h5 class="form-section-title mb-3">Purchase Information</h5>
+        <h5 class="form-section-title mb-3">Basic Information</h5>
 
         <ng-container formGroupName="advanceReturn">
           <div class="row">
-            <div class="col-md-6 form-group">
+            <div class="col-md-4 form-group">
               <label>Memo No.</label>
               <input type="text" placeholder="Memo No" class="form-control"
                 [ngClass]="{'input-readOnly': !(isInputReadOnly || isPreview)}" formControlName="memoNo"
                 (focusout)="validateObjectFieldOnBlur('memoNo')" (keyup)="inputOnlyInt($event, 'memoNo')" />
               <small class="form-text err-msg">{{validationMessages?.objFieldErr?.memoNo}}</small>
             </div>
-            <div class="col-md-6 form-group">
+            <div class="col-md-4 form-group">
               <label>Advance Return Date</label>
               <input type="text" placeholder="Return Date" class="form-control" [matDatepicker]="datePicker"
                 [ngClass]="{'input-readOnly': !(isInputReadOnly || isPreview)}" formControlName="advReturnDate" readOnly
                 (click)="datePicker.open();" />
               <mat-datepicker #datePicker (closed)="validateObjectFieldOnBlur('advReturnDate')"></mat-datepicker>
               <small class="form-text err-msg">{{validationMessages?.objFieldErr?.advReturnDate}}</small>
+            </div>
+            <div class="col-md-4 form-group">
+              <label>Select User</label>
+              <select class="form-control" formControlName="userId" (blur)="validateObjectFieldOnBlur('userId')"
+                [ngClass]="{'input-readOnly': !(isInputReadOnly || isPreview)}">
+                <option value="" disabled>Select User</option>
+                <ng-container *ngFor="let user of usersListArray">
+                  <option [value]="user.id">{{user.fullName | titlecase}}</option>
+                </ng-container>
+              </select>
+              <mat-datepicker #datePicker (closed)="validateObjectFieldOnBlur('advReturnDate')"></mat-datepicker>
+              <small class="form-text err-msg">{{validationMessages?.objFieldErr?.userId}}</small>
             </div>
           </div>
         </ng-container>

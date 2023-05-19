@@ -95,7 +95,7 @@ export class ModificationComponent implements OnInit {
     this._sharedService.showProgress();
 
     this.crntUserInfo = this._authService.getUser();
-    
+
     this.isNewEntry = this.router.url.includes('advance-return-management');
     // this.isNewEntry = this.router.url.includes('new-dispatch');
     this.itemId = this.activatedRoute.snapshot.params['itemId'] || null;
@@ -150,7 +150,22 @@ export class ModificationComponent implements OnInit {
         console.log("Raffle Res: ", _raffle);
         console.log("Group Res: ", _grp);
         console.groupEnd();
-        this.usersListArray = [...(_raffle?.data?.user || [])];
+        this.usersListArray = [...(_raffle?.data?.user.map((_u: any) => {
+          var _name: string = '';
+
+          if (_u?.firstName?.trim().length > 0) {
+            _name += _u?.firstName?.trim();
+          }
+
+          if (_u?.lastName?.trim().length > 0) {
+            if(_name.trim().length > 0){
+              _name += " " + _u?.lastName?.trim();
+            } else {
+              _name += _u?.lastName?.trim();
+            }
+          }
+          _u.fullName = _name;
+        }) || [])];
 
         this.raffleListArray = [...(_raffle?.data?.raffles || [])];
 
@@ -187,7 +202,7 @@ export class ModificationComponent implements OnInit {
 
   searchItemMemo = () => {
     // const _date: string = this.advanceReturn.value.advReturnDate;
-    
+
     // console.log("searchItemMemo: ", _advReturnDate);
 
     // if(_advReturnDate && _date != undefined && _date != '') {
@@ -213,7 +228,7 @@ export class ModificationComponent implements OnInit {
     this.itemModifyForm = this.FB.group({
       advanceReturn: _this.FB.group({
         memoNo: ['', [Validators.required]],
-        userId: [_this.crntUserInfo.id, [Validators.required]],
+        userId: ['', [Validators.required]],
         advReturnDate: ['', [Validators.required]],
       }),
       advanceReturnDetailsList: _this.FB.array([])
@@ -276,7 +291,7 @@ export class ModificationComponent implements OnInit {
   inputOnlyInt = (_inputEvent: Event | any, _field: string, _isArrayInput: boolean = false, _arrayIndex: number = 0) => {
     setTimeout(() => {
       var _val = (_inputEvent.target.value).match(/\d/g)?.join('') || '';
-      if(_isArrayInput) {
+      if (_isArrayInput) {
         this.advanceReturnDtlsForm(_arrayIndex).get(_field)?.setValue(_val);
       } else {
         this.advanceReturn.get(_field)?.setValue(_val);
@@ -332,13 +347,6 @@ export class ModificationComponent implements OnInit {
     ---------------------------------------------------------------------------
   */
 
-  datePickerDateChange = (_event: any, _field: string, _fieldType: string = 'objectField', _arrayIndex: number = 0) => {
-    console.log("datePickerDateChange: ", _event, _field, _fieldType, _arrayIndex);
-    // if(_fieldType === 'objectField') {
-    // this.advanceReturn.get(_field)?.setValue()
-    // }
-  }
-
   populateOtherRaffleInfo = (_arrayIndex: number) => {
     const _selectedObj = this.advanceReturnDetailsList.controls[_arrayIndex];
     const _selectedRaffleId = _selectedObj.value.raffleId;
@@ -367,12 +375,13 @@ export class ModificationComponent implements OnInit {
       this._sharedService.hideProgress();
       return;
     }
-    
+
     this.isFormSubmitted = true;
 
     const _payload = { ...this.itemModifyForm.value };
 
     _payload.advanceReturn.memoNo = parseInt(_payload.advanceReturn.memoNo);
+    _payload.advanceReturn.userId = parseInt(_payload.advanceReturn.userId);
     _payload.advanceReturn.advReturnDate = moment(_payload.advanceReturn.advReturnDate).format("YYYY-MM-DD");
     _payload.advanceReturnDetailsList = _payload.advanceReturnDetailsList.map((_x: any) => {
       _x.qty = parseInt(_x.qty);
@@ -386,15 +395,15 @@ export class ModificationComponent implements OnInit {
       return _x;
     })
 
-    this._apiService.modifyItemInfo(_payload, this.isNewEntry).subscribe({
+    this._apiService.modifyItemInfo(this.crntUserInfo.id, _payload, this.isNewEntry).subscribe({
       next: (_res: any) => {
-        console.log("Modify Raffle Success: ", _res);
-        this._notifyService.success('Dispatch Information has been submitted successfully.');
+        console.log("Advance Return Success: ", _res);
+        this._notifyService.success('Advance Return Information has been submitted successfully.');
         this.resetForm();
         this._sharedService.hideProgress();
       },
       error: (_err: any) => {
-        console.error("Modify Raffle Error: ", _err);
+        console.error("Advance Return Error: ", _err);
         this.isFormSubmitted = false;
         this._sharedService.hideProgress();
       }
@@ -410,7 +419,7 @@ export class ModificationComponent implements OnInit {
 
     this.advanceReturn.reset();
     this.itemModifyForm.controls.advanceReturnDetailsList = this.FB.array([]);
-    
+
     this.addNewItem();
   }
 }

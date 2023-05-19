@@ -174,6 +174,10 @@ export const itemObjectArrayFieldValidationMsg = {
       required: `Purchase Date can't be blank.`,
       whitespace: `Purchase Date can't be blank.`
     },
+    userId: {
+      required: `User can't be blank.`,
+      whitespace: `User can't be blank.`
+    },
     dsphDt: {
       required: `Dispatch Date can't be blank.`,
       whitespace: `Dispatch Date can't be blank.`
