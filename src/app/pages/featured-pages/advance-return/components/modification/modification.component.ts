@@ -150,7 +150,7 @@ export class ModificationComponent implements OnInit {
         console.log("Raffle Res: ", _raffle);
         console.log("Group Res: ", _grp);
         console.groupEnd();
-        this.usersListArray = [...(_raffle?.data?.user.map((_u: any) => {
+        this.usersListArray = [...(_users?.data?.user?.map((_u: any) => {
           var _name: string = '';
 
           if (_u?.firstName?.trim().length > 0) {
@@ -165,6 +165,7 @@ export class ModificationComponent implements OnInit {
             }
           }
           _u.fullName = _name;
+          return _u;
         }) || [])];
 
         this.raffleListArray = [...(_raffle?.data?.raffles || [])];

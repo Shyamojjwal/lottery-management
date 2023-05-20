@@ -189,6 +189,30 @@ export const itemObjectArrayFieldValidationMsg = {
     advReturnDate: {
       required: `Return Date can't be blank.`,
       whitespace: `Return Date can't be blank.`
+    },
+    schemeName: {
+      required: `Scheme Name can't be blank.`,
+      whitespace: `Scheme Name can't be blank.`
+    },
+    drwFrm: {
+      required: `Draw From can't be blank.`,
+      whitespace: `Draw From can't be blank.`
+    },
+    drwTo: {
+      required: `Draw To can't be blank.`,
+      whitespace: `Draw To can't be blank.`
+    },
+    series: {
+      required: `Series can't be blank.`,
+      whitespace: `Series can't be blank.`
+    },
+    state: {
+      required: `State can't be blank.`,
+      whitespace: `State can't be blank.`
+    },
+    dop: {
+      required: `Date of Purchase can't be blank.`,
+      whitespace: `Date of Purchase can't be blank.`
     }
   },
   arrayFieldMsg: {
@@ -223,6 +247,46 @@ export const itemObjectArrayFieldValidationMsg = {
     rate: {
       required: `Rate can't be blank.`,
       whitespace: `Rate can't be blank.`
+    },
+    rank: {
+      required: `Rank can't be blank.`,
+      whitespace: `Rank can't be blank.`
+    },
+    pfx: {
+      required: `PFX can't be blank.`,
+      whitespace: `PFX can't be blank.`
+    },
+    srs: {
+      required: `SRS can't be blank.`,
+      whitespace: `SRS can't be blank.`
+    },
+    numberOfPrize: {
+      required: `Number of Prize can't be blank.`,
+      whitespace: `Number of Prize can't be blank.`
+    },
+    przAmount: {
+      required: `Prize Amount can't be blank.`,
+      whitespace: `Prize Amount can't be blank.`
+    },
+    supTkt: {
+      required: `Super Ticket can't be blank.`,
+      whitespace: `Super Ticket can't be blank.`
+    },
+    splTkt: {
+      required: `Special Ticket can't be blank.`,
+      whitespace: `Special Ticket can't be blank.`
+    },
+    stkBon: {
+      required: `STK-BON can't be blank.`,
+      whitespace: `STK-BON can't be blank.`
+    },
+    tprz: {
+      required: `TPRZ can't be blank.`,
+      whitespace: `TPRZ can't be blank.`
+    },
+    nod: {
+      required: `NOD can't be blank.`,
+      whitespace: `NOD can't be blank.`
     },
   }
 }

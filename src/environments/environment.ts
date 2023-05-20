@@ -5,5 +5,5 @@
 export const environment = {
   production: false,
   cryptoJSKey: 'ASDFG12345678@123ce4a9d9c',
-  baseUrl: 'https://pleasure-book-vocal-ron.trycloudflare.com/'
+  baseUrl: 'https://moved-lemon-myspace-colon.trycloudflare.com/'
 };

@@ -152,7 +152,7 @@ export class ModifyPurchaseComponent implements OnInit {
         console.log("Raffle Res: ", _raffle);
         console.log("Group Res: ", _grp);
         console.groupEnd();
-        this.usersListArray = [...(_raffle?.data?.user || [])];
+        this.usersListArray = [...(_users?.data?.user || [])];
 
         this.raffleListArray = [...(_raffle?.data?.raffles || [])];
 
