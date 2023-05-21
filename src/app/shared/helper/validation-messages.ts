@@ -253,12 +253,12 @@ export const itemObjectArrayFieldValidationMsg = {
       whitespace: `Rank can't be blank.`
     },
     pfx: {
-      required: `PFX can't be blank.`,
-      whitespace: `PFX can't be blank.`
+      required: `Prefix can't be blank.`,
+      whitespace: `Prefix can't be blank.`
     },
     srs: {
-      required: `SRS can't be blank.`,
-      whitespace: `SRS can't be blank.`
+      required: `Series can't be blank.`,
+      whitespace: `Series can't be blank.`
     },
     numberOfPrize: {
       required: `Number of Prize can't be blank.`,
@@ -277,8 +277,8 @@ export const itemObjectArrayFieldValidationMsg = {
       whitespace: `Special Ticket can't be blank.`
     },
     stkBon: {
-      required: `STK-BON can't be blank.`,
-      whitespace: `STK-BON can't be blank.`
+      required: `Stock Bonus can't be blank.`,
+      whitespace: `Stock Bonus can't be blank.`
     },
     tprz: {
       required: `TPRZ can't be blank.`,
@@ -288,5 +288,13 @@ export const itemObjectArrayFieldValidationMsg = {
       required: `NOD can't be blank.`,
       whitespace: `NOD can't be blank.`
     },
+  }
+}
+
+export const resultUploadValidationMsg = {
+  file: {
+    required: `File can't be blank.`,
+    whitespace: `File can't be blank.`,
+    extension: `Please upload files having extensions <b>.kol</b> only`
   }
 }

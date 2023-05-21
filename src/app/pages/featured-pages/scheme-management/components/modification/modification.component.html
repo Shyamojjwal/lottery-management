@@ -1,1 +1,273 @@
-<p>modification works!</p>
+<div class="page-title pb-3">
+  <h3 class="d-inline-block" *ngIf="isNewEntry">Add New Scheme</h3>
+  <h3 class="d-inline-block" *ngIf="!isNewEntry">Modify Scheme</h3>
+  <div class="btn-group-v2 float-right">
+    <button class="btn btn-light mr-4" (click)="continueInfoModification()"
+      *ngIf="!isNewEntry && !isModify">Modify</button>
+    <button class="btn btn-success mr-4" *ngIf="isModify" (click)="saveModificationForm()"
+      [attr.disabled]="isFormSubmitted ? true : null">Save</button>
+    <button class="btn btn-secondary" (click)="resetForm()"
+      [attr.disabled]="isFormSubmitted ? true : null">Cancel</button>
+  </div>
+</div>
+<!-- Form Section Start -->
+<div class="form-section">
+  <form [formGroup]="itemModifyForm">
+    <div class="row">
+      <div class="col-md-12">
+
+        <h5 class="form-section-title mb-3">Basic Information</h5>
+
+        <ng-container formGroupName="scheme">
+          <div class="row">
+            <div class="col-md-4 col-sm-12 form-group">
+              <label>Scheme Name</label>
+              <input type="text" placeholder="Scheme Name" class="form-control"
+                [ngClass]="{'input-readOnly': !(isInputReadOnly || isPreview)}" formControlName="schemeName"
+                (focusout)="validateObjectFieldOnBlur('schemeName')" />
+              <small class="form-text err-msg">{{validationMessages?.scheme?.schemeName}}</small>
+            </div>
+            <div class="col-md-4 col-sm-12 form-group">
+              <label>Series</label>
+              <input type="text" placeholder="Series" class="form-control"
+                [ngClass]="{'input-readOnly': !(isInputReadOnly || isPreview)}" formControlName="series"
+                (focusout)="validateObjectFieldOnBlur('series')" (keyup)="inputOnlyInt($event, 'series')" />
+              <small class="form-text err-msg">{{validationMessages?.scheme?.series}}</small>
+            </div>
+            <div class="col-md-4 col-sm-12 form-group">
+              <label>Draw From</label>
+              <input type="text" placeholder="Draw From" class="form-control"
+                [ngClass]="{'input-readOnly': !(isInputReadOnly || isPreview)}" formControlName="drwFrm"
+                (focusout)="validateObjectFieldOnBlur('drwFrm')" (keyup)="inputOnlyInt($event, 'drwFrm')" />
+              <small class="form-text err-msg">{{validationMessages?.scheme?.drwFrm}}</small>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4 col-sm-12 form-group">
+              <label>Draw To</label>
+              <input type="text" placeholder="Draw To" class="form-control"
+                [ngClass]="{'input-readOnly': !(isInputReadOnly || isPreview)}" formControlName="drwTo"
+                (focusout)="validateObjectFieldOnBlur('drwTo')" (keyup)="inputOnlyInt($event, 'drwTo')" />
+              <small class="form-text err-msg">{{validationMessages?.scheme?.drwTo}}</small>
+            </div>
+            <div class="col-md-4 col-sm-12 form-group">
+              <label>State</label>
+              <input type="text" placeholder="State" class="form-control"
+                [ngClass]="{'input-readOnly': !(isInputReadOnly || isPreview)}" formControlName="state"
+                (focusout)="validateObjectFieldOnBlur('state')" />
+              <small class="form-text err-msg">{{validationMessages?.scheme?.state}}</small>
+            </div>
+            <div class="col-md-4 col-sm-12 form-group">
+              <label>Date of Purchase</label>
+              <input type="text" placeholder="Date of Purchase" class="form-control" [matDatepicker]="datePicker"
+                [ngClass]="{'input-readOnly': !(isInputReadOnly || isPreview)}" formControlName="dop" readOnly
+                (click)="datePicker.open();" />
+              <mat-datepicker #datePicker (closed)="validateObjectFieldOnBlur('dop')"></mat-datepicker>
+              <small class="form-text err-msg">{{validationMessages?.scheme?.dop}}</small>
+            </div>
+          </div>
+        </ng-container>
+
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <h5 class="form-section-title mb-3">Scheme Details List</h5>
+
+        <ng-container formArrayName="schemeDetailsList">
+          <div class="table-responsive" [ngClass]="{'item-rmv-btn': (schemeDetailsList.controls.length > 1)}">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th class="sl-count">Sl</th>
+                  <th>Raffel</th>
+                  <th>Rank</th>
+                  <th>Prefix</th>
+                  <th>Series</th>
+                  <th>Number Of Prize</th>
+                  <th>Prize Amount</th>
+                  <th>Super Ticket</th>
+                  <th>Special Ticket</th>
+                  <th>Stock Bonus</th>
+                  <th>TPRZ</th>
+                  <th>NOD</th>
+                  <th *ngIf="schemeDetailsList.controls.length > 1" class="btn-cont">---</th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container *ngFor="let _item of schemeDetailsList.controls; let y = index">
+                  <tr [formGroupName]="y">
+                    <td>
+                      <div class="form-group">
+                        <span>{{y + 1}}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="form-group tooltip-cont"
+                        [ngClass]="{'input-err': validationMessages?.schemeDetailsList[y]?.raffleId}">
+                        <!-- <div class="form-group"> -->
+                        <select class="form-control" formControlName="raffleId"
+                          (blur)="validateArrayFieldOnBlur(y, 'raffleId')">
+                          <option value="" disabled>Select Raffle</option>
+                          <ng-container *ngFor="let raffle of raffleListArray">
+                            <option [value]="raffle.id">{{raffle.raffleName}}</option>
+                          </ng-container>
+                        </select>
+                        <!-- <small class="form-text err-msg">{{validationMessages?.schemeDetailsList[y]?.raffleId}}</small> -->
+
+                        <span class="err-ico"><fa-icon [icon]="iconExclamation"></fa-icon></span>
+                        <span class="err-tooltip-txt">{{validationMessages?.schemeDetailsList[y]?.raffleId}}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="form-group tooltip-cont"
+                        [ngClass]="{'input-err': validationMessages?.schemeDetailsList[y]?.rank}">
+                        <input class="form-control" formControlName="rank"
+                          (keyup)="inputOnlyInt($event, 'rank', true, y)"
+                          (blur)="validateArrayFieldOnBlur(y, 'rank')" />
+
+                        <!-- <small class="form-text err-msg">{{validationMessages?.schemeDetailsList[y]?.rank}}</small> -->
+
+                        <span class="err-ico"><fa-icon [icon]="iconExclamation"></fa-icon></span>
+                        <span class="err-tooltip-txt">{{validationMessages?.schemeDetailsList[y]?.rank}}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="form-group tooltip-cont"
+                        [ngClass]="{'input-err': validationMessages?.schemeDetailsList[y]?.pfx}">
+                        <input class="form-control" formControlName="pfx" (blur)="validateArrayFieldOnBlur(y, 'pfx')" />
+
+                        <!-- <small class="form-text err-msg">{{validationMessages?.schemeDetailsList[y]?.pfx}}</small> -->
+
+                        <span class="err-ico"><fa-icon [icon]="iconExclamation"></fa-icon></span>
+                        <span class="err-tooltip-txt">{{validationMessages?.schemeDetailsList[y]?.pfx}}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="form-group tooltip-cont"
+                        [ngClass]="{'input-err': validationMessages?.schemeDetailsList[y]?.srs}">
+                        <input class="form-control" formControlName="srs" (keyup)="inputOnlyInt($event, 'srs', true, y)"
+                          (blur)="validateArrayFieldOnBlur(y, 'srs')" />
+
+                        <!-- <small class="form-text err-msg">{{validationMessages?.schemeDetailsList[y]?.srs}}</small> -->
+
+                        <span class="err-ico"><fa-icon [icon]="iconExclamation"></fa-icon></span>
+                        <span class="err-tooltip-txt">{{validationMessages?.schemeDetailsList[y]?.srs}}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="form-group tooltip-cont"
+                        [ngClass]="{'input-err': validationMessages?.schemeDetailsList[y]?.numberOfPrize}">
+                        <input class="form-control" formControlName="numberOfPrize"
+                          (keyup)="inputOnlyInt($event, 'numberOfPrize', true, y)"
+                          (blur)="validateArrayFieldOnBlur(y, 'numberOfPrize')" />
+
+                        <!-- <small class="form-text err-msg">{{validationMessages?.schemeDetailsList[y]?.numberOfPrize}}</small> -->
+
+                        <span class="err-ico"><fa-icon [icon]="iconExclamation"></fa-icon></span>
+                        <span class="err-tooltip-txt">{{validationMessages?.schemeDetailsList[y]?.numberOfPrize}}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="form-group tooltip-cont"
+                        [ngClass]="{'input-err': validationMessages?.schemeDetailsList[y]?.przAmount}">
+                        <input class="form-control" formControlName="przAmount"
+                          (keyup)="inputOnlyInt($event, 'przAmount', true, y)"
+                          (blur)="validateArrayFieldOnBlur(y, 'przAmount')" />
+
+                        <!-- <small class="form-text err-msg">{{validationMessages?.schemeDetailsList[y]?.przAmount}}</small> -->
+
+                        <span class="err-ico"><fa-icon [icon]="iconExclamation"></fa-icon></span>
+                        <span class="err-tooltip-txt">{{validationMessages?.schemeDetailsList[y]?.przAmount}}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="form-group tooltip-cont"
+                        [ngClass]="{'input-err': validationMessages?.schemeDetailsList[y]?.supTkt}">
+                        <input class="form-control" formControlName="supTkt"
+                          (keyup)="inputOnlyInt($event, 'supTkt', true, y)"
+                          (blur)="validateArrayFieldOnBlur(y, 'supTkt')" />
+
+                        <!-- <small class="form-text err-msg">{{validationMessages?.schemeDetailsList[y]?.supTkt}}</small> -->
+
+                        <span class="err-ico"><fa-icon [icon]="iconExclamation"></fa-icon></span>
+                        <span class="err-tooltip-txt">{{validationMessages?.schemeDetailsList[y]?.supTkt}}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="form-group tooltip-cont"
+                        [ngClass]="{'input-err': validationMessages?.schemeDetailsList[y]?.splTkt}">
+                        <input class="form-control" formControlName="splTkt"
+                          (keyup)="inputOnlyInt($event, 'splTkt', true, y)"
+                          (blur)="validateArrayFieldOnBlur(y, 'splTkt')" />
+
+                        <!-- <small class="form-text err-msg">{{validationMessages?.schemeDetailsList[y]?.splTkt}}</small> -->
+
+                        <span class="err-ico"><fa-icon [icon]="iconExclamation"></fa-icon></span>
+                        <span class="err-tooltip-txt">{{validationMessages?.schemeDetailsList[y]?.splTkt}}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="form-group tooltip-cont"
+                        [ngClass]="{'input-err': validationMessages?.schemeDetailsList[y]?.stkBon}">
+                        <input class="form-control" formControlName="stkBon"
+                          (keyup)="inputOnlyInt($event, 'stkBon', true, y)"
+                          (blur)="validateArrayFieldOnBlur(y, 'stkBon')" />
+
+                        <!-- <small class="form-text err-msg">{{validationMessages?.schemeDetailsList[y]?.stkBon}}</small> -->
+
+                        <span class="err-ico"><fa-icon [icon]="iconExclamation"></fa-icon></span>
+                        <span class="err-tooltip-txt">{{validationMessages?.schemeDetailsList[y]?.stkBon}}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="form-group tooltip-cont"
+                        [ngClass]="{'input-err': validationMessages?.schemeDetailsList[y]?.tprz}">
+                        <input class="form-control" formControlName="tprz"
+                          (keyup)="inputOnlyInt($event, 'tprz', true, y)"
+                          (blur)="validateArrayFieldOnBlur(y, 'tprz')" />
+
+                        <!-- <small class="form-text err-msg">{{validationMessages?.schemeDetailsList[y]?.tprz}}</small> -->
+
+                        <span class="err-ico"><fa-icon [icon]="iconExclamation"></fa-icon></span>
+                        <span class="err-tooltip-txt">{{validationMessages?.schemeDetailsList[y]?.tprz}}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="form-group tooltip-cont"
+                        [ngClass]="{'input-err': validationMessages?.schemeDetailsList[y]?.nod}">
+                        <input class="form-control" formControlName="nod" (keyup)="inputOnlyInt($event, 'nod', true, y)"
+                          (blur)="validateArrayFieldOnBlur(y, 'nod')" />
+
+                        <!-- <small class="form-text err-msg">{{validationMessages?.schemeDetailsList[y]?.nod}}</small> -->
+
+                        <span class="err-ico"><fa-icon [icon]="iconExclamation"></fa-icon></span>
+                        <span class="err-tooltip-txt">{{validationMessages?.schemeDetailsList[y]?.nod}}</span>
+                      </div>
+                    </td>
+                    <td *ngIf="schemeDetailsList.controls.length > 1">
+                      <div class="icon-rmv" (click)="removeItem(y)"><fa-icon [icon]="iconTrash"></fa-icon></div>
+                    </td>
+                  </tr>
+                </ng-container>
+              </tbody>
+            </table>
+          </div>
+          <div class="tbl-btn-cont">
+            <button type="button" class="btn btn-primary pull-right mt-4" (click)="addNewItem();">Add Another
+              Item</button>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </form>
+</div>
+<!-- Form Button Section -->
+<div class="footer-btn-group">
+  <button class="btn btn-light mr-4" (click)="continueInfoModification()"
+    *ngIf="!isNewEntry && !isModify">Modify</button>
+  <button class="btn btn-success mr-4" *ngIf="isModify" (click)="saveModificationForm()"
+    [attr.disabled]="isFormSubmitted ? true : null">Save</button>
+  <button class="btn btn-secondary" (click)="resetForm()"
+    [attr.disabled]="isFormSubmitted ? true : null">Cancel</button>
+</div>

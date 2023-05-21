@@ -28,6 +28,10 @@ const routes: Routes = [
     loadChildren: () => import('@app-featured-modules/raffle-management/raffle-management.module').then(m => m.RaffleManagementModule)
   },
   {
+    path: "scheme-management",
+    loadChildren: () => import('@app-featured-modules/scheme-management/scheme-management.module').then(m => m.SchemeManagementModule)
+  },
+  {
     path: "purchase-management",
     loadChildren: () => import('@app-featured-modules/purchase/purchase.module').then(m => m.PurchaseModule)
   },
@@ -42,6 +46,10 @@ const routes: Routes = [
   {
     path: "advance-return-management",
     loadChildren: () => import('@app-featured-modules/advance-return/advance-return.module').then(m => m.AdvanceReturnModule)
+  },
+  {
+    path: "upload-result",
+    loadChildren: () => import('@app-featured-modules/result-uploader/result-uploader.module').then(m => m.ResultUploaderModule)
   }
 ];
 

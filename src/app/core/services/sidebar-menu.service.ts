@@ -60,6 +60,16 @@ export class SidebarMenuService {
       "link": "/raffle-management"
     },
     {
+      "title": "Scheme",
+      "type": "header"
+    },
+    {
+      "title": "Scheme Management",
+      "type": "simple",
+      "icon": "<i class=\"pe-7s-server\"></i>",
+      "link": "/scheme-management"
+    },
+    {
       "title": "Purchase & Dispatch",
       "type": "header"
     },
@@ -90,6 +100,16 @@ export class SidebarMenuService {
       "type": "simple",
       "icon": "<i class=\"pe-7s-server\"></i>",
       "link": "/advance-return-management"
+    },
+    {
+      "title": "Others",
+      "type": "header"
+    },
+    {
+      "title": "Result Uploader",
+      "type": "simple",
+      "icon": "<i class=\"pe-7s-cloud-upload\"></i>",
+      "link": "/upload-result"
     },
     // {
     //   "title": "User Management",

@@ -277,8 +277,8 @@ export class ModificationComponent implements OnInit {
     var _listErr: Array<any> = [];
 
     for (const [_index, _form] of this.schemeDetailsList.controls.entries()) {
-      const _listErr = checkFormValidation(this.schemeDetailsListForm(_index), itemObjectArrayFieldValidationMsg.arrayFieldMsg);
-      _listErr.push(_listErr);
+      const _errlistArr = checkFormValidation(this.schemeDetailsListForm(_index), itemObjectArrayFieldValidationMsg.arrayFieldMsg);
+      _listErr.push(_errlistArr);
     }
 
     this.validationMessages.scheme = { ..._objError };
@@ -360,6 +360,7 @@ export class ModificationComponent implements OnInit {
     this.itemModifyForm.controls.schemeDetailsList = this.FB.array([]);
 
     this.addNewItem();
+    this.isFormSubmitted = false;
   }
 
 }

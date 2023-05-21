@@ -2,8 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { SchemeManagementRoutingModule } from './scheme-management-routing.module';
-import { ListComponent } from './components/list/list.component';
-import { ModificationComponent } from './components/modification/modification.component';
+import { ListComponent, ModificationComponent } from './components';
+import { SharedModule } from '@app-shared/shared.module';
 
 
 @NgModule({
@@ -13,6 +13,7 @@ import { ModificationComponent } from './components/modification/modification.co
   ],
   imports: [
     CommonModule,
+    SharedModule,
     SchemeManagementRoutingModule
   ]
 })

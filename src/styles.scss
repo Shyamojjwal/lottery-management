@@ -190,13 +190,42 @@ body.sidebar-hidden {
 // Table CSS
 .table {
   box-shadow: 0 0 10px 3px #d4d4d4;
+  border-radius: 10px;
 
   .action-col {
     width: 200px !important;
   }
 
-  tbody>tr>td .form-group {
-    margin-bottom: 0 !important;
+  thead>tr:first-child {
+    th {
+      &:first-child {
+        border-top-left-radius: 10px;
+      }
+
+      &:last-child {
+        border-top-right-radius: 10px;
+      }
+    }
+  }
+
+  tbody>tr {
+    &:last-child {
+      td {
+        &:first-child {
+          border-bottom-left-radius: 10px;
+        }
+
+        &:last-child {
+          border-bottom-right-radius: 10px;
+        }
+      }
+    }
+
+    td {
+      .form-group {
+        margin-bottom: 0 !important;
+      }
+    }
   }
 
   input.form-control,
@@ -228,12 +257,20 @@ body.sidebar-hidden {
 }
 
 .table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  box-shadow: 0 0 10px 3px #d4d4d4;
+  border-radius: 10px;
+
   table.table {
-    thead>tr>th {
+    margin-bottom: 0 !important;
+
+    thead>tr>th,
+    tbody>tr>td {
       width: 200px !important;
 
-      &.sl-count,
-      &.btn-cont {
+      &:first-child,
+      &:last-child.btn-cont {
         width: 40px !important;
       }
     }
@@ -260,6 +297,23 @@ body.sidebar-hidden {
       border-top: 2px solid #1bc943;
       bottom: -5px;
       position: absolute;
+    }
+  }
+
+  .drop-area {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #333;
+    background: rgba(0, 0, 0, 0.7);
+
+    .dropZone {
+      border: 2px dashed #bbb;
+      -webkit-border-radius: 5px;
+      border-radius: 5px;
+      padding: 50px;
+      text-align: center;
+      font: 21pt bold arial;
+      color: #bbb;
     }
   }
 }

@@ -1,0 +1,30 @@
+<div class="page-title pb-3">
+  <h3 class="d-inline-block">Upload Result</h3>
+</div>
+<!-- Form Section Start -->
+<div class="form-section">
+  <form [formGroup]="itemModifyForm" (ngSubmit)="uploadFile()">
+    <div class="row">
+      <div class="col-md-6">
+        <h5 class="form-section-title mb-3">Upload Result</h5>
+        <div class="form-group">
+          <div class="drop-area">
+            <div class="dropZone cursor-pointer" (click)="fileUploader.click();">
+              <input type="file" class="d-none" #fileUploader accept=".kol" formControlName="file"
+                (change)="changeInputFile($event)" />
+              <span class="file-txt">{{_uploadedFileName}}</span>
+            </div>
+          </div>
+          <small class="form-text err-msg" [innerHTML]="validationMessages?.file"></small>
+        </div>
+        <div class="footer-btn-group">
+          <button class="btn btn-success mr-4" type="submit" [attr.disabled]="isFormSubmitted ? true : null">
+            <i class="pe-7s-cloud-upload"></i>&nbsp;&nbsp;&nbsp;Upload
+          </button>
+          <button class="btn btn-secondary" (click)="resetForm()" type="button"
+            [attr.disabled]="isFormSubmitted ? true : null">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

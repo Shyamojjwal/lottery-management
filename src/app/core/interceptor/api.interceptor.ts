@@ -10,10 +10,14 @@ import { Observable, catchError, throwError } from 'rxjs';
 import { StorageService } from '@app-services/storage.service';
 import { AuthenticationService } from '../authentication';
 
+import swal from "sweetalert2";
+import { Router } from '@angular/router';
+
 @Injectable()
 export class ApiInterceptor implements HttpInterceptor {
 
   constructor(
+    private _router: Router,
     private storageService: StorageService,
     private _authService: AuthenticationService
   ) {}
@@ -50,6 +54,24 @@ export class ApiInterceptor implements HttpInterceptor {
   }
 
   errorHandler = (request:any, error: any) => {
+    console.log("errorHandler: ", error);
+    if (error.status === 401) {
+      swal.fire({
+        icon: 'warning',
+        html: 'Unable to reach server, please try after some time.',
+        confirmButtonColor: '#1B4383'
+      }).then(() => {
+        this._authService.clearUserInfo();
+        this._router.navigate(["/auth"]);
+      });
+      this.storageService.clear();
+    } else if (error.status == 0 || (error.status >= 500 && error.status < 600)) {
+      swal.fire({
+        icon: 'error',
+        html: 'Unable to reach server, please try after some time.',
+        confirmButtonColor: '#1B4383'
+      });
+    }
     return error
   }
 }
