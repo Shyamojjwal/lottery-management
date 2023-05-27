@@ -19,10 +19,11 @@ export class UserService {
   }
   
   modifyUserInformation = (_payload:any) => {
-    return this._apiService.put(`user/changePassword?username=${_payload.username}&oldPassword=${_payload.oldPassword}&newPassword=${_payload.newPassword}`, {});
+    return this._apiService.put(`user/updateProfile`, _payload);
   }
   
   modifyUserCredential = (_payload:any) => {
-    return this._apiService.put(`user/changePassword?username=${_payload.username}&oldPassword=${_payload.oldPassword}&newPassword=${_payload.newPassword}`, {});
+    // return this._apiService.put(`user/changePassword?username=${_payload.username}&oldPassword=${_payload.oldPassword}&newPassword=${_payload.newPassword}`, {});
+    return this._apiService.put(`user/changePassword`, _payload);
   }
 }

@@ -11,6 +11,7 @@ interface MenuItem {
   active?: boolean;
   icon?: string;
   submenus?: MenuItem[];
+  isVisibleToUser?: boolean;
 }
 
 @Injectable({
@@ -27,89 +28,106 @@ export class SidebarMenuService {
       "title": "Dashboards",
       "type": "simple",
       "icon": "<i class=\"pe-7s-safe\"> </i>",
-      "link": "/dashboard"
+      "link": "/dashboard",
+      "isVisibleToUser": true
     },
     {
       "title": "Site Users",
-      "type": "header"
+      "type": "header",
+      "isVisibleToUser": false
     },
     {
       "title": "User Management",
       "type": "simple",
       "icon": "<i class=\"pe-7s-users\"></i>",
-      "link": "/user-management"
+      "link": "/user-management",
+      "isVisibleToUser": false
     },
     {
       "title": "Group",
-      "type": "header"
+      "type": "header",
+      "isVisibleToUser": false
     },
     {
       "title": "Group Management",
       "type": "simple",
       "icon": "<i class=\"pe-7s-server\"></i>",
-      "link": "/group-management"
+      "link": "/group-management",
+      "isVisibleToUser": false
     },
     {
       "title": "Raffle",
-      "type": "header"
+      "type": "header",
+      "isVisibleToUser": true
     },
     {
       "title": "Raffle Management",
       "type": "simple",
       "icon": "<i class=\"pe-7s-server\"></i>",
-      "link": "/raffle-management"
+      "link": "/raffle-management",
+      "isVisibleToUser": true
     },
     {
       "title": "Scheme",
-      "type": "header"
+      "type": "header",
+      "isVisibleToUser": true
     },
     {
       "title": "Scheme Management",
       "type": "simple",
       "icon": "<i class=\"pe-7s-server\"></i>",
-      "link": "/scheme-management"
+      "link": "/scheme-management",
+      "isVisibleToUser": true
     },
     {
       "title": "Purchase & Dispatch",
-      "type": "header"
+      "type": "header",
+      "isVisibleToUser": true
     },
     {
       "title": "Purchase Management",
       "type": "simple",
       "icon": "<i class=\"pe-7s-server\"></i>",
-      "link": "/purchase-management"
+      "link": "/purchase-management",
+      "isVisibleToUser": true
     },
     {
       "title": "Dispatch Management",
       "type": "simple",
       "icon": "<i class=\"pe-7s-server\"></i>",
-      "link": "/dispatch-management"
+      "link": "/dispatch-management",
+      "isVisibleToUser": true
     },
     {
       "title": "Returns",
-      "type": "header"
+      "type": "header",
+      "isVisibleToUser": true
     },
     {
       "title": "Draw Date Return",
       "type": "simple",
       "icon": "<i class=\"pe-7s-server\"></i>",
-      "link": "/draw-date-return-management"
+      "link": "/draw-date-return-management",
+      "isVisibleToUser": true
     },
     {
       "title": "Advance Return",
       "type": "simple",
       "icon": "<i class=\"pe-7s-server\"></i>",
-      "link": "/advance-return-management"
+      "link": "/advance-return-management",
+      "isVisibleToUser": true
     },
     {
       "title": "Others",
-      "type": "header"
+      "type": "header",
+      "isVisibleToUser": true
     },
     {
       "title": "Result Uploader",
       "type": "simple",
       "icon": "<i class=\"pe-7s-cloud-upload\"></i>",
-      "link": "/upload-result"
+      "link": "/upload-result",
+      "isVisibleToUser": true
     },
     // {
     //   "title": "User Management",

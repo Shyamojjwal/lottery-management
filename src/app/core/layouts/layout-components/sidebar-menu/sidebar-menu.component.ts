@@ -1,6 +1,7 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthenticationService } from '@app-core/authentication';
 import { SidebarMenuService } from '@app-core/services';
 import { ThemeOptions } from '@app-layouts/theme-options';
 
@@ -20,17 +21,20 @@ export class SidebarMenuComponent implements OnInit {
 
   public menus: any = [];
   private innerWidth: number = 0;
+  public userInfo: any = null;
 
   constructor(
+    private router: Router,
     public globals: ThemeOptions,
+    private _authService: AuthenticationService,
     private sidebarMenuService: SidebarMenuService,
-    private router: Router
 ) { 
   this.menus = [ ...this.sidebarMenuService.getMenuList() ];
 }
 
   ngOnInit(): void {
     const theActiveMenu = this.sidebarMenuService.getMenuItemByUrl(this.menus, this.router.url);
+    this.userInfo = this._authService.getUser();
     if (theActiveMenu) {
       this.toggle(theActiveMenu);
     }

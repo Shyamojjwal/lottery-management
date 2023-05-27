@@ -31,6 +31,7 @@ export class AppStorageService {
   }
 
   setUserInfo = (_userinfo: any) => {
+    _userinfo.isAdmin = Boolean(_userinfo?.authorities?.find((x:any) => x.authority.toLowerCase() == 'admin'))
     this._storageService.save(this.userCredential, JSON.stringify(_userinfo));
   }
 
