@@ -35,6 +35,7 @@ export class SidebarMenuComponent implements OnInit {
   ngOnInit(): void {
     const theActiveMenu = this.sidebarMenuService.getMenuItemByUrl(this.menus, this.router.url);
     this.userInfo = this._authService.getUser();
+    console.log("this.userInfo: ", this.userInfo);
     if (theActiveMenu) {
       this.toggle(theActiveMenu);
     }

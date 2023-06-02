@@ -110,11 +110,18 @@ export class LoginComponent implements OnInit {
     this._apiService.getCrntUserInfo().subscribe({
       next: (_res: any) => {
         console.log("User Info: ", _res);
-        this._storageService.setUserInfo(_res);
+        const _userInfo:any = {..._res};
+        _userInfo.isAdmin = Boolean(_userInfo?.authorities?.find((x:any) => x.authority.toLowerCase() == 'admin'));
+
+        this._storageService.setUserInfo(_userInfo);
         this._sharedService.hideProgress();
         this._notifyService.success('You are successfully logged in.')
         setTimeout(() => {
-          this.router.navigate(['/user-management']);
+          if(_userInfo.isAdmin) {
+            this.router.navigate(['/user-management']);
+          } else {
+            this.router.navigate(['/dashboard']);
+          }
         }, 500);
       },
       error: (_err: any) => {

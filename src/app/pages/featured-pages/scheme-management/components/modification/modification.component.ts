@@ -65,6 +65,8 @@ export class ModificationComponent implements OnInit {
 
   public raffleListArray: Array<any> = [];
 
+  private selectedRaffelInfo: any = null;
+
   constructor(
     private router: Router,
     private FB: FormBuilder,
@@ -163,8 +165,8 @@ export class ModificationComponent implements OnInit {
     const _this = this;
     this.itemModifyForm = this.FB.group({
       scheme: _this.FB.group({
-        schemeId: [''],
-        schemeName: ['', [Validators.required, noWhitespaceValidator]],
+        raffleId: ['', [Validators.required]],
+        raffleName: ['', [Validators.required, noWhitespaceValidator]],
         drwFrm: ['', [Validators.required]],
         drwTo: ['', [Validators.required]],
         series: ['', [Validators.required]],
@@ -173,6 +175,18 @@ export class ModificationComponent implements OnInit {
       }),
       schemeDetailsList: _this.FB.array([])
     });
+
+    this.scheme.controls['raffleId'].valueChanges.subscribe((_value: any) => {
+      setTimeout(() => {
+        this.selectedRaffelInfo = this.raffleListArray.find((x: any) => x.id == _value);
+        this.scheme.controls['raffleName'].setValue(this.selectedRaffelInfo?.raffleName || '');
+
+        for (const [_index, _form] of this.schemeDetailsList.controls.entries()) {
+          this.schemeDetailsListForm(_index).get('raffleId')?.setValue(this.selectedRaffelInfo?.id || '')
+        }
+
+      }, 500);
+    })
     this.addNewItem();
   }
 
@@ -191,7 +205,7 @@ export class ModificationComponent implements OnInit {
   addNewItemToList = () => {
     const _singleItemForm = this.FB.group({
       schemeDtlsId: [''],
-      raffleId: ['', [Validators.required]],
+      raffleId: [this.selectedRaffelInfo?.id || '', [Validators.required]],
       rank: ['', [Validators.required]],
       pfx: ['', [Validators.required]],
       srs: ['', [Validators.required]],
@@ -308,7 +322,7 @@ export class ModificationComponent implements OnInit {
 
     const _payload = { ...this.itemModifyForm.value };
 
-    if(this.isNewEntry) {
+    if (this.isNewEntry) {
       delete _payload.scheme.schemeId;
     }
 

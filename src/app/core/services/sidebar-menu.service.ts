@@ -58,14 +58,14 @@ export class SidebarMenuService {
     {
       "title": "Raffle",
       "type": "header",
-      "isVisibleToUser": true
+      "isVisibleToUser": false
     },
     {
       "title": "Raffle Management",
       "type": "simple",
       "icon": "<i class=\"pe-7s-server\"></i>",
       "link": "/raffle-management",
-      "isVisibleToUser": true
+      "isVisibleToUser": false
     },
     {
       "title": "Scheme",

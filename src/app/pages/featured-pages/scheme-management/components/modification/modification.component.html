@@ -21,10 +21,16 @@
         <ng-container formGroupName="scheme">
           <div class="row">
             <div class="col-md-4 col-sm-12 form-group">
-              <label>Scheme Name</label>
-              <input type="text" placeholder="Scheme Name" class="form-control"
+              <label>Raffel Name</label>
+              <!-- <input type="text" placeholder="Scheme Name" class="form-control"
                 [ngClass]="{'input-readOnly': !(isInputReadOnly || isPreview)}" formControlName="schemeName"
-                (focusout)="validateObjectFieldOnBlur('schemeName')" />
+                (focusout)="validateObjectFieldOnBlur('schemeName')" /> -->
+              <select class="form-control" formControlName="raffleId" (blur)="validateObjectFieldOnBlur('raffleId')">
+                <option value="" disabled>Select Raffle</option>
+                <ng-container *ngFor="let raffle of raffleListArray">
+                  <option [value]="raffle.id">{{raffle.raffleName}}</option>
+                </ng-container>
+              </select>
               <small class="form-text err-msg">{{validationMessages?.scheme?.schemeName}}</small>
             </div>
             <div class="col-md-4 col-sm-12 form-group">
@@ -33,6 +39,13 @@
                 [ngClass]="{'input-readOnly': !(isInputReadOnly || isPreview)}" formControlName="series"
                 (focusout)="validateObjectFieldOnBlur('series')" (keyup)="inputOnlyInt($event, 'series')" />
               <small class="form-text err-msg">{{validationMessages?.scheme?.series}}</small>
+            </div>
+            <div class="col-md-4 col-sm-12 form-group">
+              <label>State</label>
+              <input type="text" placeholder="State" class="form-control"
+                [ngClass]="{'input-readOnly': !(isInputReadOnly || isPreview)}" formControlName="state"
+                (focusout)="validateObjectFieldOnBlur('state')" />
+              <small class="form-text err-msg">{{validationMessages?.scheme?.state}}</small>
             </div>
             <div class="col-md-4 col-sm-12 form-group">
               <label>Draw From</label>
@@ -49,13 +62,6 @@
                 [ngClass]="{'input-readOnly': !(isInputReadOnly || isPreview)}" formControlName="drwTo"
                 (focusout)="validateObjectFieldOnBlur('drwTo')" (keyup)="inputOnlyInt($event, 'drwTo')" />
               <small class="form-text err-msg">{{validationMessages?.scheme?.drwTo}}</small>
-            </div>
-            <div class="col-md-4 col-sm-12 form-group">
-              <label>State</label>
-              <input type="text" placeholder="State" class="form-control"
-                [ngClass]="{'input-readOnly': !(isInputReadOnly || isPreview)}" formControlName="state"
-                (focusout)="validateObjectFieldOnBlur('state')" />
-              <small class="form-text err-msg">{{validationMessages?.scheme?.state}}</small>
             </div>
             <div class="col-md-4 col-sm-12 form-group">
               <label>Date of Purchase</label>
@@ -80,7 +86,7 @@
               <thead>
                 <tr>
                   <th class="sl-count">Sl</th>
-                  <th>Raffel</th>
+                  <!-- <th>Raffel</th> -->
                   <th>Rank</th>
                   <th>Prefix</th>
                   <th>Series</th>
@@ -102,10 +108,9 @@
                         <span>{{y + 1}}</span>
                       </div>
                     </td>
-                    <td>
+                    <!-- <td>
                       <div class="form-group tooltip-cont"
                         [ngClass]="{'input-err': validationMessages?.schemeDetailsList[y]?.raffleId}">
-                        <!-- <div class="form-group"> -->
                         <select class="form-control" formControlName="raffleId"
                           (blur)="validateArrayFieldOnBlur(y, 'raffleId')">
                           <option value="" disabled>Select Raffle</option>
@@ -113,12 +118,11 @@
                             <option [value]="raffle.id">{{raffle.raffleName}}</option>
                           </ng-container>
                         </select>
-                        <!-- <small class="form-text err-msg">{{validationMessages?.schemeDetailsList[y]?.raffleId}}</small> -->
-
+                        
                         <span class="err-ico"><fa-icon [icon]="iconExclamation"></fa-icon></span>
                         <span class="err-tooltip-txt">{{validationMessages?.schemeDetailsList[y]?.raffleId}}</span>
                       </div>
-                    </td>
+                    </td> -->
                     <td>
                       <div class="form-group tooltip-cont"
                         [ngClass]="{'input-err': validationMessages?.schemeDetailsList[y]?.rank}">
