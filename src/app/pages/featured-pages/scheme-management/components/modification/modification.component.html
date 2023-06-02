@@ -47,6 +47,8 @@
                 (focusout)="validateObjectFieldOnBlur('state')" />
               <small class="form-text err-msg">{{validationMessages?.scheme?.state}}</small>
             </div>
+          </div>
+          <div class="row">
             <div class="col-md-4 col-sm-12 form-group">
               <label>Draw From</label>
               <input type="text" placeholder="Draw From" class="form-control"
@@ -54,8 +56,6 @@
                 (focusout)="validateObjectFieldOnBlur('drwFrm')" (keyup)="inputOnlyInt($event, 'drwFrm')" />
               <small class="form-text err-msg">{{validationMessages?.scheme?.drwFrm}}</small>
             </div>
-          </div>
-          <div class="row">
             <div class="col-md-4 col-sm-12 form-group">
               <label>Draw To</label>
               <input type="text" placeholder="Draw To" class="form-control"
